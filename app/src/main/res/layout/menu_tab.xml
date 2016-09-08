@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_home"
+            android:contentDescription="@string/tab_home"
+            android:background="@drawable/bck_tab_selected"
+            android:paddingLeft="@dimen/tab_padding_side"
+            android:paddingRight="@dimen/tab_padding_side"
+            android:paddingTop="@dimen/tab_padding"
+            android:paddingBottom="@dimen/tab_padding"
+            android:minWidth="@dimen/tab_min_w"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_library"
+            android:contentDescription="@string/tab_aip"
+            android:background="@null"
+            android:paddingLeft="@dimen/tab_padding_side"
+            android:paddingRight="@dimen/tab_padding_side"
+            android:paddingTop="@dimen/tab_padding"
+            android:paddingBottom="@dimen/tab_padding"
+            android:minWidth="@dimen/tab_min_w"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_cloud"
+            android:contentDescription="@string/tab_weather"
+            android:background="@null"
+            android:paddingLeft="@dimen/tab_padding_side"
+            android:paddingRight="@dimen/tab_padding_side"
+            android:paddingTop="@dimen/tab_padding"
+            android:paddingBottom="@dimen/tab_padding"
+            android:minWidth="@dimen/tab_min_w"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_check"
+            android:contentDescription="@string/tab_chklist"
+            android:background="@null"
+            android:paddingLeft="@dimen/tab_padding_side"
+            android:paddingRight="@dimen/tab_padding_side"
+            android:paddingTop="@dimen/tab_padding"
+            android:paddingBottom="@dimen/tab_padding"
+            android:minWidth="@dimen/tab_min_w"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_docs"
+            android:contentDescription="@string/tab_docs"
+            android:background="@null"
+            android:paddingLeft="@dimen/tab_padding_side"
+            android:paddingRight="@dimen/tab_padding_side"
+            android:paddingTop="@dimen/tab_padding"
+            android:paddingBottom="@dimen/tab_padding"
+            android:minWidth="@dimen/tab_min_w"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_plan"
+            android:contentDescription="@string/tab_plan"
+            android:background="@null"
+            android:paddingLeft="@dimen/tab_padding_side"
+            android:paddingRight="@dimen/tab_padding_side"
+            android:paddingTop="@dimen/tab_padding"
+            android:paddingBottom="@dimen/tab_padding"
+            android:minWidth="@dimen/tab_min_w"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_functions"
+            android:contentDescription="@string/tab_functions"
+            android:background="@null"
+            android:paddingLeft="@dimen/tab_padding_side"
+            android:paddingRight="@dimen/tab_padding_side"
+            android:paddingTop="@dimen/tab_padding"
+            android:paddingBottom="@dimen/tab_padding"
+            android:minWidth="@dimen/tab_min_w"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_settings"
+            android:contentDescription="@string/tab_settings"
+            android:background="@null"
+            android:paddingLeft="@dimen/tab_padding_side"
+            android:paddingRight="@dimen/tab_padding_side"
+            android:paddingTop="@dimen/tab_padding"
+            android:paddingBottom="@dimen/tab_padding"
+            android:minWidth="@dimen/tab_min_w"
+            />
+
+    </LinearLayout>
+</HorizontalScrollView>

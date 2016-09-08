@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">EasyFlightBag</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_aip">AIP</string>
+    <string name="tab_weather">Weather</string>
+    <string name="tab_chklist">Checklists</string>
+    <string name="tab_docs">Documents</string>
+    <string name="tab_plan">Plan</string>
+    <string name="tab_functions">Calculations</string>
+    <string name="tab_settings">Settings</string>
 </resources>
