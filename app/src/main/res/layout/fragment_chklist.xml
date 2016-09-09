@@ -1,14 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Checklists"
-        android:id="@+id/txt_chk"
-        android:layout_gravity="center_horizontal"/>
-</LinearLayout>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:background="?attr/backgroundColor"
+                  android:weightSum="1">
+
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:id="@+id/chklist_scroll_left"
+            android:elevation="@dimen/elevation_4">
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/chklist_list_files"/>
+        </ScrollView>
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:id="@+id/chklist_scroll_right"
+            android:background="?attr/backgroundDarkColor">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/chklist_list_content"/>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/chklist_done"
+        android:layout_width="@dimen/float_button_size"
+        android:layout_height="@dimen/float_button_size"
+        android:src="@drawable/ic_done"
+        android:background="@drawable/floating_btn_green"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="@dimen/float_button_margin"
+        android:layout_marginRight="@dimen/float_button_margin"
+        android:elevation="@dimen/elevation_4"
+        android:visibility="gone"/>
+
+</FrameLayout>
+

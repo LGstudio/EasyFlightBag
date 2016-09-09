@@ -12,5 +12,9 @@
     <color name="colorLight">#9da1a6</color>
     <color name="colorLighter">#d0d9e3</color>
     <color name="colorWhite">#f8f8f8</color>
+    <color name="colorSemiTransparent">#66000000</color>
     <color name="colorTransparent">#00000000</color>
+
+    <color name="colorGreen">#49b94b</color>
+    <color name="colorGreenDark">#287a29</color>
 </resources>

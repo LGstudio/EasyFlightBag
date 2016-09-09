@@ -6,4 +6,11 @@
     <dimen name="tab_padding_side">12dp</dimen>
     <dimen name="tab_padding">20dp</dimen>
     <dimen name="tab_min_w">72dp</dimen>
+
+    <dimen name="float_button_size">56dp</dimen>
+    <dimen name="float_button_margin">24dp</dimen>
+    <dimen name="elevation_8">8dp</dimen>
+    <dimen name="elevation_4">4dp</dimen>
+    <dimen name="row_heigth">48dp</dimen>
+    <dimen name="row_padding">16dp</dimen>
 </resources>

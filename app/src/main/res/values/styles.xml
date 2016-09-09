@@ -3,27 +3,37 @@
     <!-- Base application theme. LIGHT -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+
         <item name="primaryColor">@color/colorPrimary</item>
         <item name="primaryColorDark">@color/colorPrimaryDark</item>
         <item name="primaryTextColor">@color/colorBlack</item>
         <item name="secondaryTextColor">@color/colorDark</item>
+        <item name="fadedTextColor">@color/colorGray</item>
         <item name="dividerColor">@color/colorLight</item>
         <item name="highlightColor">@color/colorWhite</item>
         <item name="backgroundColor">@color/colorWhite</item>
         <item name="backgroundDarkColor">@color/colorLighter</item>
+        <item name="greenColor">@color/colorGreen</item>
     </style>
 
     <!-- Base application theme. DARK -->
     <style name="AppThemeDark" parent="Theme.AppCompat.Light.NoActionBar">
 
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDarker</item>
+
         <item name="primaryColor">@color/colorPrimaryDark</item>
         <item name="primaryColorDark">@color/colorPrimaryDarker</item>
         <item name="primaryTextColor">@color/colorLighter</item>
         <item name="secondaryTextColor">@color/colorLight</item>
+        <item name="fadedTextColor">@color/colorGray</item>
         <item name="dividerColor">@color/colorGray</item>
         <item name="highlightColor">@color/colorLight</item>
         <item name="backgroundColor">@color/colorDarker</item>
         <item name="backgroundDarkColor">@color/colorDark</item>
+        <item name="greenColor">@color/colorGreenDark</item>
     </style>
 
 </resources>

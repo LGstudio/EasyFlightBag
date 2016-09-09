@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class TabMenu implements View.OnClickListener{
 
     private ArrayList<ImageButton> tabs = new ArrayList<>();
-    private int selected = 0;
+    public int selected = 0;
     private CustomViewPager viewPager;
 
     public TabMenu(Activity a, CustomViewPager vP){
@@ -69,7 +69,7 @@ public class TabMenu implements View.OnClickListener{
         change(clicked);
     }
 
-    private void change(int clicked){
+    public void change(int clicked){
         tabs.get(selected).setBackgroundResource(R.color.colorTransparent);
         tabs.get(selected).setAlpha((float) 0.5);
         tabs.get(clicked).setBackgroundResource(R.drawable.bck_tab_selected);

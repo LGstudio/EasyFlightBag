@@ -4,13 +4,19 @@
     <declare-styleable name="AppTheme">
         <attr name="primaryColor" format="color"/>
         <attr name="primaryColorDark" format="color"/>
+
         <attr name="primaryTextColor" format="color"/>
         <attr name="secondaryTextColor" format="color"/>
+        <attr name="fadedTextColor" format="color"/>
+
         <attr name="dividerColor" format="color"/>
+
         <attr name="highlightColor" format="color"/>
+
         <attr name="backgroundColor" format="color"/>
         <attr name="backgroundDarkColor" format="color"/>
-        <!-- <attr name="iconPlaceholder" format="integer"/> -->
+
+        <attr name="greenColor" format="color"/>
     </declare-styleable>
     
 </resources>

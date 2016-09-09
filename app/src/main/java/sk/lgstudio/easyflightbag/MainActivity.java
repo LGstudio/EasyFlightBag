@@ -1,7 +1,12 @@
 package sk.lgstudio.easyflightbag;
 
+import android.content.Context;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+
+import java.io.File;
 
 import sk.lgstudio.easyflightbag.ui.CustomFragmentAdapter;
 import sk.lgstudio.easyflightbag.ui.CustomViewPager;
@@ -14,6 +19,8 @@ import sk.lgstudio.easyflightbag.ui.FragmentPlan;
 import sk.lgstudio.easyflightbag.ui.FragmentSettings;
 import sk.lgstudio.easyflightbag.ui.FragmentWeather;
 import sk.lgstudio.easyflightbag.ui.TabMenu;
+
+import static android.os.Environment.getDataDirectory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +44,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkDirectory();
         initView();
+
+    }
+
+    private void checkDirectory(){
+        File rootDir = new File(getFilesDir(),"EasyFlightBag");
+        if (!rootDir.mkdirs()) {
+            Log.e("Folder", "Directory not created in" + getFilesDir().toString());
+        }
 
     }
 
@@ -61,7 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
+        if (menu.selected != 0)
+            menu.change(0);
+        else
+            super.onBackPressed();
     }
 
 }

@@ -2,7 +2,8 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="sk.lgstudio.easyflightbag.ui.FragmentHome">
+             tools:context="sk.lgstudio.easyflightbag.ui.FragmentHome"
+             android:background="?attr/backgroundColor">
 
     <TextView
         android:layout_width="wrap_content"

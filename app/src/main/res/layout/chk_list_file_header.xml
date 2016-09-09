@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/elevation_4"
+    android:padding="@dimen/row_padding"
+    android:background="?attr/dividerColor">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_new"
+        android:id="@+id/chklist_new"
+        android:layout_gravity="right"
+        android:clickable="true"
+        android:textAllCaps="true"
+        android:textColor="?attr/secondaryTextColor"
+        android:textStyle="bold"/>
+
+</LinearLayout>

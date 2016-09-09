@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">EasyFlightBag</string>
+
     <string name="tab_home">Home</string>
     <string name="tab_aip">AIP</string>
     <string name="tab_weather">Weather</string>
@@ -9,6 +10,6 @@
     <string name="tab_functions">Calculations</string>
     <string name="tab_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_new">New</string>
+
 </resources>
