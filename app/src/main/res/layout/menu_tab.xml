@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimary">
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:background="?attr/primaryColor"
+                      android:scrollIndicators="none">
 
     <LinearLayout
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        >
+        android:gravity="center_horizontal">
 
         <ImageButton
+            android:id="@+id/tab_home"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_home"
@@ -25,94 +27,108 @@
             />
 
         <ImageButton
+            android:id="@+id/tab_aip"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_library"
             android:contentDescription="@string/tab_aip"
-            android:background="@null"
+            android:background="@drawable/bck_tab_default"
             android:paddingLeft="@dimen/tab_padding_side"
             android:paddingRight="@dimen/tab_padding_side"
             android:paddingTop="@dimen/tab_padding"
             android:paddingBottom="@dimen/tab_padding"
             android:minWidth="@dimen/tab_min_w"
+            android:alpha="0.5"
             />
 
         <ImageButton
+            android:id="@+id/tab_weather"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_cloud"
             android:contentDescription="@string/tab_weather"
-            android:background="@null"
+            android:background="@drawable/bck_tab_default"
             android:paddingLeft="@dimen/tab_padding_side"
             android:paddingRight="@dimen/tab_padding_side"
             android:paddingTop="@dimen/tab_padding"
             android:paddingBottom="@dimen/tab_padding"
             android:minWidth="@dimen/tab_min_w"
+            android:alpha="0.5"
             />
 
         <ImageButton
+            android:id="@+id/tab_chklist"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_check"
             android:contentDescription="@string/tab_chklist"
-            android:background="@null"
+            android:background="@drawable/bck_tab_default"
             android:paddingLeft="@dimen/tab_padding_side"
             android:paddingRight="@dimen/tab_padding_side"
             android:paddingTop="@dimen/tab_padding"
             android:paddingBottom="@dimen/tab_padding"
             android:minWidth="@dimen/tab_min_w"
+            android:alpha="0.5"
             />
 
         <ImageButton
+            android:id="@+id/tab_docs"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_docs"
             android:contentDescription="@string/tab_docs"
-            android:background="@null"
+            android:background="@drawable/bck_tab_default"
             android:paddingLeft="@dimen/tab_padding_side"
             android:paddingRight="@dimen/tab_padding_side"
             android:paddingTop="@dimen/tab_padding"
             android:paddingBottom="@dimen/tab_padding"
             android:minWidth="@dimen/tab_min_w"
+            android:alpha="0.5"
             />
 
         <ImageButton
+            android:id="@+id/tab_plan"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_plan"
             android:contentDescription="@string/tab_plan"
-            android:background="@null"
+            android:background="@drawable/bck_tab_default"
             android:paddingLeft="@dimen/tab_padding_side"
             android:paddingRight="@dimen/tab_padding_side"
             android:paddingTop="@dimen/tab_padding"
             android:paddingBottom="@dimen/tab_padding"
             android:minWidth="@dimen/tab_min_w"
+            android:alpha="0.5"
             />
 
         <ImageButton
+            android:id="@+id/tab_calc"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_functions"
             android:contentDescription="@string/tab_functions"
-            android:background="@null"
+            android:background="@drawable/bck_tab_default"
             android:paddingLeft="@dimen/tab_padding_side"
             android:paddingRight="@dimen/tab_padding_side"
             android:paddingTop="@dimen/tab_padding"
             android:paddingBottom="@dimen/tab_padding"
             android:minWidth="@dimen/tab_min_w"
+            android:alpha="0.5"
             />
 
         <ImageButton
+            android:id="@+id/tab_set"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_settings"
             android:contentDescription="@string/tab_settings"
-            android:background="@null"
+            android:background="@drawable/bck_tab_default"
             android:paddingLeft="@dimen/tab_padding_side"
             android:paddingRight="@dimen/tab_padding_side"
             android:paddingTop="@dimen/tab_padding"
             android:paddingBottom="@dimen/tab_padding"
             android:minWidth="@dimen/tab_min_w"
+            android:alpha="0.5"
             />
 
     </LinearLayout>

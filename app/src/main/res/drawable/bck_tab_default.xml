@@ -8,9 +8,5 @@
 
         <solid android:color="@null" />
 
-        <stroke
-            android:width="2dp"
-            android:color="?attr/highlightColor" />
-
     </shape>
 </inset>

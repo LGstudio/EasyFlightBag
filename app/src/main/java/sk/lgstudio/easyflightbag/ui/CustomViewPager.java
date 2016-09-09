@@ -1,4 +1,4 @@
-package sk.lgstudio.easyflightbag.fragments;
+package sk.lgstudio.easyflightbag.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -35,7 +35,7 @@ public class CustomViewPager extends android.support.v4.view.ViewPager{
 
         return false;
     }
-    
+
     public void setPagingEnabled(boolean enabled) {
         this.enabled = enabled;
     }

@@ -1,4 +1,4 @@
-package sk.lgstudio.easyflightbag.fragments;
+package sk.lgstudio.easyflightbag.ui;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,14 +11,14 @@ import java.util.ArrayList;
  *
  * Adapter for fragments in .MainAvtivity
  */
-public class FragmentAdapter extends FragmentStatePagerAdapter {
+public class CustomFragmentAdapter extends FragmentStatePagerAdapter {
 
     ArrayList<Fragment> fragments;
 
     /**
      *
      */
-    public FragmentAdapter(FragmentManager fm) {
+    public CustomFragmentAdapter(FragmentManager fm) {
         super(fm);
 
         fragments = new ArrayList<>();
