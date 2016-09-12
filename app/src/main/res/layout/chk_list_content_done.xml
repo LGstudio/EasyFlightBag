@@ -3,15 +3,16 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:clickable="false"
-              android:padding="@dimen/row_padding"
-              android:id="@+id/chklist_item">
+              android:paddingTop="@dimen/row_padding"
+              android:paddingBottom="@dimen/row_padding"
+              android:id="@+id/chklist_item_done">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chklist_item_text"
         android:text="detail"
-        android:textColor="?attr/primaryTextColor"/>
+        android:textColor="?attr/secondaryTextColor"
+        />
 
 </LinearLayout>

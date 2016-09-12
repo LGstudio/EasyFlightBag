@@ -15,6 +15,9 @@
 
         <attr name="backgroundColor" format="color"/>
         <attr name="backgroundDarkColor" format="color"/>
+        <attr name="backgroundColorHighlightLight" format="color"/>
+        <attr name="backgroundColorHighlight" format="color"/>
+
 
         <attr name="greenColor" format="color"/>
     </declare-styleable>

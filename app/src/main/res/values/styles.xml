@@ -11,10 +11,12 @@
         <item name="primaryTextColor">@color/colorBlack</item>
         <item name="secondaryTextColor">@color/colorDark</item>
         <item name="fadedTextColor">@color/colorGray</item>
-        <item name="dividerColor">@color/colorLight</item>
+        <item name="dividerColor">@color/colorPrimaryLight</item>
         <item name="highlightColor">@color/colorWhite</item>
         <item name="backgroundColor">@color/colorWhite</item>
         <item name="backgroundDarkColor">@color/colorLighter</item>
+        <item name="backgroundColorHighlightLight">@color/colorBlueLight</item>
+        <item name="backgroundColorHighlight">@color/colorBlue</item>
         <item name="greenColor">@color/colorGreen</item>
     </style>
 
@@ -29,10 +31,12 @@
         <item name="primaryTextColor">@color/colorLighter</item>
         <item name="secondaryTextColor">@color/colorLight</item>
         <item name="fadedTextColor">@color/colorGray</item>
-        <item name="dividerColor">@color/colorGray</item>
+        <item name="dividerColor">@color/colorPrimaryDark</item>
         <item name="highlightColor">@color/colorLight</item>
         <item name="backgroundColor">@color/colorDarker</item>
         <item name="backgroundDarkColor">@color/colorDark</item>
+        <item name="backgroundColorHighlightLight">@color/colorPrimaryDark</item>
+        <item name="backgroundColorHighlight">@color/colorPrimary</item>
         <item name="greenColor">@color/colorGreenDark</item>
     </style>
 

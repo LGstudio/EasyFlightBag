@@ -15,7 +15,7 @@
         android:layout_gravity="right"
         android:clickable="true"
         android:textAllCaps="true"
-        android:textColor="?attr/secondaryTextColor"
+        android:textColor="?attr/backgroundDarkColor"
         android:textStyle="bold"/>
 
 </LinearLayout>

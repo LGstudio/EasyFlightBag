@@ -12,21 +12,13 @@
     tools:context="sk.lgstudio.easyflightbag.MainActivity"
     >
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
+    <include
+        layout="@layout/menu_tab"
         android:id="@+id/menu_tab"
-        android:elevation="@dimen/elevation_8">
-
-        <include
-            layout="@layout/menu_tab"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            />
-
-    </FrameLayout>
-
-
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        />
 
     <sk.lgstudio.easyflightbag.ui.CustomViewPager
         android:id="@+id/view_fragment_pager"
@@ -35,8 +27,6 @@
         android:layout_height="match_parent"
 
         />
-
-
 
 
 </RelativeLayout>

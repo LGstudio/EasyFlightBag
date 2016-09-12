@@ -27,14 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private TabMenu menu;
 
     private CustomViewPager viewPager;
-    private FragmentHome fHome = new FragmentHome();
-    private FragmentAip fAip = new FragmentAip();
-    private FragmentWeather fWeather = new FragmentWeather();
-    private FragmentChklist fChklist = new FragmentChklist();
-    private FragmentDocs fDocs = new FragmentDocs();
-    private FragmentPlan fPlan = new FragmentPlan();
-    private FragmentCalc fCalc = new FragmentCalc();
-    private FragmentSettings fSettings = new FragmentSettings();
+
+    private File rootDir;
+    private File chkDir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +45,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkDirectory(){
-        File rootDir = new File(getFilesDir(),"EasyFlightBag");
-        if (!rootDir.mkdirs()) {
-            Log.e("Folder", "Directory not created in" + getFilesDir().toString());
+        rootDir = new File(Environment.getExternalStorageDirectory() + getString(R.string.folder_root));
+        if(!rootDir.exists()) {
+            rootDir.mkdir();
+        }
+
+        chkDir = new File(Environment.getExternalStorageDirectory() + getString(R.string.folder_chklist));
+        if(!chkDir.exists()) {
+            chkDir.mkdir();
         }
 
     }
 
     private void initView(){
         final CustomFragmentAdapter fA = new CustomFragmentAdapter(getSupportFragmentManager());
-        fA.addFragment(fHome);
-        fA.addFragment(fAip);
-        fA.addFragment(fWeather);
-        fA.addFragment(fChklist);
-        fA.addFragment(fDocs);
-        fA.addFragment(fPlan);
-        fA.addFragment(fCalc);
-        fA.addFragment(fSettings);
+        fA.addFragment(new FragmentHome());
+        fA.addFragment(new FragmentAip());
+        fA.addFragment(new FragmentWeather());
+        fA.addFragment(new FragmentChklist());
+        fA.addFragment(new FragmentDocs());
+        fA.addFragment(new FragmentPlan());
+        fA.addFragment(new FragmentCalc());
+        fA.addFragment(new FragmentSettings());
 
         viewPager = (CustomViewPager) findViewById(R.id.view_fragment_pager);
         viewPager.setAdapter(fA);

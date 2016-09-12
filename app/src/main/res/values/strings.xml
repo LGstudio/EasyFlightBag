@@ -12,4 +12,7 @@
 
     <string name="create_new">New</string>
 
+    <string name="folder_root">/EasyFlightBag</string>
+    <string name="folder_chklist">/EasyFlightBag/Checklists</string>
+
 </resources>

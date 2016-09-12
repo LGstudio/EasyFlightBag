@@ -11,32 +11,54 @@
                   android:background="?attr/backgroundColor"
                   android:weightSum="1">
 
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.4"
-            android:id="@+id/chklist_scroll_left"
-            android:elevation="@dimen/elevation_4">
-
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/chklist_list_files"/>
-        </ScrollView>
-
-        <ScrollView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:id="@+id/chklist_scroll_right"
-            android:background="?attr/backgroundDarkColor">
+            android:layout_weight="0.7"
+            android:elevation="@dimen/elevation_8"
+            android:id="@+id/chklist_scroll_left">
 
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/chklist_list_content"/>
-        </ScrollView>
+                android:id="@+id/chklist_list_files"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:id="@+id/chklist_scroll_right"
+            android:background="?attr/backgroundDarkColor"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:padding="@dimen/row_padding">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/chklist_list_content_done"
+                android:transcriptMode="alwaysScroll"
+                android:stackFromBottom="true"
+                />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/chklist_list_content_actual"
+                android:background="?attr/backgroundColorHighlightLight"
+                android:elevation="@dimen/elevation_4"/>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/chklist_list_content_next"
+                android:contextClickable="false"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 
