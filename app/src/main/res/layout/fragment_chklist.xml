@@ -34,7 +34,9 @@
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:padding="@dimen/row_padding">
+            android:padding="@dimen/row_padding"
+
+            >
 
             <ListView
                 android:layout_width="match_parent"

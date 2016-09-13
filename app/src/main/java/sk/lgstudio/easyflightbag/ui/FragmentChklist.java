@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
 
     private ImageButton check;
     private TextView createNew;
+    private ImageView showMenu;
     private ListView listFiles;
     private ListView listContentDone;
     private ListView listContentActual;
@@ -57,6 +59,26 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
 
     private File folder = new File(Environment.getExternalStorageDirectory() + "/EasyFlightBag/Checklists");
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            selectedFile = savedInstanceState.getInt("file");
+            actualTask = savedInstanceState.getInt("task");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putInt("file", selectedFile);
+        outState.putInt("task", actualTask);
+
+        super.onSaveInstanceState(outState);
+    }
+
     /**
      *
      * @param inflater
@@ -68,6 +90,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chklist, container, false);
 
+        // ---------------------------------------------------------------------------------------------
         check = (ImageButton) view.findViewById(R.id.chklist_done);
         check.setOnClickListener(this);
         listFiles = (ListView) view.findViewById(R.id.chklist_list_files);
@@ -76,6 +99,8 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
         listContentDone = (ListView) view.findViewById(R.id.chklist_list_content_done);
         listContentActual = (ListView) view.findViewById(R.id.chklist_list_content_actual);
         listContentNext = (ListView) view.findViewById(R.id.chklist_list_content_next);
+
+        listContentNext.setEnabled(false);
 
         listFiles.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -91,6 +116,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
             }
         });
 
+        // ---------------------------------------------------------------------------------------------
         doneAdapter = new LineAdapter(getContext(), R.layout.chk_list_content_done, tasksDone);
         listContentDone.setAdapter(doneAdapter);
         actualAdapter = new LineAdapter(getContext(), R.layout.chk_list_content_actual, tasksActual);
@@ -98,14 +124,19 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
         nextAdapter = new LineAdapter(getContext(), R.layout.chk_list_content_next, tasksNext);
         listContentNext.setAdapter(nextAdapter);
 
+        // ---------------------------------------------------------------------------------------------
         fAdapter = new FileAdapter(getContext(), R.layout.chk_list_file_row, getFiles());
 
         View header = inflater.inflate(R.layout.chk_list_file_header, null);
         createNew = (TextView) header.findViewById(R.id.chklist_new);
+        showMenu = (ImageView) header.findViewById(R.id.chklist_menu);
         createNew.setOnClickListener(this);
         listFiles.addHeaderView(header);
 
         listFiles.setAdapter(fAdapter);
+
+        // ---------------------------------------------------------------------------------------------
+        alignColumns();
 
         return view;
     }
@@ -136,16 +167,16 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
         actualTask = 0;
         tasks.clear();
 
-        if (pos > 0) {
-            Log.e("selected file", fAdapter.data[selectedFile].getPath());
+        alignColumns();
+
+        if (selectedFile >= 0) {
+            //Log.e("selected file", fAdapter.data[selectedFile].getPath());
 
             FileInputStream is;
             BufferedReader reader;
             final File file = new File(fAdapter.data[selectedFile].getPath());
 
             if (file.exists()) {
-                alignColumns(0.35f, 0.65f);
-                check.setVisibility(View.VISIBLE);
                 try {
                     is = new FileInputStream(file);
 
@@ -166,14 +197,13 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
 
         }
         else {
-            check.setVisibility(View.INVISIBLE);
-            alignColumns(0.7f, 0.3f);
             clearTasks();
         }
     }
 
     private void handleOnPreviousClick(int pos){
-
+        actualTask = pos;
+        loadTasks();
     }
 
     @Override
@@ -183,6 +213,9 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
                 actualTask += 1;
                 loadTasks();
                 break;
+            case R.id.chklist_new:
+                //Log.e("CLICK", "NEW");
+                break;
         }
     }
 
@@ -191,7 +224,20 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
      *   REFRESH SCREEN
      */
 
-    private void alignColumns(float left, float right){
+    private void alignColumns(){
+
+        float left = 0.7f, right = 0.3f;
+
+        if (selectedFile > -1) {
+            check.setVisibility(View.VISIBLE);
+            showMenu.setVisibility(View.VISIBLE);
+            left = 0.35f;
+            right = 0.65f;
+        }
+        else {
+            check.setVisibility(View.INVISIBLE);
+            showMenu.setVisibility(View.INVISIBLE);
+        }
 
         LinearLayout.LayoutParams paramL = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.MATCH_PARENT, left);
@@ -230,6 +276,17 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
             doneAdapter.notifyDataSetChanged();
             actualAdapter.notifyDataSetChanged();
             nextAdapter.notifyDataSetChanged();
+
+            int newHeigth = (int) ((rightScrollView.getHeight() - listContentActual.getHeight()) / 2);
+
+            ViewGroup.LayoutParams paramsDone = listContentDone.getLayoutParams();
+            paramsDone.height = newHeigth;
+            listContentDone.setLayoutParams(paramsDone);
+
+            ViewGroup.LayoutParams paramsNext = listContentNext.getLayoutParams();
+            paramsNext.height = newHeigth;
+            listContentNext.setLayoutParams(paramsNext);
+
         }
     }
 
