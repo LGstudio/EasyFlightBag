@@ -15,4 +15,7 @@
     <dimen name="row_padding">16dp</dimen>
     <dimen name="elevation_16">16dp</dimen>
     <dimen name="elevation_12">12dp</dimen>
+    <dimen name="bottomSnackbarHeigth">48dp</dimen>
+    <dimen name="padding_snack_side">24dp</dimen>
+    <dimen name="padding_snack_topbottom">14dp</dimen>
 </resources>

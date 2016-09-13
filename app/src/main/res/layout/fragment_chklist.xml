@@ -34,7 +34,8 @@
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:padding="@dimen/row_padding"
+            android:paddingLeft="@dimen/row_padding"
+            android:paddingRight="@dimen/row_padding"
 
             >
 
@@ -74,7 +75,23 @@
         android:layout_marginBottom="@dimen/float_button_margin"
         android:layout_marginRight="@dimen/float_button_margin"
         android:elevation="@dimen/elevation_4"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/bottomSnackbarHeigth"
+        android:text="TASK"
+        android:id="@+id/chklist_snackbar"
+        android:layout_gravity="bottom|center_horizontal"
+        android:textColor="?attr/highlightColor"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/padding_snack_side"
+        android:paddingRight="@dimen/padding_snack_side"
+        android:paddingTop="@dimen/padding_snack_topbottom"
+        android:paddingBottom="@dimen/padding_snack_topbottom"
+        android:background="@drawable/bck_snackbar"
+        android:elevation="@dimen/elevation_4"
+        android:visibility="invisible"/>
 
 </FrameLayout>
 

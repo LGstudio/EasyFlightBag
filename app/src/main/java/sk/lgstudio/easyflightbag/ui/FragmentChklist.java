@@ -36,6 +36,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
 
     private ImageButton check;
     private TextView createNew;
+    private TextView snackbar;
     private ImageView showMenu;
     private ListView listFiles;
     private ListView listContentDone;
@@ -93,6 +94,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
         // ---------------------------------------------------------------------------------------------
         check = (ImageButton) view.findViewById(R.id.chklist_done);
         check.setOnClickListener(this);
+        snackbar = (TextView) view.findViewById(R.id.chklist_snackbar);
         listFiles = (ListView) view.findViewById(R.id.chklist_list_files);
         rightScrollView = (LinearLayout) view.findViewById(R.id.chklist_scroll_right);
         leftScrollView = (LinearLayout) view.findViewById(R.id.chklist_scroll_left);
@@ -231,12 +233,14 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
         if (selectedFile > -1) {
             check.setVisibility(View.VISIBLE);
             showMenu.setVisibility(View.VISIBLE);
+            snackbar.setVisibility(View.VISIBLE);
             left = 0.35f;
             right = 0.65f;
         }
         else {
             check.setVisibility(View.INVISIBLE);
             showMenu.setVisibility(View.INVISIBLE);
+            snackbar.setVisibility(View.INVISIBLE);
         }
 
         LinearLayout.LayoutParams paramL = new LinearLayout.LayoutParams(
@@ -276,6 +280,8 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
             doneAdapter.notifyDataSetChanged();
             actualAdapter.notifyDataSetChanged();
             nextAdapter.notifyDataSetChanged();
+
+            snackbar.setText(String.valueOf(actualTask+1) + " / " + String.valueOf(tasks.size()));
 
             int newHeigth = (int) ((rightScrollView.getHeight() - listContentActual.getHeight()) / 2);
 
