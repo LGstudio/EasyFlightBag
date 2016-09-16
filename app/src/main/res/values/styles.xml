@@ -5,6 +5,8 @@
 
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">@color/colorPrimaryDark</item>
 
         <item name="primaryColor">@color/colorPrimary</item>
         <item name="primaryColorDark">@color/colorPrimaryDark</item>
@@ -26,6 +28,9 @@
 
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDarker</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">@color/colorPrimaryDarker</item>
+
 
         <item name="primaryColor">@color/colorPrimaryDark</item>
         <item name="primaryColorDark">@color/colorPrimaryDarker</item>
@@ -40,6 +45,15 @@
         <item name="backgroundColorHighlight">@color/colorPrimary</item>
         <item name="backgroundSnackbar">@color/colorDark</item>
         <item name="greenColor">@color/colorGreenDark</item>
+    </style>
+
+    <style name="FullScreenDialog">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+
+        <item name="android:windowBackground">?attr/backgroundColor</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 
 </resources>

@@ -17,7 +17,7 @@
         layout="@layout/menu_tab"
         android:id="@+id/menu_tab"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/row_heigth"
         />
 
     <sk.lgstudio.easyflightbag.ui.CustomViewPager

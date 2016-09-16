@@ -15,5 +15,12 @@
     <string name="folder_root">/EasyFlightBag</string>
     <string name="folder_chklist">/EasyFlightBag/Checklists</string>
     <string name="chk_menu">Checklists</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_import">Import</string>
+    <string name="btn_delete">Delete</string>
+    <string name="list_name">Checklist title</string>
+    <string name="list_name_mandatory">Please enter checklist title here.</string>
+    <string name="list_text_hint">Write the tasks to individual lines</string>
 
 </resources>

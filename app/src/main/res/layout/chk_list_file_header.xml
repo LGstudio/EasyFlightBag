@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="@dimen/elevation_4"
-    android:padding="@dimen/row_padding"
     android:background="?attr/dividerColor"
     android:layout_margin="0dp">
 
@@ -14,21 +13,19 @@
         android:layout_gravity="center_vertical"
         android:id="@+id/chklist_menu"
         android:contentDescription="@string/chk_menu"
-        android:layout_centerVertical="true"/>
+        android:padding="@dimen/row_padding"/>
 
 
-    <TextView
-
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="@string/create_new"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_add"
         android:id="@+id/chklist_new"
-        android:clickable="true"
-        android:textAllCaps="true"
-        android:textColor="?attr/highlightColor"
-        android:textStyle="bold"
+        android:contentDescription="@string/create_new"
         android:layout_gravity="end"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:padding="@dimen/row_padding"/>
 
 </RelativeLayout>

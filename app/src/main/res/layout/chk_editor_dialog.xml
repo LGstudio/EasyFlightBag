@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_heigth"
+        android:background="?attr/primaryColor"
+
+        android:elevation="@dimen/elevation_12">
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/btn_back"
+            android:layout_alignParentStart="true"
+            android:id="@+id/chk_editor_back"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/row_padding"
+            android:background="@drawable/bck_transparent"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentEnd="true">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="@string/btn_delete"
+                android:id="@+id/chk_editor_delete"
+                android:padding="@dimen/row_padding"
+                android:background="@drawable/bck_transparent"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_folder"
+                android:contentDescription="@string/btn_import"
+                android:id="@+id/chk_editor_import"
+                android:padding="@dimen/row_padding"
+                android:background="@drawable/bck_transparent"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_done"
+                android:contentDescription="@string/btn_save"
+                android:id="@+id/chk_editor_save"
+                android:padding="@dimen/row_padding"
+                android:background="@drawable/bck_transparent"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/row_padding">
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editor_edit_title"
+            android:padding="@dimen/row_padding"
+            android:background="@drawable/bck_floating_panel"
+            android:textSize="@dimen/big_text"
+            android:inputType="text"
+            android:textColor="?attr/primaryTextColor"
+            android:singleLine="true"
+            android:elevation="@dimen/elevation_4"
+            android:hint="@string/list_name"
+            android:textColorHint="?attr/fadedTextColor"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/row_padding"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/editor_edit_list"
+            android:background="@drawable/bck_floating_panel"
+            android:inputType="textMultiLine"
+            android:elevation="@dimen/elevation_4"
+            android:textColor="?attr/primaryTextColor"
+            android:hint="@string/list_text_hint"
+            android:textColorHint="?attr/fadedTextColor"
+            android:gravity="top"
+            android:nestedScrollingEnabled="true"
+            android:padding="@dimen/row_padding"
+            android:textColorHighlight="?attr/backgroundColorHighlightLight"/>
+
+    </LinearLayout>
+
+</LinearLayout>

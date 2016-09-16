@@ -22,4 +22,7 @@
 
     <color name="colorBlueLight">#8fb0d4</color>
     <color name="colorBlue">#5091d9</color>
+
+    <color name="colorRed">#d95950</color>
+    <color name="colorRedLight">#ec948e</color>
 </resources>

@@ -2,10 +2,12 @@ package sk.lgstudio.easyflightbag.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -32,10 +33,10 @@ import sk.lgstudio.easyflightbag.R;
 /**
  *
  */
-public class FragmentChklist extends Fragment implements View.OnClickListener {
+public class FragmentChklist extends Fragment implements View.OnClickListener, DialogInterface.OnDismissListener {
 
     private ImageButton check;
-    private TextView createNew;
+    private ImageView createNew;
     private TextView snackbar;
     private ImageView showMenu;
     private ListView listFiles;
@@ -59,7 +60,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
     protected int actualTask = 0;
 
     private File folder = new File(Environment.getExternalStorageDirectory() + "/EasyFlightBag/Checklists");
-
+    private LayoutInflater layoutInflater;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -89,7 +90,8 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chklist, container, false);
+        layoutInflater = inflater;
+        View view = layoutInflater.inflate(R.layout.fragment_chklist, container, false);
 
         // ---------------------------------------------------------------------------------------------
         check = (ImageButton) view.findViewById(R.id.chklist_done);
@@ -118,6 +120,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
             }
         });
 
+
         // ---------------------------------------------------------------------------------------------
         doneAdapter = new LineAdapter(getContext(), R.layout.chk_list_content_done, tasksDone);
         listContentDone.setAdapter(doneAdapter);
@@ -126,21 +129,30 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
         nextAdapter = new LineAdapter(getContext(), R.layout.chk_list_content_next, tasksNext);
         listContentNext.setAdapter(nextAdapter);
 
-        // ---------------------------------------------------------------------------------------------
-        fAdapter = new FileAdapter(getContext(), R.layout.chk_list_file_row, getFiles());
-
-        View header = inflater.inflate(R.layout.chk_list_file_header, null);
-        createNew = (TextView) header.findViewById(R.id.chklist_new);
+        View header = layoutInflater.inflate(R.layout.chk_list_file_header, null);
+        createNew = (ImageView) header.findViewById(R.id.chklist_new);
         showMenu = (ImageView) header.findViewById(R.id.chklist_menu);
         createNew.setOnClickListener(this);
         listFiles.addHeaderView(header);
 
-        listFiles.setAdapter(fAdapter);
-
-        // ---------------------------------------------------------------------------------------------
-        alignColumns();
+        reloadFiles();
 
         return view;
+    }
+
+    /**
+     * Initializes lists
+     */
+    private void reloadFiles(){
+        selectedFile = -1;
+        actualTask = 0;
+        tasks.clear();
+
+        fAdapter = new FileAdapter(getContext(), R.layout.chk_list_file_row, getFiles());
+        listFiles.setAdapter(fAdapter);
+
+        alignLayout();
+        loadTasks();
     }
 
     /**
@@ -148,6 +160,10 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
     *   FILE READING
     */
 
+    /**
+     * Gets the list of files from the checklist folder
+     * @return list of files
+     */
     public File[] getFiles(){
         return folder.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
@@ -161,6 +177,10 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
      *   CLICK HANDLING
      */
 
+    /**
+     * Handles clicks on the folders
+     * @param pos
+     */
     private void handleOnFileClick(int pos){ // !!! HEADER IS POSITION 0
         selectedFile = pos - 1;
         listFiles.setSelection(pos);
@@ -169,7 +189,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
         actualTask = 0;
         tasks.clear();
 
-        alignColumns();
+        alignLayout();
 
         if (selectedFile >= 0) {
             //Log.e("selected file", fAdapter.data[selectedFile].getPath());
@@ -203,6 +223,11 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
         }
     }
 
+
+    /**
+     * Handles click on an already done task
+     * @param pos
+     */
     private void handleOnPreviousClick(int pos){
         actualTask = pos;
         loadTasks();
@@ -216,17 +241,48 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
                 loadTasks();
                 break;
             case R.id.chklist_new:
-                //Log.e("CLICK", "NEW");
+                createEditorDialog();
                 break;
         }
     }
+
 
     /**
      * ----------------------------------------------------------------------------------------------------
      *   REFRESH SCREEN
      */
 
-    private void alignColumns(){
+    /**
+     * Creates CHecklist edotor dialog
+     */
+    private void createEditorDialog(){
+
+        boolean isNew = (selectedFile < 0);
+
+        String title = null;
+        if (!isNew) {
+            title = fAdapter.data[selectedFile].getName();
+            int pos = title.lastIndexOf(".");
+            if (pos > 0) title = title.substring(0, pos);
+        }
+
+        EditorDialog dialog = new EditorDialog(getContext(), R.style.FullScreenDialog);
+        dialog.setContentView(R.layout.chk_editor_dialog);
+        dialog.loadContent(folder, isNew, title, tasks);
+        dialog.setOnDismissListener(this);
+        dialog.show();
+
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        reloadFiles();
+    }
+
+    /**
+     * Aligns the layout of the fragment
+     */
+    private void alignLayout(){
 
         float left = 0.7f, right = 0.3f;
 
@@ -236,30 +292,33 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
             snackbar.setVisibility(View.VISIBLE);
             left = 0.35f;
             right = 0.65f;
+            createNew.setImageResource(R.drawable.ic_edit);
         }
         else {
             check.setVisibility(View.INVISIBLE);
             showMenu.setVisibility(View.INVISIBLE);
             snackbar.setVisibility(View.INVISIBLE);
+            createNew.setImageResource(R.drawable.ic_add);
         }
 
-        LinearLayout.LayoutParams paramL = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.MATCH_PARENT, left);
-
-        LinearLayout.LayoutParams paramR = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.MATCH_PARENT, right);
+        LinearLayout.LayoutParams paramL = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, left);
+        LinearLayout.LayoutParams paramR = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, right);
 
         leftScrollView.setLayoutParams(paramL);
         rightScrollView.setLayoutParams(paramR);
 
     }
 
-    private void loadTasks(){
-        if (tasks.size() > actualTask) {
 
-            tasksDone.clear();
-            tasksActual.clear();
-            tasksNext.clear();
+    /**
+     * Loads tasks into the 3 separate lists in the right panel
+     */
+    private void loadTasks(){
+        tasksDone.clear();
+        tasksActual.clear();
+        tasksNext.clear();
+
+        if (tasks.size() > actualTask) {
 
             int i = 0;
             while (i < actualTask) {
@@ -283,19 +342,28 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
 
             snackbar.setText(String.valueOf(actualTask+1) + " / " + String.valueOf(tasks.size()));
 
-            int newHeigth = (int) ((rightScrollView.getHeight() - listContentActual.getHeight()) / 2);
-
-            ViewGroup.LayoutParams paramsDone = listContentDone.getLayoutParams();
-            paramsDone.height = newHeigth;
-            listContentDone.setLayoutParams(paramsDone);
-
-            ViewGroup.LayoutParams paramsNext = listContentNext.getLayoutParams();
-            paramsNext.height = newHeigth;
-            listContentNext.setLayoutParams(paramsNext);
-
         }
+
+        int newHeigth = (int) ((rightScrollView.getHeight() - listContentActual.getHeight()) / 2);
+
+        ViewGroup.LayoutParams paramsDone = listContentDone.getLayoutParams();
+        paramsDone.height = newHeigth;
+        listContentDone.setLayoutParams(paramsDone);
+
+        ViewGroup.LayoutParams paramsNext = listContentNext.getLayoutParams();
+        paramsNext.height = newHeigth;
+        listContentNext.setLayoutParams(paramsNext);
+
+        // TODO: Solve this bug
+        //Log.e("0", String.valueOf(rightScrollView.getHeight()));
+        //Log.e("1", String.valueOf(listContentDone.getHeight()));
+        //Log.e("2", String.valueOf(listContentActual.getHeight()));
+        //Log.e("3", String.valueOf(listContentNext.getHeight()));
     }
 
+    /**
+     * Clears all tasks from the right panel
+     */
     private void clearTasks(){
         tasksDone.clear();
         tasksActual.clear();
@@ -304,6 +372,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener {
         actualAdapter.notifyDataSetChanged();
         nextAdapter.notifyDataSetChanged();
     }
+
 
     /**
      * ----------------------------------------------------------------------------------------------------
