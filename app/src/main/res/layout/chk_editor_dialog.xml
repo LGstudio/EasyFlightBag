@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="?attr/backgroundColor">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_heigth"
         android:background="?attr/primaryColor"
-
         android:elevation="@dimen/elevation_12">
 
 
@@ -77,10 +77,10 @@
             android:textSize="@dimen/big_text"
             android:inputType="text"
             android:textColor="?attr/primaryTextColor"
-            android:singleLine="true"
             android:elevation="@dimen/elevation_4"
             android:hint="@string/list_name"
-            android:textColorHint="?attr/fadedTextColor"/>
+            android:textColorHint="?attr/fadedTextColor"
+            android:maxLines="1"/>
 
         <Space
             android:layout_width="match_parent"

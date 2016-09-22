@@ -22,5 +22,6 @@
     <string name="list_name">Checklist title</string>
     <string name="list_name_mandatory">Please enter checklist title here.</string>
     <string name="list_text_hint">Write the tasks to individual lines</string>
+    <string name="hide">hide</string>
 
 </resources>
