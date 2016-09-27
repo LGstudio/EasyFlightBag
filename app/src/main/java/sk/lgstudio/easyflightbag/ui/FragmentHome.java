@@ -1,14 +1,21 @@
 package sk.lgstudio.easyflightbag.ui;
 
+import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
 
@@ -17,15 +24,21 @@ import sk.lgstudio.easyflightbag.R;
  */
 public class FragmentHome extends Fragment implements View.OnClickListener {
 
-    private ImageButton panelTopBtn;
-    private ImageButton panelBottomBtn;
     private RelativeLayout panelTop;
     private RelativeLayout panelBottom;
     private LinearLayout fullLayout;
     private LinearLayout mapLayout;
+    private ImageButton panelTopBtn;
+    private ImageButton panelBottomBtn;
+    private Button startStop;
+    private TextView textViewTest;
 
     private boolean isPanelTop = true;
     private boolean isPanelBottom = true;
+    private int isTracking = 0; // 0 - cleared | 1 - tracking | 2 - stopped
+
+    public ArrayList<Location> track;
+    public ArrayList<Location> route;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,14 +65,18 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
 
         panelTopBtn = (ImageButton) view.findViewById(R.id.home_panel_top_btn);
         panelBottomBtn = (ImageButton) view.findViewById(R.id.home_panel_bottom_btn);
+        startStop = (Button) view.findViewById(R.id.home_button_start_stop);
 
         panelTopBtn.setOnClickListener(this);
         panelBottomBtn.setOnClickListener(this);
+        startStop.setOnClickListener(this);
 
         panelTop = (RelativeLayout) view.findViewById(R.id.home_panel_top);
         panelBottom = (RelativeLayout) view.findViewById(R.id.home_panel_bottom);
         mapLayout = (LinearLayout) view.findViewById(R.id.home_panel_map);
         fullLayout = (LinearLayout) view.findViewById(R.id.home_screen);
+
+        textViewTest = (TextView) view.findViewById(R.id.home_data_test);
 
         return view;
     }
@@ -80,6 +97,15 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
                 break;
             case R.id.home_panel_bottom_btn:
                 changePanelState(isPanelTop, !isPanelBottom);
+                break;
+            case  R.id.home_button_start_stop:
+                isTracking = (isTracking + 1) % 3;
+                if (isTracking == 1) startStop.setText(getString(R.string.btn_stop));
+                else if (isTracking == 2) startStop.setText(getString(R.string.btn_clear));
+                else {
+                    track.clear();
+                    startStop.setText(getString(R.string.btn_start));
+                }
                 break;
         }
     }
@@ -118,4 +144,36 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
         mapLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mapH));
 
     }
+
+    public void addNewLocation(Location loc){
+        if (isTracking == 1){
+            track.add(loc);
+
+            if (isPanelTop){
+                RedrawElevationGraphTask task = new RedrawElevationGraphTask();
+                task.execute((Void) null);
+            }
+
+            Location l = track.get(track.size()-1);
+            String num = String.valueOf(track.size()) + ": ";
+            String pos = String.valueOf(l.getLongitude()) + "/" + String.valueOf(l.getLatitude()) + " @ " + String.valueOf(l.getAltitude());
+            String acc = " | A:" + String.valueOf(l.getAccuracy() + " | S:" + String.valueOf(l.getSpeed()));
+            String head = " | B:" + String.valueOf(l.getBearing());
+
+            textViewTest.setText(num + pos + acc + head);
+
+        }
+    }
+
+    public class RedrawElevationGraphTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            // TODO: Update graph in RedrawLocationData
+
+            return null;
+        }
+    }
+
 }

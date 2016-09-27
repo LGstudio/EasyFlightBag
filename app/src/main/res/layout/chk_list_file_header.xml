@@ -22,7 +22,7 @@
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_add"
         android:id="@+id/chklist_new"
-        android:contentDescription="@string/create_new"
+        android:contentDescription="@string/btn_new"
         android:layout_gravity="end"
         android:layout_centerVertical="true"
         android:clickable="true"
