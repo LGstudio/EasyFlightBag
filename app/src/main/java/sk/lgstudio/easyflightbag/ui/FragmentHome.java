@@ -4,7 +4,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
@@ -22,16 +26,17 @@ import sk.lgstudio.easyflightbag.R;
 /**
  *
  */
-public class FragmentHome extends Fragment implements View.OnClickListener {
+public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback {
 
     private RelativeLayout panelTop;
     private RelativeLayout panelBottom;
     private LinearLayout fullLayout;
-    private LinearLayout mapLayout;
     private ImageButton panelTopBtn;
     private ImageButton panelBottomBtn;
     private Button startStop;
     private TextView textViewTest;
+
+    protected MapView mapLayout;
 
     private boolean isPanelTop = true;
     private boolean isPanelBottom = true;
@@ -47,6 +52,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
         if (savedInstanceState != null) {
             isPanelTop = savedInstanceState.getBoolean("PTop");
             isPanelBottom = savedInstanceState.getBoolean("PBottom");
+            if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
         }
     }
 
@@ -63,6 +69,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        textViewTest = (TextView) view.findViewById(R.id.home_data_test);
+
         panelTopBtn = (ImageButton) view.findViewById(R.id.home_panel_top_btn);
         panelBottomBtn = (ImageButton) view.findViewById(R.id.home_panel_bottom_btn);
         startStop = (Button) view.findViewById(R.id.home_button_start_stop);
@@ -71,22 +79,46 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
         panelBottomBtn.setOnClickListener(this);
         startStop.setOnClickListener(this);
 
+        fullLayout = (LinearLayout) view.findViewById(R.id.home_screen);
         panelTop = (RelativeLayout) view.findViewById(R.id.home_panel_top);
         panelBottom = (RelativeLayout) view.findViewById(R.id.home_panel_bottom);
-        mapLayout = (LinearLayout) view.findViewById(R.id.home_panel_map);
-        fullLayout = (LinearLayout) view.findViewById(R.id.home_screen);
 
-        textViewTest = (TextView) view.findViewById(R.id.home_data_test);
+        mapLayout = (MapView) view.findViewById(R.id.home_map_view);
+        mapLayout.onCreate(savedInstanceState);
 
         return view;
     }
 
     @Override
-    public void onStart(){
-        super.onStart();
+    public void onResume() {
+        super.onResume();
+        if (mapLayout != null) mapLayout.onResume();
 
-        //changePanelState(isPanelTop, isPanelBottom);
+    }
 
+    @Override
+    public void onPause() {
+        if (mapLayout != null) mapLayout.onPause();
+
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mapLayout != null) {
+            try {
+                mapLayout.onDestroy();
+            } catch (NullPointerException e) {
+                Log.e("MAP", "Error while attempting MapView.onDestroy(), ignoring exception", e);
+            }
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        if (mapLayout != null) mapLayout.onLowMemory();
     }
 
     @Override
@@ -163,6 +195,11 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
             textViewTest.setText(num + pos + acc + head);
 
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 
     public class RedrawElevationGraphTask extends AsyncTask<Void, Void, Void>{

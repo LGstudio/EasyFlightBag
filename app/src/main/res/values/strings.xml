@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">EasyFlightBag</string>
+    <string name="gmap_api_key">AIzaSyCxUOrnnZ3KJ5uoTiqBRox_iy0Ifzkjobc</string>
+
 
     <string name="tab_home">Home</string>
     <string name="tab_aip">AIP</string>
