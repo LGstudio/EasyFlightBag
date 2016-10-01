@@ -21,6 +21,7 @@
         <item name="backgroundColorHighlight">@color/colorBlue</item>
         <item name="backgroundSnackbar">@color/colorGray</item>
         <item name="greenColor">@color/colorGreen</item>
+
     </style>
 
     <!-- Base application theme. DARK -->
@@ -45,6 +46,8 @@
         <item name="backgroundColorHighlight">@color/colorPrimary</item>
         <item name="backgroundSnackbar">@color/colorDark</item>
         <item name="greenColor">@color/colorGreenDark</item>
+
+
     </style>
 
     <style name="FullScreenDialog">

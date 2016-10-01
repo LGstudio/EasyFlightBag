@@ -154,14 +154,8 @@ public class MainActivity extends AppCompatActivity {
             newLoc.setTime(Long.parseLong(intent.getStringExtra(context.getString(R.string.gps_time))));
             newLoc.setAltitude(Double.parseDouble(intent.getStringExtra(context.getString(R.string.gps_altitude))));
 
-
             fHome.addNewLocation(newLoc);
 
-
-            //String coo = String.valueOf(newLoc.getLatitude()) + " - " + String.valueOf(newLoc.getLongitude());
-            //String txt = String.valueOf(newLoc.getAltitude()) + " @ " + String.valueOf(newLoc.getAccuracy());
-
-            //Log.e(coo, txt);
         }
     };
 
