@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:background="?attr/backgroundColor"
+              android:layout_height="@dimen/row_height"
+    android:padding="@dimen/row_padding">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/chk_airplane_item"
+        android:textColor="?attr/primaryTextColor"
+        android:gravity="center_vertical"/>
+
+</RelativeLayout>

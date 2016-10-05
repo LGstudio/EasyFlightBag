@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Environment;
@@ -14,14 +15,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.service.GPSTrackerService;
-import sk.lgstudio.easyflightbag.ui.CustomFragmentAdapter;
-import sk.lgstudio.easyflightbag.ui.CustomViewPager;
+import sk.lgstudio.easyflightbag.ui.TabFragmentAdapter;
+import sk.lgstudio.easyflightbag.ui.TabViewPager;
 import sk.lgstudio.easyflightbag.ui.FragmentAip;
 import sk.lgstudio.easyflightbag.ui.FragmentCalc;
 import sk.lgstudio.easyflightbag.ui.FragmentChklist;
@@ -32,21 +33,23 @@ import sk.lgstudio.easyflightbag.ui.FragmentSettings;
 import sk.lgstudio.easyflightbag.ui.FragmentWeather;
 import sk.lgstudio.easyflightbag.ui.TabMenu;
 
-import static android.os.Environment.getDataDirectory;
-
 public class MainActivity extends AppCompatActivity {
 
     private FragmentHome fHome = new FragmentHome();
+    private FragmentChklist fChk = new FragmentChklist();
 
     private TabMenu menu;
-    private CustomViewPager viewPager;
+    private TabViewPager viewPager;
 
     private File rootDir;
-    private File chkDir;
 
     private ArrayList<Location> track = new ArrayList<>();
     private ArrayList<Location> route = new ArrayList<>();
 
+    private SharedPreferences prefs;
+    private String prefChkActual;
+
+    private boolean isChkTutCreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,21 +67,54 @@ public class MainActivity extends AppCompatActivity {
             //ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
         }
 
-        checkDirectory();
+        // creates fragments
         initView();
 
+        // checks internal storage for existing files
+        checkDirectory();
+
+        // loads shared preferences
+        loadSharedPerefs();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
 
+
+        if (fChk.folderActual != null)
+            prefs.edit().putString(getString(R.string.pref_chk_folder), fChk.folderActual.getPath()).apply();
+        else
+            prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
+
+
         stopService(new Intent(this, GPSTrackerService.class));
         LocalBroadcastManager.getInstance(this).unregisterReceiver(gpsReceiver);
     }
 
     /**
+     * Loads the saved preferences when application starts
+     */
+    private void loadSharedPerefs(){
+        prefs = this.getSharedPreferences("sk.lgstudio.efb", Context.MODE_PRIVATE);
+
+        if (isChkTutCreated){
+            fChk.folderActual = new File(fChk.folder.getPath() + getString(R.string.folder_chklist_demo));
+        }
+        else {
+            prefChkActual = prefs.getString(getString(R.string.pref_chk_folder), null);
+            if (prefChkActual != null) {
+                fChk.folderActual = new File(prefChkActual);
+                if (!fChk.folderActual.exists()){
+                    fChk.folderActual = null;
+                }
+            }
+        }
+    }
+
+    /**
      * Checks if directories exist on internal memory
+     * Adds default data in case of first app launch or when data were deleted
      */
     private void checkDirectory(){
         rootDir = new File(Environment.getExternalStorageDirectory() + getString(R.string.folder_root));
@@ -86,9 +122,28 @@ public class MainActivity extends AppCompatActivity {
             rootDir.mkdir();
         }
 
-        chkDir = new File(Environment.getExternalStorageDirectory() + getString(R.string.folder_chklist));
-        if(!chkDir.exists()) {
-            chkDir.mkdir();
+        fChk.folder = new File(rootDir.getPath() + getString(R.string.folder_chklist));
+        if(!fChk.folder.exists()) {
+            fChk.folder.mkdir();
+            File chkTutDir = new File(fChk.folder.getPath() + getString(R.string.folder_chklist_demo));
+            chkTutDir.mkdir();
+            if (chkTutDir.exists()){
+                isChkTutCreated = true;
+                int files[] = {R.string.file_chk_plane, R.string.file_chk_add_list, R.string.file_chk_edit_list};
+                int texts[] = {R.string.file_chk_plane_, R.string.file_chk_add_list_, R.string.file_chk_edit_list_};
+
+                for (int i = 0; i<files.length; i++){
+                    try {
+                        File tut1 = new File(chkTutDir, getString(files[i]) );
+                        FileWriter writer1 = new FileWriter(tut1);
+                        writer1.append(getString(texts[i]));
+                        writer1.flush();
+                        writer1.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
     }
@@ -97,20 +152,22 @@ public class MainActivity extends AppCompatActivity {
      * initializes fragments and top menu on the view
      */
     private void initView(){
-        final CustomFragmentAdapter fA = new CustomFragmentAdapter(getSupportFragmentManager());
+        final TabFragmentAdapter fA = new TabFragmentAdapter(getSupportFragmentManager());
 
         fHome.track = track;
-
         fA.addFragment(fHome);
+
         fA.addFragment(new FragmentAip());
         fA.addFragment(new FragmentWeather());
-        fA.addFragment(new FragmentChklist());
+
+        fA.addFragment(fChk);
+
         fA.addFragment(new FragmentDocs());
         fA.addFragment(new FragmentPlan());
         fA.addFragment(new FragmentCalc());
         fA.addFragment(new FragmentSettings());
 
-        viewPager = (CustomViewPager) findViewById(R.id.view_fragment_pager);
+        viewPager = (TabViewPager) findViewById(R.id.view_fragment_pager);
         viewPager.setAdapter(fA);
         viewPager.setPagingEnabled(false);
 

@@ -12,7 +12,6 @@
         android:id="@+id/chklist_filename"
         android:text="filename"
         android:textColor="?attr/primaryTextColor"
-        android:singleLine="true"
         android:textStyle="bold"/>
 
 </LinearLayout>

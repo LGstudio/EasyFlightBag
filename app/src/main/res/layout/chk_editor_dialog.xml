@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/row_heigth"
+        android:layout_height="@dimen/row_height"
         android:background="?attr/primaryColor"
         android:elevation="@dimen/elevation_12">
 
@@ -80,7 +80,10 @@
             android:elevation="@dimen/elevation_4"
             android:hint="@string/list_name"
             android:textColorHint="?attr/fadedTextColor"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:textColorHighlight="?attr/backgroundColorHighlightLight"
+            android:textCursorDrawable="@null"
+            />
 
         <Space
             android:layout_width="match_parent"
@@ -100,7 +103,8 @@
             android:gravity="top"
             android:nestedScrollingEnabled="true"
             android:padding="@dimen/row_padding"
-            android:textColorHighlight="?attr/backgroundColorHighlightLight"/>
+            android:textColorHighlight="?attr/backgroundColorHighlightLight"
+            android:textCursorDrawable="@null"/>
 
     </LinearLayout>
 

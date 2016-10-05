@@ -9,11 +9,11 @@ import android.view.MotionEvent;
  *
  * extends ViewPager with the possibility to disable swipe events
  */
-public class CustomViewPager extends android.support.v4.view.ViewPager{
+public class TabViewPager extends android.support.v4.view.ViewPager{
 
     private boolean enabled;
 
-    public CustomViewPager(Context context, AttributeSet attrs) {
+    public TabViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.enabled = false;
     }

@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -33,11 +33,14 @@ import sk.lgstudio.easyflightbag.R;
 /**
  *
  */
-public class FragmentChklist extends Fragment implements View.OnClickListener, DialogInterface.OnDismissListener {
+public class FragmentChklist extends Fragment implements View.OnClickListener, DialogInterface.OnDismissListener, DialogInterface.OnCancelListener {
+
+    private final static int FILE_NONE = -1;
 
     private ImageButton check;
     private ImageView createNew;
     private TextView snackbar;
+    private TextView airplaneType;
     private ImageView showMenu;
     private ListView listFiles;
     private ListView listContentDone;
@@ -56,10 +59,14 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
     private ArrayList<String> tasksActual = new ArrayList<>();
     private ArrayList<String> tasksNext = new ArrayList<>();
 
-    protected int selectedFile = -1;
+    private ChklistEditorDialog dialogListEdit;
+    private ChklistAirplaneDialog dialogAirplane;
+
+    protected int selectedFile = FILE_NONE;
     protected int actualTask = 0;
 
-    private File folder = new File(Environment.getExternalStorageDirectory() + "/EasyFlightBag/Checklists");
+    public File folderActual;
+    public File folder;
     private LayoutInflater layoutInflater;
 
     @Override
@@ -130,9 +137,11 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
         listContentNext.setAdapter(nextAdapter);
 
         View header = layoutInflater.inflate(R.layout.chk_list_file_header, null);
+        airplaneType = (TextView) header.findViewById(R.id.chklist_airplane_name);
         createNew = (ImageView) header.findViewById(R.id.chklist_new);
         showMenu = (ImageView) header.findViewById(R.id.chklist_menu);
         createNew.setOnClickListener(this);
+        showMenu.setOnClickListener(this);
         listFiles.addHeaderView(header);
 
         reloadFiles();
@@ -144,15 +153,11 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      * Initializes lists
      */
     private void reloadFiles(){
-        selectedFile = -1;
-        actualTask = 0;
-        tasks.clear();
-
         fAdapter = new FileAdapter(getContext(), R.layout.chk_list_file_row, getFiles());
         listFiles.setAdapter(fAdapter);
 
         alignLayout();
-        loadTasks();
+        reloadTasks();
     }
 
     /**
@@ -165,11 +170,15 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      * @return list of files
      */
     public File[] getFiles(){
-        return folder.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".txt");
-            }
-        });
+        if (folderActual != null){
+            return folderActual.listFiles(new FilenameFilter() {
+                public boolean accept(File dir, String name) {
+                    return name.endsWith(".txt");
+                }
+            });
+        }
+
+        return new File[0];
     }
 
     /**
@@ -215,7 +224,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
                 }
             }
 
-            loadTasks();
+            reloadTasks();
 
         }
         else {
@@ -230,7 +239,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     private void handleOnPreviousClick(int pos){
         actualTask = pos;
-        loadTasks();
+        reloadTasks();
     }
 
     @Override
@@ -238,10 +247,14 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
         switch (v.getId()){
             case R.id.chklist_done:
                 actualTask += 1;
-                loadTasks();
+                reloadTasks();
                 break;
             case R.id.chklist_new:
                 createEditorDialog();
+                break;
+            case R.id.chklist_menu:
+                if (selectedFile > FILE_NONE) handleOnFileClick(0);
+                else createAirplaneSelectorDialog();
                 break;
         }
     }
@@ -253,7 +266,32 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
 
     /**
-     * Creates CHecklist edotor dialog
+     * Creates Airplane Selector Dialog
+     */
+    private void createAirplaneSelectorDialog(){
+
+        dialogAirplane = new ChklistAirplaneDialog(getContext());
+        dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogAirplane.setContentView(R.layout.chk_airplane_dialog);
+        dialogAirplane.loadContent(folder);
+        dialogAirplane.setOnCancelListener(this);
+        dialogAirplane.show();
+    }
+
+    /**
+     * Handles the return from the airplane selector dialog
+     * @param dialog
+     */
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        if (dialogAirplane.selectedFolder != null){
+            folderActual = new File(folder.getPath() + "/" + dialogAirplane.selectedFolder);
+        }
+        reloadFiles();
+    }
+
+    /**
+     * Creates Checklist editor dialog
      */
     private void createEditorDialog(){
 
@@ -266,17 +304,32 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
             if (pos > 0) title = title.substring(0, pos);
         }
 
-        EditorDialog dialog = new EditorDialog(getContext(), R.style.FullScreenDialog);
-        dialog.setContentView(R.layout.chk_editor_dialog);
-        dialog.loadContent(folder, isNew, title, tasks);
-        dialog.setOnDismissListener(this);
-        dialog.show();
+        dialogListEdit = new ChklistEditorDialog(getContext(), R.style.FullScreenDialog);
+        dialogListEdit.setContentView(R.layout.chk_editor_dialog);
+        dialogListEdit.loadContent(folderActual, isNew, title, tasks);
+        dialogListEdit.setOnDismissListener(this);
+        dialogListEdit.show();
 
     }
 
+    /**
+     * Handles the return from editor dialog
+     * @param dialog
+     */
     @Override
     public void onDismiss(DialogInterface dialog) {
-        reloadFiles();
+        switch (dialogListEdit.returnStatus){
+            case ChklistEditorDialog.SAVE_NEW:
+            case ChklistEditorDialog.DELETE:
+                selectedFile = FILE_NONE;
+            case ChklistEditorDialog.SAVE_EDIT:
+                actualTask = 0;
+                tasks.clear();
+                reloadFiles();
+                break;
+            case ChklistEditorDialog.BACK:
+                break;
+        }
     }
 
     /**
@@ -286,19 +339,28 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
 
         float left = 0.7f, right = 0.3f;
 
-        if (selectedFile > -1) {
+        if (selectedFile > FILE_NONE) {
             check.setVisibility(View.VISIBLE);
-            showMenu.setVisibility(View.VISIBLE);
             snackbar.setVisibility(View.VISIBLE);
             left = 0.35f;
             right = 0.65f;
             createNew.setImageResource(R.drawable.ic_edit);
+            showMenu.setImageResource(R.drawable.ic_menu);
         }
         else {
             check.setVisibility(View.INVISIBLE);
-            showMenu.setVisibility(View.INVISIBLE);
             snackbar.setVisibility(View.INVISIBLE);
             createNew.setImageResource(R.drawable.ic_add);
+            showMenu.setImageResource(R.drawable.ic_flight);
+        }
+
+        if (folderActual == null) {
+            airplaneType.setText(getString(R.string.chk_no_airplane));
+            createNew.setVisibility(View.GONE);
+        }
+        else {
+            airplaneType.setText(folderActual.getName());
+            createNew.setVisibility(View.VISIBLE);
         }
 
         LinearLayout.LayoutParams paramL = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, left);
@@ -313,7 +375,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
     /**
      * Loads tasks into the 3 separate lists in the right panel
      */
-    private void loadTasks(){
+    private void reloadTasks(){
         tasksDone.clear();
         tasksActual.clear();
         tasksNext.clear();
@@ -342,19 +404,23 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
 
             snackbar.setText(String.valueOf(actualTask+1) + " / " + String.valueOf(tasks.size()));
 
+            int newHeight =((rightScrollView.getHeight() - listContentActual.getHeight()) / 2);
+
+            ViewGroup.LayoutParams paramsDone = listContentDone.getLayoutParams();
+            paramsDone.height = newHeight;
+            listContentDone.setLayoutParams(paramsDone);
+
+            ViewGroup.LayoutParams paramsNext = listContentNext.getLayoutParams();
+            paramsNext.height = newHeight;
+            listContentNext.setLayoutParams(paramsNext);
+        }
+        else {
+            selectedFile = FILE_NONE;
+            alignLayout();
         }
 
-        int newHeigth = (int) ((rightScrollView.getHeight() - listContentActual.getHeight()) / 2);
 
-        ViewGroup.LayoutParams paramsDone = listContentDone.getLayoutParams();
-        paramsDone.height = newHeigth;
-        listContentDone.setLayoutParams(paramsDone);
-
-        ViewGroup.LayoutParams paramsNext = listContentNext.getLayoutParams();
-        paramsNext.height = newHeigth;
-        listContentNext.setLayoutParams(paramsNext);
-
-        // TODO: Solve this bug
+        // TODO: Solve this bug - Only Actual task is displayed when returning to activity
         //Log.e("0", String.valueOf(rightScrollView.getHeight()));
         //Log.e("1", String.valueOf(listContentDone.getHeight()));
         //Log.e("2", String.valueOf(listContentActual.getHeight()));
@@ -389,7 +455,10 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
             super(c, layoutR, d);
             context = c;
             layoutResourceId = layoutR;
-            data = d;
+            if (d != null)
+                data = d;
+            else
+                data = new File[0];
         }
 
         @Override

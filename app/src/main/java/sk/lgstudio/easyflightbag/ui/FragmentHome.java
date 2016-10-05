@@ -250,7 +250,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         map.setOnMarkerClickListener(this);
         map.setOnMyLocationButtonClickListener(this);
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        
+
         mapFollow = true;
 
         if(lastPosition != null) changeMapPosition(lastPosition);

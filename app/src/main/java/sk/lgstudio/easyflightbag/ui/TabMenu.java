@@ -3,8 +3,6 @@ package sk.lgstudio.easyflightbag.ui;
 import sk.lgstudio.easyflightbag.R;
 
 import android.app.Activity;
-import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -17,9 +15,9 @@ public class TabMenu implements View.OnClickListener{
 
     private ArrayList<ImageButton> tabs = new ArrayList<>();
     public int selected = 0;
-    private CustomViewPager viewPager;
+    private TabViewPager viewPager;
 
-    public TabMenu(Activity a, CustomViewPager vP){
+    public TabMenu(Activity a, TabViewPager vP){
 
         viewPager = vP;
 

@@ -19,7 +19,12 @@ import sk.lgstudio.easyflightbag.R;
 /**
  * Created by L on 16/09/14.
  */
-public class EditorDialog extends Dialog implements View.OnClickListener {
+public class ChklistEditorDialog extends Dialog implements View.OnClickListener {
+
+    public static final int BACK = 0;
+    public static final int SAVE_NEW = 1;
+    public static final int SAVE_EDIT = 2;
+    public static final int DELETE = 3;
 
     private ImageButton btnBack;
     private ImageButton btnImport;
@@ -29,13 +34,19 @@ public class EditorDialog extends Dialog implements View.OnClickListener {
     private EditText textTitle;
     private EditText textList;
 
+    private boolean isNew;
+
+    public int returnStatus = BACK;
+
     private File folder;
 
-    public EditorDialog(Context context, int themeResId) {
+    public ChklistEditorDialog(Context context, int themeResId) {
         super(context, themeResId);
     }
 
-    public void loadContent(File f, boolean isNew, String title, ArrayList<String> tasks){
+    public void loadContent(File f, boolean isnew, String title, ArrayList<String> tasks){
+
+        isNew = isnew;
 
         folder = f;
 
@@ -62,7 +73,6 @@ public class EditorDialog extends Dialog implements View.OnClickListener {
                 textList.setText(textList.getText() + line + "\n");
             }
         }
-
     }
 
     @Override
@@ -98,22 +108,27 @@ public class EditorDialog extends Dialog implements View.OnClickListener {
                 writer.append(textList.getText());
                 writer.flush();
                 writer.close();
-                Toast.makeText(getContext(), "Ckecklist saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.chk_saved_toast), Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            if (isNew) returnStatus = SAVE_NEW;
+            else returnStatus = SAVE_EDIT;
             dismiss();
         }
     }
 
     private void deleteList(){
+        // TODO: ask to delete
         File f = new File(folder, textTitle.getText() + ".txt");
         if (f.delete()){
-            Toast.makeText(getContext(), "Ckecklist deleted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.chk_deleted_toast), Toast.LENGTH_SHORT).show();
             dismiss();
         }
         else {
-            Toast.makeText(getContext(), "Unable to deleted checklist", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.chk_deleted_fail_toast), Toast.LENGTH_SHORT).show();
         }
+        returnStatus = DELETE;
+        dismiss();
     }
 }

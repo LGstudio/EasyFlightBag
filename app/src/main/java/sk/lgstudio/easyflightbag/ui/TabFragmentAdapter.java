@@ -11,14 +11,14 @@ import java.util.ArrayList;
  *
  * Adapter for fragments in .MainAvtivity
  */
-public class CustomFragmentAdapter extends FragmentStatePagerAdapter {
+public class TabFragmentAdapter extends FragmentStatePagerAdapter {
 
     ArrayList<Fragment> fragments;
 
     /**
      *
      */
-    public CustomFragmentAdapter(FragmentManager fm) {
+    public TabFragmentAdapter(FragmentManager fm) {
         super(fm);
 
         fragments = new ArrayList<>();

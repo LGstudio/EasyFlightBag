@@ -17,10 +17,10 @@
         layout="@layout/menu_tab"
         android:id="@+id/menu_tab"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/row_heigth"
+        android:layout_height="@dimen/row_height"
         />
 
-    <sk.lgstudio.easyflightbag.ui.CustomViewPager
+    <sk.lgstudio.easyflightbag.ui.TabViewPager
         android:id="@+id/view_fragment_pager"
         android:layout_below="@id/menu_tab"
         android:layout_width="match_parent"
