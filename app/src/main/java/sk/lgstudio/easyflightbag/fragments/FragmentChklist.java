@@ -1,12 +1,10 @@
-package sk.lgstudio.easyflightbag.ui;
+package sk.lgstudio.easyflightbag.fragments;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +27,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.dialogs.ChklistAirplaneDialog;
+import sk.lgstudio.easyflightbag.dialogs.ChklistEditorDialog;
 
 /**
  *

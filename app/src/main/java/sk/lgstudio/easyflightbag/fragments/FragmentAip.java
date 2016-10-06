@@ -1,4 +1,4 @@
-package sk.lgstudio.easyflightbag.ui;
+package sk.lgstudio.easyflightbag.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

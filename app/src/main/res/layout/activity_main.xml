@@ -20,7 +20,7 @@
         android:layout_height="@dimen/row_height"
         />
 
-    <sk.lgstudio.easyflightbag.ui.TabViewPager
+    <sk.lgstudio.easyflightbag.menu.TabViewPager
         android:id="@+id/view_fragment_pager"
         android:layout_below="@id/menu_tab"
         android:layout_width="match_parent"

@@ -58,7 +58,6 @@
     <string name="list_name_mandatory">Please enter checklist title here.</string>
     <string name="list_text_hint">Write the tasks to individual lines</string>
 
-
     <string name="gps_intent_filter">GPSIntent</string>
     <string name="GPS_disabled">GPS is off</string>
 
@@ -70,5 +69,21 @@
     <string name="gps_time">GPStim</string>
     <string name="gps_bearing">GPSbea</string>
     <string name="gps_location">gps_location</string>
+
+    <string name="calc_conv">Conversions</string>
+    <string name="calc_conv_dist">Distance</string>
+    <string name="calc_conv_speed">Speed</string>
+    <string name="calc_conv_weight">Weight</string>
+    <string name="calc_conv_vol">Volume</string>
+    <string name="calc_conv_press">Pressure</string>
+    <string name="calc_conv_temp">Temperature</string>
+    <string name="calc_conv_fuel">Fuel</string>
+    <string name="calc_func">Functions</string>
+    <string name="calc_func_coord">Kz/Km/Kk</string>
+    <string name="calc_func_time">Time/Speed/Distance</string>
+    <string name="calc_func_tas">TAS</string>
+    <string name="calc_func_fuel">Fuel</string>
+    <string name="calc_func_wind">Wind</string>
+    <string name="calc_bal">Balance</string>
 
 </resources>

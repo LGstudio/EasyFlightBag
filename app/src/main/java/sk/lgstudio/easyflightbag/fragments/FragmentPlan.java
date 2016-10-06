@@ -1,4 +1,4 @@
-package sk.lgstudio.easyflightbag.ui;
+package sk.lgstudio.easyflightbag.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,10 +11,10 @@ import sk.lgstudio.easyflightbag.R;
 /**
  *
  */
-public class FragmentDocs extends Fragment {
+public class FragmentPlan extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_docs, container, false);
+        View view = inflater.inflate(R.layout.fragment_plan, container, false);
 
         return view;
     }

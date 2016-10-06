@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -20,18 +19,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import sk.lgstudio.easyflightbag.service.GPSTrackerService;
-import sk.lgstudio.easyflightbag.ui.TabFragmentAdapter;
-import sk.lgstudio.easyflightbag.ui.TabViewPager;
-import sk.lgstudio.easyflightbag.ui.FragmentAip;
-import sk.lgstudio.easyflightbag.ui.FragmentCalc;
-import sk.lgstudio.easyflightbag.ui.FragmentChklist;
-import sk.lgstudio.easyflightbag.ui.FragmentDocs;
-import sk.lgstudio.easyflightbag.ui.FragmentHome;
-import sk.lgstudio.easyflightbag.ui.FragmentPlan;
-import sk.lgstudio.easyflightbag.ui.FragmentSettings;
-import sk.lgstudio.easyflightbag.ui.FragmentWeather;
-import sk.lgstudio.easyflightbag.ui.TabMenu;
+import sk.lgstudio.easyflightbag.services.GPSTrackerService;
+import sk.lgstudio.easyflightbag.menu.TabFragmentAdapter;
+import sk.lgstudio.easyflightbag.menu.TabViewPager;
+import sk.lgstudio.easyflightbag.fragments.FragmentAip;
+import sk.lgstudio.easyflightbag.fragments.FragmentCalc;
+import sk.lgstudio.easyflightbag.fragments.FragmentChklist;
+import sk.lgstudio.easyflightbag.fragments.FragmentDocs;
+import sk.lgstudio.easyflightbag.fragments.FragmentHome;
+import sk.lgstudio.easyflightbag.fragments.FragmentPlan;
+import sk.lgstudio.easyflightbag.fragments.FragmentSettings;
+import sk.lgstudio.easyflightbag.fragments.FragmentWeather;
+import sk.lgstudio.easyflightbag.menu.TabMenu;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -46,7 +46,7 @@
         </activity>
 
         <service
-            android:name=".service.GPSTrackerService"
+            android:name=".services.GPSTrackerService"
             android:label="@string/app_name"
             android:exported="false" >
         </service>

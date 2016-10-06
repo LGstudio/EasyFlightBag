@@ -1,4 +1,4 @@
-package sk.lgstudio.easyflightbag.ui;
+package sk.lgstudio.easyflightbag.menu;
 
 import sk.lgstudio.easyflightbag.R;
 

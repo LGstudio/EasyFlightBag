@@ -1,4 +1,4 @@
-package sk.lgstudio.easyflightbag.ui;
+package sk.lgstudio.easyflightbag.dialogs;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;

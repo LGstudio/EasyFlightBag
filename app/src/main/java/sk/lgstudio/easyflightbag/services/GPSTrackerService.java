@@ -1,4 +1,4 @@
-package sk.lgstudio.easyflightbag.service;
+package sk.lgstudio.easyflightbag.services;
 
 import android.Manifest;
 import android.app.Service;

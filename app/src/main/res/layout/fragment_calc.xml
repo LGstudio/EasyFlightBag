@@ -1,15 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:orientation="horizontal"
+              android:weightSum="1"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="?attr/backgroundColor">
+              >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Calculator"
-        android:id="@+id/txt_calc"
-        android:layout_gravity="center_horizontal"/>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.35"
+        android:elevation="@dimen/elevation_8"
+        android:background="?attr/backgroundColor"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:background="?attr/backgroundColorHighlightLight"
+                android:textColor="?attr/highlightColor"
+                android:text="@string/calc_conv"
+                android:padding="@dimen/row_padding"
+                android:textAllCaps="true"
+                android:elevation="@dimen/elevation_4"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/calc_conv_dist"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_conv_dist"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_conv_speed"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_conv_speed"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_conv_weight"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_conv_weight"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_conv_vol"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_conv_vol"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_conv_press"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_conv_press"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_conv_temp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_conv_temp"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_conv_fuel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_conv_fuel"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:background="?attr/backgroundColorHighlightLight"
+                android:textColor="?attr/highlightColor"
+                android:text="@string/calc_func"
+                android:padding="@dimen/row_padding"
+                android:textAllCaps="true"
+                android:elevation="@dimen/elevation_4"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+
+
+            <TextView
+                android:id="@+id/calc_func_coord"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_func_coord"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_conv_time"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_func_time"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_func_tas"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_func_tas"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_func_fuel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_func_fuel"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:id="@+id/calc_func_wind"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:textColor="?attr/primaryTextColor"
+                android:text="@string/calc_func_wind"
+                android:padding="@dimen/row_padding"
+                android:clickable="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:background="?attr/backgroundColorHighlightLight"
+                android:textColor="?attr/highlightColor"
+                android:text="@string/calc_bal"
+                android:padding="@dimen/row_padding"
+                android:textAllCaps="true"
+                android:elevation="@dimen/elevation_4"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.65"
+        android:background="?attr/backgroundDarkColor">
+
+    </FrameLayout>
+
 </LinearLayout>

@@ -1,4 +1,4 @@
-package sk.lgstudio.easyflightbag.ui;
+package sk.lgstudio.easyflightbag.fragments;
 
 import android.location.Location;
 import android.os.AsyncTask;
