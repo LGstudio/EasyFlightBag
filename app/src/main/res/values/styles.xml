@@ -2,7 +2,6 @@
 
     <!-- Base application theme. LIGHT -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="windowActionModeOverlay">true</item>
@@ -26,12 +25,10 @@
 
     <!-- Base application theme. DARK -->
     <style name="AppThemeDark" parent="Theme.AppCompat.Light.NoActionBar">
-
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDarker</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">@color/colorPrimaryDarker</item>
-
 
         <item name="primaryColor">@color/colorPrimaryDark</item>
         <item name="primaryColorDark">@color/colorPrimaryDarker</item>
@@ -50,6 +47,8 @@
 
     </style>
 
+    <!-- ====================================================================== -->
+
     <style name="FullScreenDialog">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
@@ -57,6 +56,36 @@
         <item name="android:windowBackground">?attr/backgroundColor</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="Calculator_edit_text_field">
+        <item name="android:padding">@dimen/calc_field_padding</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/backgroundColor</item>
+        <item name="android:gravity">end|center_vertical</item>
+        <item name="android:elevation">@dimen/elevation_4</item>
+        <item name="android:textSize">@dimen/calc_text_size</item>
+        <item name="android:layout_margin">@dimen/calc_field_margin</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:inputType">numberSigned|numberDecimal</item>
+        <item name="android:state_focused">false</item>
+        <item name="android:selectAllOnFocus">true</item>
+        <item name="android:textColorHighlight">?attr/backgroundColorHighlightLight</item>
+    </style>
+
+    <style name="Calculator_text_unit">
+        <item name="android:padding">@dimen/calc_field_padding</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/calc_text_size</item>
+        <item name="android:layout_margin">@dimen/calc_field_margin</item>
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:maxLines">1</item>
+
     </style>
 
 </resources>

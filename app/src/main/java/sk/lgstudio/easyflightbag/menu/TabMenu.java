@@ -13,6 +13,17 @@ import java.util.ArrayList;
  */
 public class TabMenu implements View.OnClickListener{
 
+    private final int[] ids = {
+            R.id.tab_home,
+            R.id.tab_aip,
+            R.id.tab_weather,
+            R.id.tab_chklist,
+            R.id.tab_docs,
+            R.id.tab_plan,
+            R.id.tab_calc,
+            R.id.tab_set
+    };
+
     private ArrayList<ImageButton> tabs = new ArrayList<>();
     public int selected = 0;
     private TabViewPager viewPager;
@@ -21,49 +32,23 @@ public class TabMenu implements View.OnClickListener{
 
         viewPager = vP;
 
-        tabs.add((ImageButton) a.findViewById(R.id.tab_home));
-        tabs.add((ImageButton) a.findViewById(R.id.tab_aip));
-        tabs.add((ImageButton) a.findViewById(R.id.tab_weather));
-        tabs.add((ImageButton) a.findViewById(R.id.tab_chklist));
-        tabs.add((ImageButton) a.findViewById(R.id.tab_docs));
-        tabs.add((ImageButton) a.findViewById(R.id.tab_plan));
-        tabs.add((ImageButton) a.findViewById(R.id.tab_calc));
-        tabs.add((ImageButton) a.findViewById(R.id.tab_set));
+        for (int i = 0; i < ids.length; i++)
+            tabs.add((ImageButton) a.findViewById(ids[i]));
 
-        for (ImageButton ib : tabs){
+        for (ImageButton ib : tabs)
             ib.setOnClickListener(this);
-        }
+
+        change(6); //TODO: Just for testing purposes!!!
+
     }
 
     @Override
     public void onClick(View v) {
         int clicked = 0;
-        switch (v.getId()){
-            case R.id.tab_home:
-                clicked = 0;
-                break;
-            case R.id.tab_aip:
-                clicked = 1;
-                break;
-            case R.id.tab_weather:
-                clicked = 2;
-                break;
-            case R.id.tab_chklist:
-                clicked = 3;
-                break;
-            case R.id.tab_docs:
-                clicked = 4;
-                break;
-            case R.id.tab_plan:
-                clicked = 5;
-                break;
-            case R.id.tab_calc:
-                clicked = 6;
-                break;
-            case R.id.tab_set:
-                clicked = 7;
-                break;
-        }
+        for (int i = 0; i < ids.length; i++)
+            if (ids[i] == v.getId())
+                clicked = i;
+
         change(clicked);
     }
 

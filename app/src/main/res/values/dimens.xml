@@ -14,10 +14,13 @@
     <dimen name="row_padding">16dp</dimen>
     <dimen name="elevation_16">16dp</dimen>
     <dimen name="elevation_12">12dp</dimen>
-    <dimen name="bottomSnackbarHeigth">48dp</dimen>
+    <dimen name="bottom_snackbar_heigth">48dp</dimen>
     <dimen name="padding_snack_side">24dp</dimen>
     <dimen name="padding_snack_topbottom">14dp</dimen>
     <dimen name="big_text">32sp</dimen>
 
     <dimen name="panel_closed">44dp</dimen>
+    <dimen name="calc_field_margin">6dp</dimen>
+    <dimen name="calc_text_size">14sp</dimen>
+    <dimen name="calc_field_padding">12dp</dimen>
 </resources>

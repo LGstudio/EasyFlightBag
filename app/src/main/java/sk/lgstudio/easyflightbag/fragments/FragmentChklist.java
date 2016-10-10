@@ -484,7 +484,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
             filename.setText(name);
 
             if (position == selectedFile)
-                row.setBackgroundResource(R.drawable.bck_file_selected);
+                row.setBackgroundResource(R.drawable.bck_item_selected);
             else
                 row.setBackgroundResource(R.drawable.bck_transparent);
 

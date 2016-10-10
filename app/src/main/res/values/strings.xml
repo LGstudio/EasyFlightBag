@@ -73,7 +73,7 @@
     <string name="calc_conv">Conversions</string>
     <string name="calc_conv_dist">Distance</string>
     <string name="calc_conv_speed">Speed</string>
-    <string name="calc_conv_weight">Weight</string>
+    <string name="calc_conv_mass">Mass</string>
     <string name="calc_conv_vol">Volume</string>
     <string name="calc_conv_press">Pressure</string>
     <string name="calc_conv_temp">Temperature</string>
@@ -85,5 +85,26 @@
     <string name="calc_func_fuel">Fuel</string>
     <string name="calc_func_wind">Wind</string>
     <string name="calc_bal">Balance</string>
+
+    <string name="calc_unit_m">m</string>
+    <string name="calc_unit_ft">ft</string>
+    <string name="calc_unit_nmi">nm</string>
+    <string name="calc_unit_mi">mi</string>
+    <string name="calc_unit_yd">yd</string>
+    <string name="calc_unit_in">in</string>
+    <string name="calc_unit_kmh">km/h</string>
+    <string name="calc_unit_kn">kn</string>
+    <string name="calc_unit_mph">mph</string>
+    <string name="calc_unit_ftpmin">ft/min</string>
+    <string name="calc_unit_kg">Kg</string>
+    <string name="calc_unit_t">T</string>
+    <string name="calc_unit_lb">lb</string>
+    <string name="calc_unit_l">l</string>
+    <string name="calc_unit_m_cube">m&lt;sup&gt;3&lt;/sup&gt;</string>
+    <string name="calc_unit_g_us">US fl. gal.</string>
+    <string name="calc_unit_g_imp">imp. gal.</string>
+    <string name="calc_unit_oz">fl. oz</string>
+
+
 
 </resources>

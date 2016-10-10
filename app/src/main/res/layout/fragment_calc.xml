@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/row_height"
-                android:background="?attr/backgroundColorHighlightLight"
+                android:background="?attr/backgroundColorHighlight"
                 android:textColor="?attr/highlightColor"
                 android:text="@string/calc_conv"
                 android:padding="@dimen/row_padding"
@@ -51,11 +51,11 @@
                 android:clickable="true"/>
 
             <TextView
-                android:id="@+id/calc_conv_weight"
+                android:id="@+id/calc_conv_mass"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/row_height"
                 android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_conv_weight"
+                android:text="@string/calc_conv_mass"
                 android:padding="@dimen/row_padding"
                 android:clickable="true"/>
 
@@ -98,7 +98,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/row_height"
-                android:background="?attr/backgroundColorHighlightLight"
+                android:background="?attr/backgroundColorHighlight"
                 android:textColor="?attr/highlightColor"
                 android:text="@string/calc_func"
                 android:padding="@dimen/row_padding"
@@ -118,13 +118,13 @@
                 android:clickable="true"/>
 
             <TextView
-                android:id="@+id/calc_conv_time"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/row_height"
                 android:textColor="?attr/primaryTextColor"
                 android:text="@string/calc_func_time"
                 android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:clickable="true"
+                android:id="@+id/calc_func_time"/>
 
             <TextView
                 android:id="@+id/calc_func_tas"
@@ -156,7 +156,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/row_height"
-                android:background="?attr/backgroundColorHighlightLight"
+                android:background="?attr/backgroundColorHighlight"
                 android:textColor="?attr/highlightColor"
                 android:text="@string/calc_bal"
                 android:padding="@dimen/row_padding"
@@ -169,12 +169,13 @@
 
     </ScrollView>
 
-    <FrameLayout
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.65"
+        android:id="@+id/calc_frame"
         android:background="?attr/backgroundDarkColor">
 
-    </FrameLayout>
+    </ScrollView>
 
 </LinearLayout>

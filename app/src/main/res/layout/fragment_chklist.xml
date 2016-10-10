@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/chklist_list_content_actual"
-                android:background="?attr/backgroundColorHighlightLight"
+                android:background="@drawable/bck_item_floating_white"
                 android:elevation="@dimen/elevation_4"/>
 
             <ListView
@@ -79,7 +79,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/bottomSnackbarHeigth"
+        android:layout_height="@dimen/bottom_snackbar_heigth"
         android:text="TASK"
         android:id="@+id/chklist_snackbar"
         android:layout_gravity="bottom|center_horizontal"
