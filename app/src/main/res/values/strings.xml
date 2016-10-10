@@ -104,6 +104,12 @@
     <string name="calc_unit_g_us">US fl. gal.</string>
     <string name="calc_unit_g_imp">imp. gal.</string>
     <string name="calc_unit_oz">fl. oz</string>
+    <string name="calc_unit_hpa_bma">hPa (mBa)</string>
+    <string name="calc_unit_atm">ATM</string>
+    <string name="calc_unit_inhg">In. Hg.</string>
+    <string name="calc_unit_c">C</string>
+    <string name="calc_unit_f">F</string>
+    <string name="calc_unit_k">k</string>
 
 
 

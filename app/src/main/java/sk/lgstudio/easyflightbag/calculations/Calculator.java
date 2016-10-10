@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by L on 16/10/06.
  */
 
-public class CalculatorView implements View.OnFocusChangeListener, TextWatcher {
+public class Calculator implements View.OnFocusChangeListener, TextWatcher {
 
     protected final static int NONE = -1;
 
@@ -23,7 +23,7 @@ public class CalculatorView implements View.OnFocusChangeListener, TextWatcher {
     protected int actualFocus = NONE;
 
 
-    public CalculatorView(float[] r, float[] v, int[] l){
+    public Calculator(float[] r, float[] v, int[] l){
         ratios = r;
         values = v;
         layouts = l;

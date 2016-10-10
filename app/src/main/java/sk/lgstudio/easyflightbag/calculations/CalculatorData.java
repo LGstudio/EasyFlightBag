@@ -96,4 +96,36 @@ public final class CalculatorData {
 
     public static final float[] volValues = {0f, 0f, 0f, 0f, 0f };
 
+    /**
+     *  ======================================================================
+     *      PRESSURE
+     */
+
+    public static final float[] preRatios = {
+            1f,                     // hPa to hPa
+            0.000986923f,           // hPa to atmosphere
+            0.02953f                // hPa to inches of mercury
+    };
+
+    public static final int[] preLayout = {
+            R.id.calc_unit_text_hpa_bma,
+            R.id.calc_unit_text_atm,
+            R.id.calc_unit_text_inhg,
+    };
+
+    public static final float[] preValues = {0f, 0f, 0f};
+
+    /**
+     *  ======================================================================
+     *      TEMPARATURE
+     */
+
+    public static final int[] temLayout = {
+            R.id.calc_unit_text_c,
+            R.id.calc_unit_text_f,
+            R.id.calc_unit_text_k,
+    };
+
+    public static final float[] temValues = {0f, 32f, 273.15f};
+
 }
