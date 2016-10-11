@@ -128,4 +128,20 @@ public final class CalculatorData {
 
     public static final float[] temValues = {0f, 32f, 273.15f};
 
+    /**
+     *  ======================================================================
+     *      FUEL / OIL
+     */
+
+    public static final int[] oilLayout = {
+            R.id.calc_unit_text_fu_dens,
+            R.id.calc_unit_text_fu_l,
+            R.id.calc_unit_text_fu_kg,
+            R.id.calc_unit_text_fu_usg,
+            R.id.calc_unit_text_fu_impg,
+            R.id.calc_unit_text_fu_lb
+    };
+
+    public static final float[] oilValues = {0f, 0f, 0f, 0f, 0f, 0f};
+
 }

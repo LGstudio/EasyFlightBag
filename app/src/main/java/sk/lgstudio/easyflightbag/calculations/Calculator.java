@@ -36,7 +36,7 @@ public class Calculator implements View.OnFocusChangeListener, TextWatcher {
         for (int i = 0; i < layouts.length; i++){
 
             final EditText tv = (EditText) v.findViewById(layouts[i]);
-            if (values[i] != 0f) tv.setText(String.format("%.3f",values[i]));
+            tv.setText(String.format("%.3f",values[i]));
             tv.setOnFocusChangeListener(this);
             textViews.add(tv);
         }
@@ -49,7 +49,7 @@ public class Calculator implements View.OnFocusChangeListener, TextWatcher {
         actualView = null;
     }
 
-    private void updateData(float value){
+    protected void updateData(float value){
 
         values[actualFocus] = value;
         values[0] = values[actualFocus]/ratios[actualFocus];

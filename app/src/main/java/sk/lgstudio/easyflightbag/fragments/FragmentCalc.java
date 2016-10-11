@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.calculations.CalculatorData;
+import sk.lgstudio.easyflightbag.calculations.CalculatorFuelOil;
 import sk.lgstudio.easyflightbag.calculations.CalculatorTemperature;
 import sk.lgstudio.easyflightbag.calculations.Calculator;
 
@@ -55,7 +56,8 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
             new Calculator(CalculatorData.masRatios, CalculatorData.masValues, CalculatorData.masLayout),
             new Calculator(CalculatorData.volRatios, CalculatorData.volValues, CalculatorData.volLayout),
             new Calculator(CalculatorData.preRatios, CalculatorData.preValues, CalculatorData.preLayout),
-            new CalculatorTemperature(null, CalculatorData.temValues, CalculatorData.temLayout)
+            new CalculatorTemperature(null, CalculatorData.temValues, CalculatorData.temLayout),
+            new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout)
     };
 
     private ArrayList<TextView> menu = new ArrayList<>();

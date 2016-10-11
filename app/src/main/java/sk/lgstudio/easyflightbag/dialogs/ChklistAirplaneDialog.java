@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,9 +28,9 @@ public class ChklistAirplaneDialog extends Dialog implements View.OnClickListene
 
     private EditText newPlane;
     private Spinner planeSpinner;
-    private ImageView addPlane;
-    private ImageView deletePlane;
-    private ImageView done;
+    private ImageButton addPlane;
+    private ImageButton deletePlane;
+    private ImageButton done;
 
     private ArrayList<String> folders;
 
@@ -42,9 +42,9 @@ public class ChklistAirplaneDialog extends Dialog implements View.OnClickListene
         root = f;
 
         newPlane = (EditText) findViewById(R.id.chk_airplane_new);
-        addPlane = (ImageView) findViewById(R.id.chk_airplane_add);
-        deletePlane = (ImageView) findViewById(R.id.chk_airplane_delete);
-        done = (ImageView)  findViewById(R.id.chk_airplane_done);
+        addPlane = (ImageButton) findViewById(R.id.chk_airplane_add);
+        deletePlane = (ImageButton) findViewById(R.id.chk_airplane_delete);
+        done = (ImageButton)  findViewById(R.id.chk_airplane_done);
         planeSpinner = (Spinner) findViewById(R.id.chk_airplane_spinner);
 
         done.setOnClickListener(this);
@@ -145,9 +145,9 @@ public class ChklistAirplaneDialog extends Dialog implements View.OnClickListene
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(ctx);
-            View spinnerElement = inflater.inflate(R.layout.chk_airplane_item, null);
+            View spinnerElement = inflater.inflate(R.layout.spinner_text_item, null);
 
-            TextView airplane = (TextView) spinnerElement.findViewById(R.id.chk_airplane_item);
+            TextView airplane = (TextView) spinnerElement.findViewById(R.id.spinner_text_item);
             airplane.setText(folders.get(position));
 
             return spinnerElement;

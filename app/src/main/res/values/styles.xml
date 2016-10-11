@@ -77,7 +77,8 @@
     </style>
 
     <style name="Calculator_text_unit">
-        <item name="android:padding">@dimen/calc_field_padding</item>
+        <item name="android:paddingTop">@dimen/calc_field_padding</item>
+        <item name="android:paddingBottom">@dimen/calc_field_padding</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/calc_text_size</item>

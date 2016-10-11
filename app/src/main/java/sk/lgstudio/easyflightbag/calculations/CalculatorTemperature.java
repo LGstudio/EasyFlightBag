@@ -15,7 +15,8 @@ public class CalculatorTemperature extends Calculator {
     }
 
 
-    private void updateTemperatures(float temp){
+    @Override
+    protected void updateData(float temp){
 
         values[actualFocus] = temp;
 
@@ -39,15 +40,6 @@ public class CalculatorTemperature extends Calculator {
                 textViews.get(0).setText(String.format("%.3f",values[0]));
                 break;
         }
-    }
-
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (s.length() > 0)
-            updateTemperatures(Float.valueOf(s.toString()));
-        else
-            updateTemperatures(0f);
     }
 
 }
