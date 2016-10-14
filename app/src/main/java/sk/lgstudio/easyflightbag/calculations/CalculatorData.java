@@ -22,6 +22,13 @@ public final class CalculatorData {
             39.370093070865607388f  // Meter to Inch
     };
 
+    public static final float[] dstRatiosToKm = {
+            1f,                     // KiloMeter to Meter
+            3280.8410892388f,       // KiloMeter to Feet
+            0.539957f,           // KiloMeter to Nautical Mile
+            0.621371f           // KiloMeter to Mile
+    };
+
     public static final int[] dstLayout = {
             R.id.calc_unit_text_m,
             R.id.calc_unit_text_ft,

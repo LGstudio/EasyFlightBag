@@ -2,6 +2,7 @@ package sk.lgstudio.easyflightbag.calculations;
 
 import android.content.Context;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,8 +57,11 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
 
     private Context context;
 
+    private CalculatorTime self;
+
     public CalculatorTime(float[] r, float[] v, int[] l) {
         super(r, v, l);
+        self = this;
     }
 
     @Override
@@ -86,18 +90,42 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
         textDist = (EditText) v.findViewById(R.id.calc_unit_text_time_d);
         textSpeed.setText(String.format("%.3f",values[0]));
         textDist.setText(String.format("%.3f",values[1]));
-        textSpeed.setOnFocusChangeListener(this);
-        textDist.setOnFocusChangeListener(this);
+        textSpeed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    textSpeed.addTextChangedListener(self);
+                }
+                else{
+                    textSpeed.removeTextChangedListener(self);
+                    setSpeedText();
+                }
+            }
+        });
+        textDist.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    textDist.addTextChangedListener(self);
+                }
+                else{
+                    textDist.removeTextChangedListener(self);
+                    setDistanceText();
+                }
+            }
+        });
 
         btnSpeed = (Button) v.findViewById(R.id.calc_func_time_s_btn);
         btnDist = (Button) v.findViewById(R.id.calc_func_time_d_btn);
         btnSpeed.setOnClickListener(this);
         btnDist.setOnClickListener(this);
         btnSpeed.setText(context.getString(SPEED_UNIT[selectedSpeed]));
-        btnDist.setText(context.getString(SPEED_UNIT[selectedDistance]));
+        btnDist.setText(context.getString(DISTANCE_UNIT[selectedDistance]));
+
+        onCheckedChanged(radio, selectedRadio);
     }
 
-    protected void updateData() {
+    private void updateData() {
         if (selectedRadio == RADIO[0]) { // calculte speed
             values[1] = calculateDistance();
             values[2] = calculateTime();
@@ -116,6 +144,10 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
             values[2] = values[1] / values[0];
             setTimeNumbers();
         }
+
+        Log.e("Speed", String.valueOf(values[0]));
+        Log.e("Distance", String.valueOf(values[1]));
+        Log.e("Time", String.valueOf(values[2]));
     }
 
     private float calculateTime(){
@@ -129,7 +161,9 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
     }
 
     private float calculateSpeed() {
-        return Float.valueOf(textSpeed.getText().toString()) / CalculatorData.speRatios[selectedSpeed];
+        if (textSpeed.getText().toString().length() > 0)
+            return Float.valueOf(textSpeed.getText().toString()) / CalculatorData.speRatios[selectedSpeed];
+        return 0f;
     }
 
     private void setSpeedText(){
@@ -137,45 +171,26 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
     }
 
     private float calculateDistance() {
-        return Float.valueOf(textDist.getText().toString()) / CalculatorData.speRatios[selectedDistance];
+        if (textDist.getText().toString().length() > 0)
+            return Float.valueOf(textDist.getText().toString()) / CalculatorData.speRatios[selectedDistance];
+        return 0f;
     }
 
     private void setDistanceText(){
-        textDist.setText(String.format("%.3f",values[0] * CalculatorData.dstRatios[selectedDistance]));
-    }
-
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        EditText et = (EditText) v;
-        int af = 0;
-
-        if (v.getId() == layouts[1])
-                af = 1;
-
-        if (hasFocus) {
-            actualFocus = af;
-            actualView = et;
-            actualView.addTextChangedListener(this);
-        }
-        else {
-            et.removeTextChangedListener(this);
-            if (actualFocus == 0)
-                setSpeedText();
-            else
-                setDistanceText();
-
-        }
+        textDist.setText(String.format("%.3f",values[0] * CalculatorData.dstRatiosToKm[selectedDistance]));
     }
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
+        textSpeed.removeTextChangedListener(this);
+        textDist.removeTextChangedListener(this);
+
         if (selectedRadio == RADIO[0])
             textSpeed.setEnabled(true);
 
         else if (selectedRadio == RADIO[1])
-            textSpeed.setEnabled(true);
+            textDist.setEnabled(true);
 
         else if (selectedRadio == RADIO[2]) {
             pickTimeH.setEnabled(true);
@@ -189,7 +204,7 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
             textSpeed.setEnabled(false);
 
         else if (selectedRadio == RADIO[1])
-            textSpeed.setEnabled(false);
+            textDist.setEnabled(false);
 
         else if (selectedRadio == RADIO[2]) {
             pickTimeH.setEnabled(false);
@@ -200,6 +215,7 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
 
     @Override
     public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+        Log.e("Change from " + String.valueOf(i),  "to " + String.valueOf(i1));
         updateData();
     }
 
@@ -217,7 +233,7 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
                 break;
             case R.id.calc_func_time_d_btn:
                 selectedDistance = (selectedDistance + 1) % UNIT_COUNT;
-                btnDist.setText(context.getString(SPEED_UNIT[selectedDistance]));
+                btnDist.setText(context.getString(DISTANCE_UNIT[selectedDistance]));
                 break;
         }
 

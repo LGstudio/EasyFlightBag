@@ -114,7 +114,7 @@
     <string name="calc_unit_k">k</string>
     <string name="calc_unit_kg_m3">kg/m^3</string>
     <string name="calc_unit_h">h</string>
-    <string name="calc_unit_min">min</string>
+    <string name="calc_unit_min">m</string>
     <string name="calc_unit_sec">s</string>
 
     <string name="calc_unit_text_density">Density</string>
