@@ -85,8 +85,10 @@
     <string name="calc_func_fuel">Fuel</string>
     <string name="calc_func_wind">Wind</string>
     <string name="calc_bal">Balance</string>
+    <string name="calc_func_time_">Time</string>
 
     <string name="calc_unit_m">m</string>
+    <string name="calc_unit_km">km</string>
     <string name="calc_unit_ft">ft</string>
     <string name="calc_unit_nmi">nm</string>
     <string name="calc_unit_mi">mi</string>
@@ -111,6 +113,9 @@
     <string name="calc_unit_f">F</string>
     <string name="calc_unit_k">k</string>
     <string name="calc_unit_kg_m3">kg/m^3</string>
+    <string name="calc_unit_h">h</string>
+    <string name="calc_unit_min">min</string>
+    <string name="calc_unit_sec">s</string>
 
     <string name="calc_unit_text_density">Density</string>
     <string name="calc_unit_text_fuel">Fuel/Oil</string>

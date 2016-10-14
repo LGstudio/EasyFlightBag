@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="?attr/backgroundColor">
+              android:background="?attr/backgroundDarkColor">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/editor_edit_title"
             android:padding="@dimen/row_padding"
-            android:background="@drawable/bck_floating_panel"
+            android:background="@drawable/bck_item_floating_white"
             android:textSize="@dimen/big_text"
             android:inputType="text"
             android:textColor="?attr/primaryTextColor"
@@ -94,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/editor_edit_list"
-            android:background="@drawable/bck_floating_panel"
+            android:background="@drawable/bck_item_floating_white"
             android:inputType="textMultiLine"
             android:elevation="@dimen/elevation_4"
             android:textColor="?attr/primaryTextColor"

@@ -15,6 +15,7 @@ import sk.lgstudio.easyflightbag.calculations.CalculatorData;
 import sk.lgstudio.easyflightbag.calculations.CalculatorFuelOil;
 import sk.lgstudio.easyflightbag.calculations.CalculatorTemperature;
 import sk.lgstudio.easyflightbag.calculations.Calculator;
+import sk.lgstudio.easyflightbag.calculations.CalculatorTime;
 
 /**
  *
@@ -57,7 +58,9 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
             new Calculator(CalculatorData.volRatios, CalculatorData.volValues, CalculatorData.volLayout),
             new Calculator(CalculatorData.preRatios, CalculatorData.preValues, CalculatorData.preLayout),
             new CalculatorTemperature(null, CalculatorData.temValues, CalculatorData.temLayout),
-            new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout)
+            new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout),
+            new Calculator(null, null, null),
+            new CalculatorTime(null, CalculatorData.timeValues, CalculatorData.timeLayout)
     };
 
     private ArrayList<TextView> menu = new ArrayList<>();

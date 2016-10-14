@@ -33,6 +33,8 @@ public class Calculator implements View.OnFocusChangeListener, TextWatcher {
 
         textViews.clear();
 
+        if (layouts == null) return;
+
         for (int i = 0; i < layouts.length; i++){
 
             final EditText tv = (EditText) v.findViewById(layouts[i]);

@@ -144,4 +144,17 @@ public final class CalculatorData {
 
     public static final float[] oilValues = {0f, 0f, 0f, 0f, 0f, 0f};
 
+    /**
+     *  ======================================================================
+     *      TIME / SPEED / DISTANCE
+     */
+
+    public static final int[] timeLayout = {
+            R.id.calc_unit_text_fu_dens,
+            R.id.calc_unit_text_fu_l
+    };
+
+    public static final float[] timeValues = {0f, 0f, 0f};
+
+
 }
