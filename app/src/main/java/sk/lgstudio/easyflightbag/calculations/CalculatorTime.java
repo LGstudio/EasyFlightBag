@@ -1,7 +1,6 @@
 package sk.lgstudio.easyflightbag.calculations;
 
 import android.content.Context;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -141,13 +140,9 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
         else if (selectedRadio == RADIO[2]) { // calculate time
             values[0] = calculateSpeed();
             values[1] = calculateDistance();
-            values[2] = values[1] / values[0];
+            values[2] = (values[1] / values[0]) * HOUR;
             setTimeNumbers();
         }
-
-        Log.e("Speed", String.valueOf(values[0]));
-        Log.e("Distance", String.valueOf(values[1]));
-        Log.e("Time", String.valueOf(values[2]));
     }
 
     private float calculateTime(){
@@ -215,7 +210,6 @@ public class CalculatorTime extends Calculator implements RadioGroup.OnCheckedCh
 
     @Override
     public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-        Log.e("Change from " + String.valueOf(i),  "to " + String.valueOf(i1));
         updateData();
     }
 

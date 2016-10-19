@@ -1,15 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="?attr/backgroundColor">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundDarkColor"
+    android:gravity="center_horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Settings"
-        android:id="@+id/txt_set"
-        android:layout_gravity="center_horizontal"/>
+        android:background="?attr/backgroundColor"
+        android:layout_margin="@dimen/row_padding"
+        android:padding="@dimen/row_padding"
+        android:elevation="@dimen/elevation_8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_theme"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/set_night_switch"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:layout_marginBottom="@dimen/row_padding"
+        android:layout_marginStart="@dimen/row_padding"
+        android:layout_marginEnd="@dimen/row_padding"
+        android:padding="@dimen/row_padding"
+        android:elevation="@dimen/elevation_8">
+
+        <TextView
+            android:id="@+id/set_aip_refresh_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_aip"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <ImageButton
+            android:src="@drawable/ic_refresh"
+            android:background="@drawable/bck_transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/set_aip_refresh"/>
+
+    </RelativeLayout>
+
+
 </LinearLayout>

@@ -51,6 +51,11 @@
             android:exported="false" >
         </service>
 
+        <service
+            android:name=".services.AIPDownloader"
+            android:exported="false">
+        </service>
+
     </application>
 
 </manifest>

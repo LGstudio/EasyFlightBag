@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentHome fHome = new FragmentHome();
     private FragmentChklist fChk = new FragmentChklist();
+    private FragmentSettings fSet  = new FragmentSettings();
 
     private TabMenu menu;
     private TabViewPager viewPager;
@@ -43,37 +44,38 @@ public class MainActivity extends AppCompatActivity {
     private File rootDir;
 
     private ArrayList<Location> track = new ArrayList<>();
-    private ArrayList<Location> route = new ArrayList<>();
+    //private ArrayList<Location> route = new ArrayList<>();
 
-    private SharedPreferences prefs;
+    public SharedPreferences prefs;
     private String prefChkActual;
+    public boolean nightMode = false;
+    public String aipLastUpdate;
 
     private boolean isChkTutCreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        //setTheme(R.style.AppThemeDark);
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        if (userAllowedLocation()) {
-            this.startGPSService();
-        }
-        else{
-            // Request missing location permission.
-            //ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
-        }
-
-        // creates fragments
-        initView();
 
         // checks internal storage for existing files
         checkDirectory();
 
         // loads shared preferences
         loadSharedPerefs();
+
+        setContentView(R.layout.activity_main);
+
+        if (userAllowedLocation()) {
+            this.startGPSService();
+        }
+        //else{
+            // Request missing location permission.
+            //ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
+        //}
+
+        // creates fragments
+        initView();
+
     }
 
     @Override
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadSharedPerefs(){
         prefs = this.getSharedPreferences("sk.lgstudio.efb", Context.MODE_PRIVATE);
 
+        // Load last opened Checklist
         if (isChkTutCreated){
             fChk.folderActual = new File(fChk.folder.getPath() + getString(R.string.folder_chklist_demo));
         }
@@ -109,6 +112,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+        // Load selected theme
+        nightMode = prefs.getBoolean(getString(R.string.pref_theme), false);
+        if (nightMode) setTheme(R.style.AppThemeDark);
+
+        // Aip last updateed time
+        aipLastUpdate = prefs.getString(getString(R.string.pref_aip_last_update), "");
+
     }
 
     /**
@@ -145,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        File aipFolder = new File(rootDir.getPath() + getString(R.string.folder_aip));
+        if (!aipFolder.exists())
+            aipFolder.mkdir();
     }
 
     /**
@@ -155,16 +169,14 @@ public class MainActivity extends AppCompatActivity {
 
         fHome.track = track;
         fA.addFragment(fHome);
-
         fA.addFragment(new FragmentAip());
         fA.addFragment(new FragmentWeather());
-
         fA.addFragment(fChk);
-
         fA.addFragment(new FragmentDocs());
         fA.addFragment(new FragmentPlan());
         fA.addFragment(new FragmentCalc());
-        fA.addFragment(new FragmentSettings());
+        fSet.activity = this;
+        fA.addFragment(fSet);
 
         viewPager = (TabViewPager) findViewById(R.id.view_fragment_pager);
         viewPager.setAdapter(fA);

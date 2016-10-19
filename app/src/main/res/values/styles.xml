@@ -9,6 +9,11 @@
 
         <item name="primaryColor">@color/colorPrimary</item>
         <item name="primaryColorDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorBlue</item>
+        <item name="colorControlNormal">@color/colorPrimaryLight</item>
+        <item name="colorControlActivated" >@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorBlueLight</item>
+
         <item name="primaryTextColor">@color/colorBlack</item>
         <item name="secondaryTextColor">@color/colorDark</item>
         <item name="fadedTextColor">@color/colorGray</item>
@@ -32,6 +37,11 @@
 
         <item name="primaryColor">@color/colorPrimaryDark</item>
         <item name="primaryColorDark">@color/colorPrimaryDarker</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorPrimaryDarker</item>
+        <item name="colorControlActivated" >@color/colorPrimaryDark</item>
+        <item name="colorControlHighlight">@color/colorDarker</item>
+
         <item name="primaryTextColor">@color/colorLighter</item>
         <item name="secondaryTextColor">@color/colorLight</item>
         <item name="fadedTextColor">@color/colorGray</item>
