@@ -17,8 +17,11 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import sk.lgstudio.easyflightbag.services.AIPDownloader;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.menu.TabFragmentAdapter;
 import sk.lgstudio.easyflightbag.menu.TabViewPager;
@@ -34,11 +37,21 @@ import sk.lgstudio.easyflightbag.menu.TabMenu;
 
 public class MainActivity extends AppCompatActivity {
 
+    public final static int MENU_NAV = 0;
+    public final static int MENU_AIP = 1;
+    public final static int MENU_WEATH = 2;
+    public final static int MENU_CHKL = 3;
+    public final static int MENU_DOCS = 4;
+    public final static int MENU_PLAN = 5;
+    public final static int MENU_CAL = 6;
+    public final static int MENU_SET = 7;
+
+
     private FragmentHome fHome = new FragmentHome();
     private FragmentChklist fChk = new FragmentChklist();
     private FragmentSettings fSet  = new FragmentSettings();
 
-    private TabMenu menu;
+    public TabMenu menu;
     private TabViewPager viewPager;
 
     private File rootDir;
@@ -114,12 +127,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Load selected theme
-        nightMode = prefs.getBoolean(getString(R.string.pref_theme), false);
-        if (nightMode) setTheme(R.style.AppThemeDark);
+        changeToNight();
 
-        // Aip last updateed time
+        // Aip last updated time
         aipLastUpdate = prefs.getString(getString(R.string.pref_aip_last_update), "");
 
+    }
+
+    public void changeToNight(){
+        nightMode = prefs.getBoolean(getString(R.string.pref_theme), false);
+        if (nightMode)
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
     }
 
     /**
@@ -164,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * initializes fragments and top menu on the view
      */
-    private void initView(){
+    public void initView(){
         final TabFragmentAdapter fA = new TabFragmentAdapter(getSupportFragmentManager());
 
         fHome.track = track;
@@ -227,11 +247,28 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public BroadcastReceiver aipDownloadedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            int code = intent.getIntExtra(getString(R.string.set_intent_aip_status), -1);
+            int files = intent.getIntExtra(getString(R.string.set_intent_aip_count), -1);
+
+            if (code == AIPDownloader.STATUS_FINISHED){
+                aipLastUpdate = " (" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ")";
+                prefs.edit().putString(getString(R.string.pref_aip_last_update), aipLastUpdate).apply();
+            }
+
+            if (menu.selected == MENU_SET)
+                fSet.aipUpdate(code, files);
+        }
+    };
+
     @Override
     public void onBackPressed() {
 
-        if (menu.selected != 0)
-            menu.change(0);
+        if (menu.selected != MENU_NAV)
+            menu.change(MENU_NAV);
         else
             super.onBackPressed();
     }

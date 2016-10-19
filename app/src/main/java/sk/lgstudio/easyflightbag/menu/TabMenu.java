@@ -32,14 +32,11 @@ public class TabMenu implements View.OnClickListener{
 
         viewPager = vP;
 
-        for (int i = 0; i < ids.length; i++)
-            tabs.add((ImageButton) a.findViewById(ids[i]));
+        for (int id : ids)
+            tabs.add((ImageButton) a.findViewById(id));
 
         for (ImageButton ib : tabs)
             ib.setOnClickListener(this);
-
-        change(1); //TODO: Just for testing purposes!!!
-
     }
 
     @Override
@@ -49,7 +46,8 @@ public class TabMenu implements View.OnClickListener{
             if (ids[i] == v.getId())
                 clicked = i;
 
-        change(clicked);
+        if (selected != clicked)
+            change(clicked);
     }
 
     public void change(int clicked){

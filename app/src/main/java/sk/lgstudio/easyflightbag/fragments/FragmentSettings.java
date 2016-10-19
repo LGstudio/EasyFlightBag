@@ -1,5 +1,7 @@
 package sk.lgstudio.easyflightbag.fragments;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +50,7 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         nightSwith.setOnCheckedChangeListener(this);
 
         aipText = (TextView) view.findViewById(R.id.set_aip_refresh_text);
-        reloadAipText();
+        if (aipDownloadReady) reloadAipText();
         aipRefresh = (ImageButton) view.findViewById(R.id.set_aip_refresh);
         aipRefresh.setOnClickListener(this);
 
@@ -64,8 +66,14 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (activity != null){
             activity.prefs.edit().putBoolean(getString(R.string.pref_theme),b).apply();
-            activity.finish();
-            activity.startActivity(new Intent(activity, activity.getClass()));
+            activity.changeToNight();
+            //activity.menu.initView(activity); <- This does not work
+
+            final android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            ft.detach(this);
+            ft.attach(this);
+            ft.commit();
+
         }
     }
 
@@ -76,7 +84,7 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
                 if (aipDownloadReady){
                     activity.startService(new Intent(activity, AIPDownloader.class));
                     LocalBroadcastManager.getInstance(activity)
-                            .registerReceiver(aipDownloadedReceiver,
+                            .registerReceiver(activity.aipDownloadedReceiver,
                                     new IntentFilter(this.getString(R.string.set_intent_aip_download)));
                     aipDownloadReady = false;
                 }
@@ -88,32 +96,21 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         reloadAipText();
         aipDownloadReady = true;
         activity.stopService(new Intent(activity, AIPDownloader.class));
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(aipDownloadedReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(activity.aipDownloadedReceiver);
     }
 
-    private BroadcastReceiver aipDownloadedReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            int code = intent.getIntExtra(getString(R.string.set_intent_aip_status), -1);
-            int files = intent.getIntExtra(getString(R.string.set_intent_aip_count), -1);
-
-            switch (code) {
-                case AIPDownloader.STATUS_STARTED:
-                    String aipUpdated = getString(R.string.set_aip) + " - " + String.valueOf(files);
-                    aipText.setText(aipUpdated);
-                    break;
-                case AIPDownloader.STATUS_ERROR:
-                    Toast.makeText(getContext(),getString(R.string.set_aip_downloader_error), Toast.LENGTH_SHORT).show();
-                    finishAIPDownloader();
-                    break;
-                case AIPDownloader.STATUS_FINISHED:
-                    Toast.makeText(getContext(),getString(R.string.set_aip_downloader_finished), Toast.LENGTH_SHORT).show();
-                    activity.aipLastUpdate = " (" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ")";
-                    activity.prefs.edit().putString(getString(R.string.pref_aip_last_update), activity.aipLastUpdate).apply();
-                    finishAIPDownloader();
-                    break;
-            }
+    public void aipUpdate(int code, int files) {
+        switch (code) {
+            case AIPDownloader.STATUS_STARTED:
+                String aipUpdated = getString(R.string.set_aip) + " - " + String.valueOf(files);
+                aipText.setText(aipUpdated);
+                break;
+            case AIPDownloader.STATUS_ERROR:
+            case AIPDownloader.STATUS_FINISHED:
+                Toast.makeText(getContext(), getString(R.string.set_aip_downloader_finished), Toast.LENGTH_SHORT).show();
+                finishAIPDownloader();
+                break;
         }
-    };
+    }
+
 }

@@ -51,6 +51,7 @@ public class AIPDownloader extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
         try {
             // download html file and get all elements with title
             Document page = Jsoup.connect(getString(R.string.url_cz_ais)).get();
