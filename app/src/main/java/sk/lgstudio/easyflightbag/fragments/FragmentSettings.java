@@ -84,6 +84,12 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         }
     }
 
+    private void finishAIPDownloader(){
+        reloadAipText();
+        aipDownloadReady = true;
+        activity.stopService(new Intent(activity, AIPDownloader.class));
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(aipDownloadedReceiver);
+    }
 
     private BroadcastReceiver aipDownloadedReceiver = new BroadcastReceiver() {
         @Override
@@ -99,15 +105,13 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
                     break;
                 case AIPDownloader.STATUS_ERROR:
                     Toast.makeText(getContext(),getString(R.string.set_aip_downloader_error), Toast.LENGTH_SHORT).show();
-                    reloadAipText();
-                    aipDownloadReady = true;
+                    finishAIPDownloader();
                     break;
                 case AIPDownloader.STATUS_FINISHED:
                     Toast.makeText(getContext(),getString(R.string.set_aip_downloader_finished), Toast.LENGTH_SHORT).show();
-                    aipDownloadReady = true;
                     activity.aipLastUpdate = " (" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ")";
                     activity.prefs.edit().putString(getString(R.string.pref_aip_last_update), activity.aipLastUpdate).apply();
-                    reloadAipText();
+                    finishAIPDownloader();
                     break;
             }
         }

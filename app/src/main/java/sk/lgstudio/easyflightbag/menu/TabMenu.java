@@ -38,7 +38,7 @@ public class TabMenu implements View.OnClickListener{
         for (ImageButton ib : tabs)
             ib.setOnClickListener(this);
 
-        change(6); //TODO: Just for testing purposes!!!
+        change(1); //TODO: Just for testing purposes!!!
 
     }
 
