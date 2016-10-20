@@ -18,6 +18,8 @@
     <dimen name="padding_snack_side">24dp</dimen>
     <dimen name="padding_snack_topbottom">14dp</dimen>
     <dimen name="big_text">32sp</dimen>
+    <dimen name="row_big_text">20sp</dimen>
+    <dimen name="row_small_text">16sp</dimen>
 
     <dimen name="panel_closed">44dp</dimen>
 
@@ -25,4 +27,6 @@
     <dimen name="calc_text_size">14sp</dimen>
     <dimen name="calc_field_padding">12dp</dimen>
     <dimen name="calc_field_button_margin">3dp</dimen>
+
+    <dimen name="aip_list_margin">12dp</dimen>
 </resources>

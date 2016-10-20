@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/row_padding"
+    android:id="@+id/aip_row">
+
+    <ImageView
+        android:id="@+id/aip_row_image_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_expand_right_inv"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        />
+
+    <ImageView
+        android:id="@+id/aip_row_image_doc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_docs_inv"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toStartOf="@id/aip_row_image_list">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/aip_row_title"
+            android:text="title"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/row_big_text"
+            android:maxLines="1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/aip_row_description"
+            android:text="description"
+            android:textColor="?attr/secondaryTextColor"
+            android:textSize="@dimen/row_small_text"
+            android:maxLines="1"
+            />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
