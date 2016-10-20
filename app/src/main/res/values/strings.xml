@@ -20,6 +20,7 @@
     <string name="folder_chklist_demo">/Tutorial</string>
     <string name="folder_aip">/AIP</string>
     <string name="folder_cz">/cz</string>
+    <string name="file_aip_data">/data.txt</string>
 
     <string name="file_chk_plane">Switch Add and Delete airplane type.txt</string>
     <string name="file_chk_plane_">Click on the airplane icon\n

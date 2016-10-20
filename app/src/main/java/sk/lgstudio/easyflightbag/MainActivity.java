@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentHome fHome = new FragmentHome();
     private FragmentChklist fChk = new FragmentChklist();
     private FragmentSettings fSet  = new FragmentSettings();
+    private FragmentAip fAip = new FragmentAip();
 
     public TabMenu menu;
     private TabViewPager viewPager;
@@ -179,6 +180,12 @@ public class MainActivity extends AppCompatActivity {
         File aipFolder = new File(rootDir.getPath() + getString(R.string.folder_aip));
         if (!aipFolder.exists())
             aipFolder.mkdir();
+
+        fAip.folder = new File(aipFolder.getPath() + getString(R.string.folder_cz));
+        if (!fAip.folder.exists())
+            fAip.folder.mkdir();
+
+
     }
 
     /**
@@ -189,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
         fHome.track = track;
         fA.addFragment(fHome);
-        fA.addFragment(new FragmentAip());
+        fA.addFragment(fAip);
         fA.addFragment(new FragmentWeather());
         fA.addFragment(fChk);
         fA.addFragment(new FragmentDocs());
@@ -257,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
             if (code == AIPDownloader.STATUS_FINISHED){
                 aipLastUpdate = " (" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ")";
                 prefs.edit().putString(getString(R.string.pref_aip_last_update), aipLastUpdate).apply();
+                fAip.fillData = true;
             }
 
             if (menu.selected == MENU_SET)

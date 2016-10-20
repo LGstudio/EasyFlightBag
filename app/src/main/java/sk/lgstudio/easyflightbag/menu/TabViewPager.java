@@ -32,7 +32,6 @@ public class TabViewPager extends android.support.v4.view.ViewPager{
         if (this.enabled) {
             return super.onInterceptTouchEvent(event);
         }
-
         return false;
     }
 

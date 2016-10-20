@@ -11,7 +11,6 @@
     tools:context="sk.lgstudio.easyflightbag.MainActivity"
     >
 
-
     <include
         layout="@layout/menu_tab"
         android:id="@+id/menu_tab"

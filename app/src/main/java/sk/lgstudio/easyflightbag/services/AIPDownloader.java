@@ -121,11 +121,13 @@ public class AIPDownloader extends IntentService {
                     //close the output stream when done
                     fileOutput.close();
                     urlConnection.disconnect();
+
                     downloadedcount++;
                 }
                 sendReport(STATUS_STARTED);
             }
 
+            //if (writeJsonFile())
             if (writeFile())
                 sendReport(STATUS_FINISHED);
             else
@@ -137,72 +139,28 @@ public class AIPDownloader extends IntentService {
         }
     }
 
-
     private boolean writeFile() throws IOException {
         if (docDepth.size() != docValues.size()){
             return false;
         }
 
-        File data = new File(aipFolder, "data.json");
+        File data = new File(aipFolder, "data.txt");
         FileWriter writer = new FileWriter(data);
 
-        writer.append("{");
-
-        int lastLevel = 0;
-        boolean wasEnd = false;
-
         for (int i = 0; i < docDepth.size(); i++){
-            if (docDepth.get(i) == -1){
-                writer.append("\"");
+            if (docDepth.get(i) == -1) {
+                writer.append(":");
+                writer.append(docValues.get(i));
+            }
+            else{
+                if (i > 0) writer.append("\n");
+
+                writer.append(String.valueOf(docDepth.get(i)));
+                writer.append(":\"");
                 writer.append(docValues.get(i));
                 writer.append("\"");
-                wasEnd = true;
-                continue;
             }
-
-            int j = lastLevel - docDepth.get(i);
-            for (int k = 0; k < j; k++){
-                writer.append("\n");
-                for (int t = 0; t < lastLevel; t++) writer.append("\t");
-                writer.append("}");
-                lastLevel =- 1;
-                wasEnd = true;
-            }
-
-            if (docDepth.get(i) == lastLevel){
-                if (wasEnd){
-                    writer.append(",\n");
-                    wasEnd = false;
-                }
-                else {
-                    writer.append("\n");
-                }
-            }
-            else { // docDepth.get(i) > lastLevel
-                lastLevel = docDepth.get(i);
-                if (wasEnd) {
-                    writer.append(",\n");
-                    wasEnd = false;
-                }
-                else {
-                    writer.append("{\n");
-                }
-            }
-
-            for (int t = 0; t < lastLevel; t++) writer.append("\t");
-            writer.append("\"");
-            writer.append(docValues.get(i));
-            writer.append("\" : ");
-
         }
-
-        while (lastLevel >= 0){
-            writer.append("\n");
-            for (int t = 0; t < lastLevel; t++) writer.append("\t");
-            writer.append("}");
-            lastLevel--;
-        }
-
 
         writer.flush();
         writer.close();
