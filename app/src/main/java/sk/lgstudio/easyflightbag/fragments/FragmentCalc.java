@@ -23,44 +23,48 @@ import sk.lgstudio.easyflightbag.calculations.CalculatorTime;
 public class FragmentCalc extends Fragment implements View.OnClickListener {
 
     private final int[] idLayout = {
+            R.layout.calc_wb,
+            R.layout.calc_time,
+            R.layout.calc_f_fuel,
+            R.layout.calc_wind,
+            R.layout.calc_coord,
+            R.layout.calc_fuel,
             R.layout.calc_distance,
             R.layout.calc_speed,
             R.layout.calc_mass,
             R.layout.calc_volume,
             R.layout.calc_pressure,
-            R.layout.calc_temperature,
-            R.layout.calc_fuel,
-            R.layout.calc_coord,
-            R.layout.calc_time,
-            R.layout.calc_tas,
-            R.layout.calc_f_fuel,
-            R.layout.calc_wind};
+            R.layout.calc_temperature
+    };
 
     private final int[] idMenu = {
+            R.id.calc_WB,
+            R.id.calc_func_time,
+            R.id.calc_func_fuel,
+            R.id.calc_func_wind,
+            R.id.calc_func_coord,
+            R.id.calc_conv_fuel,
             R.id.calc_conv_dist,
             R.id.calc_conv_speed,
             R.id.calc_conv_mass,
             R.id.calc_conv_vol,
             R.id.calc_conv_press,
-            R.id.calc_conv_temp,
-            R.id.calc_conv_fuel,
-            R.id.calc_func_coord,
-            R.id.calc_func_time,
-            R.id.calc_func_tas,
-            R.id.calc_func_fuel,
-            R.id.calc_func_wind
+            R.id.calc_conv_temp
     };
 
     private final Calculator[] calcFunctions = {
+            new Calculator(null, null, null),
+            new CalculatorTime(null, CalculatorData.timeValues, CalculatorData.timeLayout),
+            new Calculator(null, null, null),
+            new Calculator(null, null, null),
+            new Calculator(null, null, null),
+            new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout),
             new Calculator(CalculatorData.dstRatios, CalculatorData.dstValues, CalculatorData.dstLayout),
             new Calculator(CalculatorData.speRatios, CalculatorData.speValues, CalculatorData.speLayout),
             new Calculator(CalculatorData.masRatios, CalculatorData.masValues, CalculatorData.masLayout),
             new Calculator(CalculatorData.volRatios, CalculatorData.volValues, CalculatorData.volLayout),
             new Calculator(CalculatorData.preRatios, CalculatorData.preValues, CalculatorData.preLayout),
-            new CalculatorTemperature(null, CalculatorData.temValues, CalculatorData.temLayout),
-            new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout),
-            new Calculator(null, null, null),
-            new CalculatorTime(null, CalculatorData.timeValues, CalculatorData.timeLayout)
+            new CalculatorTemperature(null, CalculatorData.temValues, CalculatorData.temLayout)
     };
 
     private ArrayList<TextView> menu = new ArrayList<>();

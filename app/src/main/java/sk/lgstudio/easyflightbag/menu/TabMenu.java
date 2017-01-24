@@ -15,12 +15,10 @@ public class TabMenu implements View.OnClickListener{
 
     private final int[] ids = {
             R.id.tab_home,
+            R.id.tab_calc,
             R.id.tab_aip,
-            R.id.tab_weather,
             R.id.tab_chklist,
             R.id.tab_docs,
-            R.id.tab_plan,
-            R.id.tab_calc,
             R.id.tab_set
     };
 

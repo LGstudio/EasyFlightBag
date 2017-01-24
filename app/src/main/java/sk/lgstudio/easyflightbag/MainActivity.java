@@ -30,9 +30,7 @@ import sk.lgstudio.easyflightbag.fragments.FragmentCalc;
 import sk.lgstudio.easyflightbag.fragments.FragmentChklist;
 import sk.lgstudio.easyflightbag.fragments.FragmentDocs;
 import sk.lgstudio.easyflightbag.fragments.FragmentHome;
-import sk.lgstudio.easyflightbag.fragments.FragmentPlan;
 import sk.lgstudio.easyflightbag.fragments.FragmentSettings;
-import sk.lgstudio.easyflightbag.fragments.FragmentWeather;
 import sk.lgstudio.easyflightbag.menu.TabMenu;
 
 public class MainActivity extends AppCompatActivity {
@@ -196,12 +194,10 @@ public class MainActivity extends AppCompatActivity {
 
         fHome.track = track;
         fA.addFragment(fHome);
+        fA.addFragment(new FragmentCalc());
         fA.addFragment(fAip);
-        fA.addFragment(new FragmentWeather());
         fA.addFragment(fChk);
         fA.addFragment(new FragmentDocs());
-        fA.addFragment(new FragmentPlan());
-        fA.addFragment(new FragmentCalc());
         fSet.activity = this;
         fA.addFragment(fSet);
 

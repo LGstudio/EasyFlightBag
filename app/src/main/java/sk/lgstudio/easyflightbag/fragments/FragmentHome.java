@@ -245,7 +245,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     public void onMapReady(GoogleMap googleMap) {
 
         map = googleMap;
-        map.setMyLocationEnabled(true);
+// TODO: fix        map.setMyLocationEnabled(true);
         map.setOnCameraMoveListener(this);
         map.setOnMarkerClickListener(this);
         map.setOnMyLocationButtonClickListener(this);

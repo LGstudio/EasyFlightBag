@@ -4,10 +4,8 @@
 
     <string name="tab_home">Home</string>
     <string name="tab_aip">AIP</string>
-    <string name="tab_weather">Weather</string>
     <string name="tab_chklist">Checklists</string>
     <string name="tab_docs">Documents</string>
-    <string name="tab_plan">Plan</string>
     <string name="tab_functions">Calculations</string>
     <string name="tab_settings">Settings</string>
 
@@ -89,7 +87,7 @@
     <string name="calc_func_tas">TAS</string>
     <string name="calc_func_fuel">Fuel</string>
     <string name="calc_func_wind">Wind</string>
-    <string name="calc_bal">Balance</string>
+    <string name="calc_bal">Weight/Balance</string>
     <string name="calc_func_time_">Time</string>
 
     <string name="calc_unit_m">m</string>

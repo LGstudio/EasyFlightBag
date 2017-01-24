@@ -153,7 +153,8 @@ public class FragmentAip extends Fragment {
     }
 
     private void handleOnItemClick(int lvl, int pos){
-        if (getLevel(lvl+1).get(pos).files == null){
+        FileStructure struct = getLevel(lvl+1).get(pos);
+        if (struct.files == null){
             // TODO: Open file here
         }
         else {
@@ -219,14 +220,11 @@ public class FragmentAip extends Fragment {
             title.setText(data.get(position).title.substring(0,pos));
             description.setText(data.get(position).title.substring(pos+1,len));
 
-            ImageView icon;
+            ImageView icon = (ImageView) row.findViewById(R.id.aip_row_icon);
             if (data.get(position).files == null)
-                icon = (ImageView) row.findViewById(R.id.aip_row_image_list);
-            else
-                icon = (ImageView) row.findViewById(R.id.aip_row_image_doc);
-            icon.setVisibility(View.GONE);
+                icon.setImageResource(R.drawable.ic_docs_inv);
 
-            if (selectedItems.size() >= level)
+            if (selectedItems.size() >= level && data.get(position).files != null)
                 if (position == selectedItems.get(level-1))
                     row.setBackgroundResource(R.drawable.bck_item_selected);
                 else
