@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -36,8 +38,8 @@ import sk.lgstudio.easyflightbag.R;
  */
 public class FragmentAip extends Fragment {
 
-    private HorizontalScrollView horizontalScrollView;
     private LinearLayout scrollLayout;
+    private HorizontalScrollView horizontalScrollView;
 
     public File folder;
 
@@ -47,12 +49,18 @@ public class FragmentAip extends Fragment {
     private int openedLevel = 1;
     public boolean fillData = true;
 
+    private int screenWidth;
+
     LayoutInflater inflater;
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
         inflater = i;
         View view = inflater.inflate(R.layout.fragment_aip, container, false);
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        screenWidth = displaymetrics.widthPixels;
 
         horizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.aip_list_scroll);
         scrollLayout = (LinearLayout) view.findViewById(R.id.aip_list_layout);
@@ -61,7 +69,7 @@ public class FragmentAip extends Fragment {
             files.clear();
             getData();
         }
-        fillView(view);
+        fillView();
 
 
 
@@ -124,7 +132,7 @@ public class FragmentAip extends Fragment {
         }
     }
 
-    private void fillView(View v){
+    private void fillView(){
 
         scrollLayout.removeAllViewsInLayout();
         adapters.clear();
@@ -134,6 +142,10 @@ public class FragmentAip extends Fragment {
             adapters.add(new FileAdapter(getContext(), R.layout.aip_list_item, getLevel(i+1), i+1));
             ListView list = (ListView) inflater.inflate(R.layout.aip_list, scrollLayout, false);
 
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) (screenWidth*0.8), ViewGroup.LayoutParams.MATCH_PARENT);
+            params.setMargins(0, 0, getResources().getDimensionPixelSize(R.dimen.aip_list_margin), 0);
+            list.setLayoutParams(params);
+
             list.setAdapter(adapters.get(i));
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -142,15 +154,20 @@ public class FragmentAip extends Fragment {
                 }
             });
 
-            //ViewGroup.LayoutParams params = new ViewGroup.LayoutParams((int) (scrollLayout.getWidth()*0.6), ViewGroup.LayoutParams.MATCH_PARENT);
-            //list.setLayoutParams(params);
-
             scrollLayout.addView(list);
         }
 
+        horizontalScrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                horizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+            }
+        }, 100L);
 
         fillData = false;
     }
+
+
 
     private void handleOnItemClick(int lvl, int pos){
         FileStructure struct = getLevel(lvl+1).get(pos);
@@ -164,7 +181,7 @@ public class FragmentAip extends Fragment {
             selectedItems.add(pos);
             openedLevel = selectedItems.size() + 1;
 
-            fillView(getView());
+            fillView();
         }
 
     }
@@ -218,7 +235,7 @@ public class FragmentAip extends Fragment {
             //Log.w("dsc", data.get(position).title.substring(pos+1,len));
 
             title.setText(data.get(position).title.substring(0,pos));
-            description.setText(data.get(position).title.substring(pos+1,len));
+            description.setText(data.get(position).title.substring(pos+2,len)); //+2 for the empty space, maybe only for czech AIP
 
             ImageView icon = (ImageView) row.findViewById(R.id.aip_row_icon);
             if (data.get(position).files == null)

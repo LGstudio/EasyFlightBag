@@ -21,10 +21,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_toEndOf="@id/aip_row_icon"
-        android:layout_marginEnd="@dimen/list_icon_margin">
+        >
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/aip_row_title"
             android:text="title"
@@ -34,13 +34,12 @@
             />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/aip_row_description"
             android:text="description"
             android:textColor="?attr/secondaryTextColor"
             android:textSize="@dimen/row_small_text"
-            android:maxLines="1"
             />
 
     </LinearLayout>
