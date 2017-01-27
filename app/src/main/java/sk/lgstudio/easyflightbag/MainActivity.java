@@ -17,11 +17,9 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
-import sk.lgstudio.easyflightbag.services.AIPDownloader;
+import sk.lgstudio.easyflightbag.managers.AIPManager;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.menu.TabFragmentAdapter;
 import sk.lgstudio.easyflightbag.menu.TabViewPager;
@@ -51,17 +49,13 @@ public class MainActivity extends AppCompatActivity {
     private FragmentAip fAip = new FragmentAip();
 
     public TabMenu menu;
-    private TabViewPager viewPager;
-
-    private File rootDir;
 
     private ArrayList<Location> track = new ArrayList<>();
     //private ArrayList<Location> route = new ArrayList<>();
 
     public SharedPreferences prefs;
-    private String prefChkActual;
     public boolean nightMode = false;
-    public String aipLastUpdate;
+    public AIPManager aipManager;
 
     private boolean isChkTutCreated = false;
 
@@ -69,21 +63,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        prefs = this.getSharedPreferences(getString(R.string.app_prefs), Context.MODE_PRIVATE);
+
+        // TODO: Permission check for android 6.0 and newer
+
         // checks internal storage for existing files
         checkDirectory();
 
         // loads shared preferences
         loadSharedPerefs();
 
+        // Load selected theme
+        changeToNight();
+
+        // create AIP manager
+        aipManager = new AIPManager(this);
+
         setContentView(R.layout.activity_main);
 
         if (userAllowedLocation()) {
             this.startGPSService();
         }
-        //else{
-            // Request missing location permission.
-            //ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
-        //}
 
         // creates fragments
         initView();
@@ -103,20 +103,30 @@ public class MainActivity extends AppCompatActivity {
 
         stopService(new Intent(this, GPSTrackerService.class));
         LocalBroadcastManager.getInstance(this).unregisterReceiver(gpsReceiver);
+
+        //TODO: stop AIP downloader ???
+    }
+
+    /**
+     * Android 6.0 and newer - checks for permissions
+     */
+    private void permissionCheck(){
+        // Request missing location permission.
+        //ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
     }
 
     /**
      * Loads the saved preferences when application starts
      */
     private void loadSharedPerefs(){
-        prefs = this.getSharedPreferences("sk.lgstudio.efb", Context.MODE_PRIVATE);
+
 
         // Load last opened Checklist
         if (isChkTutCreated){
             fChk.folderActual = new File(fChk.folder.getPath() + getString(R.string.folder_chklist_demo));
         }
         else {
-            prefChkActual = prefs.getString(getString(R.string.pref_chk_folder), null);
+            String prefChkActual = prefs.getString(getString(R.string.pref_chk_folder), null);
             if (prefChkActual != null) {
                 fChk.folderActual = new File(prefChkActual);
                 if (!fChk.folderActual.exists()){
@@ -124,15 +134,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
-        // Load selected theme
-        changeToNight();
-
-        // Aip last updated time
-        aipLastUpdate = prefs.getString(getString(R.string.pref_aip_last_update), "");
-
     }
 
+
+    /**
+     * Changes between day and night mode
+     */
     public void changeToNight(){
         nightMode = prefs.getBoolean(getString(R.string.pref_theme), false);
         if (nightMode)
@@ -146,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
      * Adds default data in case of first app launch or when data were deleted
      */
     private void checkDirectory(){
-        rootDir = new File(Environment.getExternalStorageDirectory() + getString(R.string.folder_root));
+        File rootDir = new File(Environment.getExternalStorageDirectory() + getString(R.string.folder_root));
         if(!rootDir.exists()) {
             rootDir.mkdir();
         }
@@ -179,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         if (!aipFolder.exists())
             aipFolder.mkdir();
 
+        //TODO: move to AIP downloader to handle this
         fAip.folder = new File(aipFolder.getPath() + getString(R.string.folder_cz));
         if (!fAip.folder.exists())
             fAip.folder.mkdir();
@@ -201,13 +209,16 @@ public class MainActivity extends AppCompatActivity {
         fSet.activity = this;
         fA.addFragment(fSet);
 
-        viewPager = (TabViewPager) findViewById(R.id.view_fragment_pager);
+        TabViewPager viewPager = (TabViewPager) findViewById(R.id.view_fragment_pager);
         viewPager.setAdapter(fA);
         viewPager.setPagingEnabled(false);
 
         menu = new TabMenu(this, viewPager);
     }
 
+    /**
+     * Starts GPS service
+     */
     private void startGPSService() {
         startService(new Intent(this, GPSTrackerService.class));
         LocalBroadcastManager.getInstance(this).registerReceiver(gpsReceiver, new IntentFilter(this.getString(R.string.gps_intent_filter))
@@ -250,23 +261,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public BroadcastReceiver aipDownloadedReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
 
-            int code = intent.getIntExtra(getString(R.string.set_intent_aip_status), -1);
-            int files = intent.getIntExtra(getString(R.string.set_intent_aip_count), -1);
-
-            if (code == AIPDownloader.STATUS_FINISHED){
-                aipLastUpdate = " (" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ")";
-                prefs.edit().putString(getString(R.string.pref_aip_last_update), aipLastUpdate).apply();
-                fAip.fillData = true;
-            }
-
-            if (menu.selected == MENU_SET)
-                fSet.aipUpdate(code, files);
-        }
-    };
 
     @Override
     public void onBackPressed() {

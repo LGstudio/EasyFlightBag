@@ -40,8 +40,8 @@ public class ChklistEditorDialog extends Dialog implements View.OnClickListener 
 
     private File folder;
 
-    public ChklistEditorDialog(Context context, int themeResId) {
-        super(context, themeResId);
+    public ChklistEditorDialog(Context context, int themeStyle) {
+        super(context, themeStyle);
     }
 
     public void loadContent(File f, boolean isnew, String title, ArrayList<String> tasks){

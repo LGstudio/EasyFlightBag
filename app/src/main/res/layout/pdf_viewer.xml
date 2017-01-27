@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundDarkColor">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:background="?attr/primaryColor"
+        android:elevation="@dimen/elevation_12">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/btn_back"
+            android:layout_alignParentStart="true"
+            android:id="@+id/pdf_back"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/row_padding"
+            android:background="@drawable/bck_transparent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/pdf_back"
+            android:text="Title goes here"
+            android:textSize="@dimen/row_big_text"
+            android:gravity="center_vertical"
+            android:textColor="?attr/highlightColor"
+            android:id="@+id/pdf_title"
+            />
+
+    </RelativeLayout>
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdf_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

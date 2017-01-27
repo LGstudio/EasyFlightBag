@@ -31,4 +31,5 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.4+'
     compile 'com.diogobernardino:williamchart:2.0.1'
     compile 'org.jsoup:jsoup:1.9.2'
+    compile 'com.github.barteksc:android-pdf-viewer:2.4.0'
 }

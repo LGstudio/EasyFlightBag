@@ -2,6 +2,7 @@ package sk.lgstudio.easyflightbag.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -15,23 +16,17 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.dialogs.PdfViewer;
 
 /**
  *
@@ -47,7 +42,6 @@ public class FragmentAip extends Fragment {
     private ArrayList<Integer> selectedItems = new ArrayList<>();
     private ArrayList<FileAdapter> adapters = new ArrayList<>();
     private int openedLevel = 1;
-    public boolean fillData = true;
 
     private int screenWidth;
 
@@ -65,10 +59,10 @@ public class FragmentAip extends Fragment {
         horizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.aip_list_scroll);
         scrollLayout = (LinearLayout) view.findViewById(R.id.aip_list_layout);
 
-        if (fillData) {
-            files.clear();
-            getData();
-        }
+        //if (fillData) { TODO: FIX THIS
+        files.clear();
+        getData();
+        //}
         fillView();
 
 
@@ -139,7 +133,7 @@ public class FragmentAip extends Fragment {
 
         for (int i = 0; i < openedLevel; i++){
             final int l = i;
-            adapters.add(new FileAdapter(getContext(), R.layout.aip_list_item, getLevel(i+1), i+1));
+            adapters.add(new FileAdapter(getContext(), R.layout.aip_list_item, getOpenedLevel(i+1), i+1));
             ListView list = (ListView) inflater.inflate(R.layout.aip_list, scrollLayout, false);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) (screenWidth*0.8), ViewGroup.LayoutParams.MATCH_PARENT);
@@ -164,15 +158,18 @@ public class FragmentAip extends Fragment {
             }
         }, 100L);
 
-        fillData = false;
     }
 
-
-
     private void handleOnItemClick(int lvl, int pos){
-        FileStructure struct = getLevel(lvl+1).get(pos);
+        FileStructure struct = getOpenedLevel(lvl+1).get(pos);
         if (struct.files == null){
-            // TODO: Open file here
+            String url  = folder.getPath() + "/" + struct.url;
+            //Log.e("URL", url);
+
+            PdfViewer viewer = new PdfViewer(getContext(), R.style.FullScreenDialog);
+            viewer.setContentView(R.layout.pdf_viewer);
+            viewer.loadContent(struct.title, folder.getPath(), struct.url);
+            viewer.show();
         }
         else {
             while (selectedItems.size() > lvl)
@@ -186,7 +183,7 @@ public class FragmentAip extends Fragment {
 
     }
 
-    private ArrayList<FileStructure> getLevel(int l){
+    private ArrayList<FileStructure> getOpenedLevel(int l){
         ArrayList<FileStructure> level = files;
 
         for(int i = 1; i < l; i++){
@@ -195,7 +192,6 @@ public class FragmentAip extends Fragment {
 
         return level;
     }
-
 
     private static class FileStructure {
         public String title = null;

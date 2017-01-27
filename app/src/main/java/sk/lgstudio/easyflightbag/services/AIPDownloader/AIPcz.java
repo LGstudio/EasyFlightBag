@@ -1,10 +1,7 @@
-package sk.lgstudio.easyflightbag.services;
+package sk.lgstudio.easyflightbag.services.AIPDownloader;
 
-import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.webkit.URLUtil;
 
 import org.jsoup.Jsoup;
@@ -14,43 +11,28 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.managers.AIPManager;
 
 /**
- * Created by LGstudio on 2016-10-18.
+ * Created by LGstudio on 2017-01-25.
  */
 
-public class AIPDownloader extends IntentService {
+public class AIPcz extends AIPDownloader {
+    @Override
+    protected void onHandleIntent(Intent intent) {
 
-    public final static int STATUS_STARTED = 0;
-    public final static int STATUS_ERROR = 1;
-    public final static int STATUS_FINISHED = 2;
+        country = AIPManager.AIP_CZ;
 
-    private File aipFolder;
-
-    private ArrayList<Element> parents = new ArrayList<>();
-    private ArrayList<Integer> docDepth = new ArrayList<>();
-    private ArrayList<String> docValues = new ArrayList<>();
-
-    private int downloadedcount = 0;
-
-    public AIPDownloader() {
-        super("AIP");
-        aipFolder = new File(Environment.getExternalStorageDirectory() + "/EasyFlightBag/AIP/cz");
+        aipFolder = new File(Environment.getExternalStorageDirectory() + getString(R.string.folder_root) + getString(R.string.folder_aip) + getString(R.string.folder_cz));
         if (!aipFolder.exists()){
             aipFolder.mkdir();
         }
-    }
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
 
         try {
             // download html file and get all elements with title
@@ -127,7 +109,6 @@ public class AIPDownloader extends IntentService {
                 sendReport(STATUS_STARTED);
             }
 
-            //if (writeJsonFile())
             if (writeFile())
                 sendReport(STATUS_FINISHED);
             else
@@ -137,45 +118,5 @@ public class AIPDownloader extends IntentService {
             sendReport(STATUS_ERROR);
             e.printStackTrace();
         }
-    }
-
-    private boolean writeFile() throws IOException {
-        if (docDepth.size() != docValues.size()){
-            return false;
-        }
-
-        File data = new File(aipFolder, "data.txt");
-        FileWriter writer = new FileWriter(data);
-
-        for (int i = 0; i < docDepth.size(); i++){
-            if (docDepth.get(i) == -1) {
-                writer.append(":");
-                writer.append(docValues.get(i));
-            }
-            else{
-                if (i > 0) writer.append("\n");
-
-                writer.append(String.valueOf(docDepth.get(i)));
-                writer.append(":\"");
-                writer.append(docValues.get(i));
-                writer.append("\"");
-            }
-        }
-
-        writer.flush();
-        writer.close();
-
-        return true;
-    }
-
-
-    private void sendReport(int status){
-        Context context = getApplicationContext();
-        Intent intent = new Intent(context.getString(R.string.set_intent_aip_download));
-
-        intent.putExtra(context.getString(R.string.set_intent_aip_status), status);
-        intent.putExtra(context.getString(R.string.set_intent_aip_count), downloadedcount);
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

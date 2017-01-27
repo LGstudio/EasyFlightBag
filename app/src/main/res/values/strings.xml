@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">EasyFlightBag</string>
+    <string name="app_prefs">sk.lgstudio.efb</string>
     <string name="gmap_api_key">AIzaSyCxUOrnnZ3KJ5uoTiqBRox_iy0Ifzkjobc</string>
 
     <string name="tab_home">Home</string>
@@ -11,13 +12,18 @@
 
     <string name="pref_chk_folder">chk_folder</string>
     <string name="pref_theme">app_theme</string>
-    <string name="pref_aip_last_update">aip_last_update</string>
+    <string name="pref_aip_last_update_cz">aip_last_update_cz</string>
+    <string name="pref_aip_last_update_sk">aip_last_update_sk</string>
+    <string name="pref_aip_last_update_hu">aip_last_update_hu</string>
+    <string name="pref_document_page">document_page.</string>
 
     <string name="folder_root">/EasyFlightBag</string>
     <string name="folder_chklist">/Checklists</string>
     <string name="folder_chklist_demo">/Tutorial</string>
     <string name="folder_aip">/AIP</string>
     <string name="folder_cz">/cz</string>
+    <string name="folder_sk">/sk</string>
+    <string name="folder_hu">/hu</string>
     <string name="file_aip_data">/data.txt</string>
 
     <string name="file_chk_plane">Switch Add and Delete airplane type.txt</string>
@@ -123,14 +129,17 @@
     <string name="calc_unit_text_density">Density</string>
     <string name="calc_unit_text_fuel">Fuel/Oil</string>
 
+    <string name="aip_day_ago">day{s) ago</string>
+    <string name="aip_downloading">Downloading...</string>
+    <string name="aip_waiting">Waiting</string>
+
     <string name="set_theme">Night mode</string>
     <string name="set_aip">AIP data</string>
-    <string name="set_intent_aip_download">intent_aip_download</string>
-    <string name="set_intent_aip_status">intent_aip_status</string>
-    <string name="set_intent_aip_count">intent_aip_count</string>
-    <string name="set_aip_downloader_start">AIP data downloading started</string>
-    <string name="set_aip_downloader_error">AIP data downloading failed</string>
-    <string name="set_aip_downloader_finished">AIP data downloaded</string>
+
+    <string name="service_aip_download">intent_aip_download</string>
+    <string name="intent_aip_status">intent_aip_status</string>
+    <string name="intent_aip_count">intent_aip_count</string>
+    <string name="intent_aip_country">intent_aip_country</string>
     
     <string name="url_cz_ais">http://lis.rlp.cz/ais_data/aip/control/aip_obsah_en.htm</string>
     <string name="url_cz_ais_data">http://lis.rlp.cz/ais_data</string>
