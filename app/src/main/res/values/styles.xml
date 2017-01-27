@@ -118,4 +118,14 @@
         <item name="android:paddingBottom">@dimen/tab_padding</item>
         <item name="android:minWidth">@dimen/tab_min_w</item>
     </style>
+
+    <style name="Settings_country_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/row_padding</item>
+        <item name="android:layout_marginEnd">@dimen/row_padding</item>
+        <item name="android:elevation">@dimen/elevation_8</item>
+        <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:background">?attr/backgroundColor</item>
+    </style>
 </resources>

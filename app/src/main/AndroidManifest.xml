@@ -52,7 +52,7 @@
         </service>
 
         <service
-            android:name=".services.AIPDownloader.AIPDownloader"
+            android:name=".services.AIPDownloader.AIPcz"
             android:exported="false">
         </service>
 

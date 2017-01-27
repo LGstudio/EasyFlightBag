@@ -34,13 +34,11 @@ import sk.lgstudio.easyflightbag.menu.TabMenu;
 public class MainActivity extends AppCompatActivity {
 
     public final static int MENU_NAV = 0;
-    public final static int MENU_AIP = 1;
-    public final static int MENU_WEATH = 2;
+    public final static int MENU_CAL = 1;
+    public final static int MENU_AIP = 2;
     public final static int MENU_CHKL = 3;
     public final static int MENU_DOCS = 4;
-    public final static int MENU_PLAN = 5;
-    public final static int MENU_CAL = 6;
-    public final static int MENU_SET = 7;
+    public final static int MENU_SET = 5;
 
 
     private FragmentHome fHome = new FragmentHome();
@@ -261,6 +259,11 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public void aipDataChange(int c){
+        if (menu.selected == MENU_SET){
+            fSet.reloadAipData(c);
+        }
+    }
 
 
     @Override

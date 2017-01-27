@@ -42,6 +42,10 @@
         Save or discract changes\n
         The trashcan icon allows you to delete the list</string>
 
+    <string name="country_cz">Czech Republic</string>
+    <string name="country_sk">Slovakia</string>
+    <string name="country_hu">Hungary</string>
+
     <string name="chk_menu">Checklists</string>
     <string name="chk_no_airplane"></string>
     <string name="chk_add_airplane">Add new airplane</string>
@@ -132,6 +136,8 @@
     <string name="aip_day_ago">day{s) ago</string>
     <string name="aip_downloading">Downloading...</string>
     <string name="aip_waiting">Waiting</string>
+    <string name="aip_error_download">Error downloading AIP</string>
+    <string name="aip_done_download">Finished downloading AIP</string>
 
     <string name="set_theme">Night mode</string>
     <string name="set_aip">AIP data</string>

@@ -29,21 +29,21 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/set_aip_text"
+        android:text="@string/set_aip"
+        android:textColor="?attr/primaryTextColor"
+        style="@style/Settings_country_layout"
+        android:textStyle="bold"
+        />
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/backgroundColor"
-        android:layout_marginBottom="@dimen/row_padding"
-        android:layout_marginStart="@dimen/row_padding"
-        android:layout_marginEnd="@dimen/row_padding"
-        android:padding="@dimen/row_padding"
-        android:elevation="@dimen/elevation_8">
+        style="@style/Settings_country_layout">
 
         <TextView
-            android:id="@+id/set_aip_refresh_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/set_aip"
+            android:text="@string/country_cz"
             android:layout_centerVertical="true"
             android:textColor="?attr/primaryTextColor"/>
 
@@ -53,9 +53,77 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:id="@+id/set_aip_refresh"/>
+            android:id="@+id/set_aip_refresh_cz"/>
+
+        <TextView
+            android:id="@+id/set_aip_text_cz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/row_padding"
+            android:layout_toStartOf="@+id/set_aip_refresh_cz"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
 
     </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/Settings_country_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/country_hu"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <ImageButton
+            android:src="@drawable/ic_refresh"
+            android:background="@drawable/bck_transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/set_aip_refresh_hu"/>
+
+        <TextView
+            android:id="@+id/set_aip_text_hu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/row_padding"
+            android:layout_toStartOf="@+id/set_aip_refresh_hu"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/Settings_country_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/country_sk"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <ImageButton
+            android:src="@drawable/ic_refresh"
+            android:background="@drawable/bck_transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/set_aip_refresh_sk"/>
+
+        <TextView
+            android:id="@+id/set_aip_text_sk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/row_padding"
+            android:layout_toStartOf="@+id/set_aip_refresh_sk"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+    </RelativeLayout>
+
 
 
 </LinearLayout>

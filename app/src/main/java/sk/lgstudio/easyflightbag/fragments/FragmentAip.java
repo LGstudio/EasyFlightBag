@@ -163,9 +163,6 @@ public class FragmentAip extends Fragment {
     private void handleOnItemClick(int lvl, int pos){
         FileStructure struct = getOpenedLevel(lvl+1).get(pos);
         if (struct.files == null){
-            String url  = folder.getPath() + "/" + struct.url;
-            //Log.e("URL", url);
-
             PdfViewer viewer = new PdfViewer(getContext(), R.style.FullScreenDialog);
             viewer.setContentView(R.layout.pdf_viewer);
             viewer.loadContent(struct.title, folder.getPath(), struct.url);

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
@@ -26,11 +29,22 @@ import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPcz;
  */
 public class FragmentSettings extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
+    private final static int aip_txt_id[] = {
+            R.id.set_aip_text_cz,
+            R.id.set_aip_text_hu,
+            R.id.set_aip_text_sk
+    };
 
+    private final static int aip_btn_id[] = {
+            R.id.set_aip_refresh_cz,
+            R.id.set_aip_refresh_hu,
+            R.id.set_aip_refresh_sk
+    };
+
+    private ArrayList<TextView> aip_txt;
+    private ArrayList<ImageButton> aip_btn;
 
     private Switch nightSwith;
-    private TextView aipText;
-    private ImageButton aipRefresh;
 
     public MainActivity activity;
 
@@ -42,18 +56,28 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         nightSwith.setChecked(activity.nightMode);
         nightSwith.setOnCheckedChangeListener(this);
 
-        aipText = (TextView) view.findViewById(R.id.set_aip_refresh_text);
-        aipRefresh = (ImageButton) view.findViewById(R.id.set_aip_refresh);
-        aipRefresh.setOnClickListener(this);
+        aip_txt = new ArrayList<>();
+        aip_btn = new ArrayList<>();
+
+        for( int i : aip_txt_id)
+            aip_txt.add((TextView) view.findViewById(i));
+
+        for( int i : aip_btn_id){
+            ImageButton btn= (ImageButton) view.findViewById(i);
+            btn.setOnClickListener(this);
+            aip_btn.add(btn);
+        }
 
         return view;
     }
 
     @Override
-    public void onAttach(Context activity){
-        super.onAttach(activity);
+    public void onPause(){
+        super.onPause();
 
-        // TODO update AIP status
+        for (int i = 0; i < aip_txt.size(); i++){
+            aip_txt.get(i).setText(activity.aipManager.getStatus(i));
+        }
 
     }
 
@@ -74,11 +98,17 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.set_aip_refresh:
+        int vId = view.getId();
 
-                break;
+        for (int i = 0; i < aip_btn_id.length; i++){
+            if (aip_btn_id[i] == vId){
+                activity.aipManager.getUpdate(i);
+            }
         }
+    }
+
+    public void reloadAipData(int c){
+        aip_txt.get(c).setText(activity.aipManager.getStatus(c));
     }
 
 
