@@ -12,6 +12,7 @@
 
     <string name="pref_chk_folder">chk_folder</string>
     <string name="pref_theme">app_theme</string>
+    <string name="pref_aip_last_update_at">aip_last_update_at</string>
     <string name="pref_aip_last_update_cz">aip_last_update_cz</string>
     <string name="pref_aip_last_update_sk">aip_last_update_sk</string>
     <string name="pref_aip_last_update_hu">aip_last_update_hu</string>
@@ -21,6 +22,7 @@
     <string name="folder_chklist">/Checklists</string>
     <string name="folder_chklist_demo">/Tutorial</string>
     <string name="folder_aip">/AIP</string>
+    <string name="folder_at">/at</string>
     <string name="folder_cz">/cz</string>
     <string name="folder_sk">/sk</string>
     <string name="folder_hu">/hu</string>
@@ -42,6 +44,7 @@
         Save or discract changes\n
         The trashcan icon allows you to delete the list</string>
 
+    <string name="country_at">Austria</string>
     <string name="country_cz">Czech Republic</string>
     <string name="country_sk">Slovakia</string>
     <string name="country_hu">Hungary</string>
@@ -133,8 +136,8 @@
     <string name="calc_unit_text_density">Density</string>
     <string name="calc_unit_text_fuel">Fuel/Oil</string>
 
-    <string name="aip_day_ago">day{s) ago</string>
-    <string name="aip_downloading">Downloading...</string>
+    <string name="aip_day_ago">day(s) ago</string>
+    <string name="aip_downloading">Downloading…</string>
     <string name="aip_waiting">Waiting</string>
     <string name="aip_error_download">Error downloading AIP</string>
     <string name="aip_done_download">Finished downloading AIP</string>
@@ -149,5 +152,6 @@
     
     <string name="url_cz_ais">http://lis.rlp.cz/ais_data/aip/control/aip_obsah_en.htm</string>
     <string name="url_cz_ais_data">http://lis.rlp.cz/ais_data</string>
+    <string name="url_at_aip">https://eaip.austrocontrol.at/</string>
 
 </resources>

@@ -43,6 +43,35 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/country_at"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <ImageButton
+            android:src="@drawable/ic_refresh"
+            android:background="@drawable/bck_transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/set_aip_refresh_at"/>
+
+        <TextView
+            android:id="@+id/set_aip_text_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/row_padding"
+            android:layout_toStartOf="@+id/set_aip_refresh_at"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/Settings_country_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/country_cz"
             android:layout_centerVertical="true"
             android:textColor="?attr/primaryTextColor"/>

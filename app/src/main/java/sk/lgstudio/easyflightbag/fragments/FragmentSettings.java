@@ -30,12 +30,14 @@ import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPcz;
 public class FragmentSettings extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private final static int aip_txt_id[] = {
+            R.id.set_aip_text_at,
             R.id.set_aip_text_cz,
             R.id.set_aip_text_hu,
             R.id.set_aip_text_sk
     };
 
     private final static int aip_btn_id[] = {
+            R.id.set_aip_refresh_at,
             R.id.set_aip_refresh_cz,
             R.id.set_aip_refresh_hu,
             R.id.set_aip_refresh_sk
@@ -72,13 +74,12 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
-
+    public void onResume(){
         for (int i = 0; i < aip_txt.size(); i++){
             aip_txt.get(i).setText(activity.aipManager.getStatus(i));
         }
 
+        super.onResume();
     }
 
 

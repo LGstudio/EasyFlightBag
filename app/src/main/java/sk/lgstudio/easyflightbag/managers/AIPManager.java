@@ -16,6 +16,7 @@ import java.util.Date;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader;
+import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPat;
 import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPcz;
 
 /**
@@ -26,9 +27,10 @@ public class AIPManager {
 
     private final static int DAYS_IN_MILLISECONDS = 24*60*60*1000;
 
-    public final static int AIP_CZ = 0;
-    public final static int AIP_HU = 1;
-    public final static int AIP_SK = 2;
+    public final static int AIP_AT = 0;
+    public final static int AIP_CZ = 1;
+    public final static int AIP_HU = 2;
+    public final static int AIP_SK = 3;
 
     private SharedPreferences prefs;
     private MainActivity activity;
@@ -42,6 +44,8 @@ public class AIPManager {
         activity = a;
         prefs = a.prefs;
         waiting = new ArrayList<>();
+
+        //TODO: check if every AIP exists in internal memory && data.txt line count = file count-1
     }
 
     public String getStatus(int country){
@@ -64,7 +68,7 @@ public class AIPManager {
             Long saveTime = prefs.getLong(str, 0);
             if (saveTime > 0) {
                 Long timeDiff = (new Date(System.currentTimeMillis()).getTime()) - saveTime;
-                return String.valueOf(format.format(timeDiff / DAYS_IN_MILLISECONDS));
+                return String.valueOf(format.format(timeDiff / DAYS_IN_MILLISECONDS)) + " " + activity.getString(R.string.aip_day_ago);
             }
         }
         return "";
@@ -83,6 +87,8 @@ public class AIPManager {
 
     private String getPrefId(int country){
         switch (country){
+            case AIP_AT:
+                return activity.getString(R.string.pref_aip_last_update_at);
             case AIP_CZ:
                 return activity.getString(R.string.pref_aip_last_update_cz);
             case AIP_SK:
@@ -118,6 +124,11 @@ public class AIPManager {
 
     private void stopService(){
         switch (started){
+            case AIP_AT:
+                activity.stopService(new Intent(activity, AIPat.class));
+                LocalBroadcastManager.getInstance(activity).unregisterReceiver(this.aipDownloadedReceiver);
+                activity.aipDataChange(started);
+                break;
             case AIP_CZ:
                 activity.stopService(new Intent(activity, AIPcz.class));
                 LocalBroadcastManager.getInstance(activity).unregisterReceiver(this.aipDownloadedReceiver);
@@ -131,6 +142,11 @@ public class AIPManager {
     private void startService(int c){
         started = c;
         switch (started){
+            case AIP_AT:
+                activity.startService(new Intent(activity, AIPat.class));
+                LocalBroadcastManager.getInstance(activity).registerReceiver(this.aipDownloadedReceiver, new IntentFilter(activity.getString(R.string.service_aip_download)));
+                activity.aipDataChange(started);
+                break;
             case AIP_CZ:
                 activity.startService(new Intent(activity, AIPcz.class));
                 LocalBroadcastManager.getInstance(activity).registerReceiver(this.aipDownloadedReceiver, new IntentFilter(activity.getString(R.string.service_aip_download)));
