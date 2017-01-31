@@ -5,7 +5,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import sk.lgstudio.easyflightbag.fragments.FragmentCalc;
 
 /**
  * Created by L on 16/10/06.
@@ -22,8 +25,7 @@ public class Calculator implements View.OnFocusChangeListener, TextWatcher {
     protected EditText actualView;
     protected int actualFocus = NONE;
 
-
-    public Calculator(float[] r, float[] v, int[] l){
+    public Calculator( float[] r, float[] v, int[] l){
         ratios = r;
         values = v;
         layouts = l;

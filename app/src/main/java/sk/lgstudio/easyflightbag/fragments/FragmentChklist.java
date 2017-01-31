@@ -27,7 +27,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
-import sk.lgstudio.easyflightbag.dialogs.ChklistAirplaneDialog;
+import sk.lgstudio.easyflightbag.dialogs.AirplaneDialog;
 import sk.lgstudio.easyflightbag.dialogs.ChklistEditorDialog;
 
 /**
@@ -60,7 +60,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
     private ArrayList<String> tasksNext = new ArrayList<>();
 
     private ChklistEditorDialog dialogListEdit;
-    private ChklistAirplaneDialog dialogAirplane;
+    private AirplaneDialog dialogAirplane;
 
     protected int selectedFile = FILE_NONE;
     protected int actualTask = 0;
@@ -270,10 +270,10 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     private void createAirplaneSelectorDialog(){
 
-        dialogAirplane = new ChklistAirplaneDialog(getContext());
+        dialogAirplane = new AirplaneDialog(getContext());
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogAirplane.setContentView(R.layout.chk_airplane_dialog);
-        dialogAirplane.loadContent(folder);
+        dialogAirplane.loadContent(folder, false);
         dialogAirplane.setOnCancelListener(this);
         dialogAirplane.show();
     }
@@ -284,8 +284,8 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     @Override
     public void onCancel(DialogInterface dialog) {
-        if (dialogAirplane.selectedFolder != null){
-            folderActual = new File(folder.getPath() + "/" + dialogAirplane.selectedFolder);
+        if (dialogAirplane.selected != null){
+            folderActual = dialogAirplane.selected;
         }
         reloadFiles();
     }

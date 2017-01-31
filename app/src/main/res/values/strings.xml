@@ -17,8 +17,10 @@
     <string name="pref_aip_last_update_sk">aip_last_update_sk</string>
     <string name="pref_aip_last_update_hu">aip_last_update_hu</string>
     <string name="pref_document_page">document_page.</string>
+    <string name="pref_wb_selected">wb_file</string>
 
     <string name="folder_root">/EasyFlightBag</string>
+    <string name="folder_airplanes">/Airplanes</string>
     <string name="folder_chklist">/Checklists</string>
     <string name="folder_chklist_demo">/Tutorial</string>
     <string name="folder_aip">/AIP</string>
@@ -69,6 +71,9 @@
     <string name="btn_hide">Hide</string>
     <string name="btn_new">New</string>
     <string name="btn_add">Add</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_orient">Orientation</string>
+    <string name="btn_airplane">Airplanes</string>
 
     <string name="list_name">Checklist title</string>
     <string name="list_name_mandatory">Please enter checklist title here.</string>

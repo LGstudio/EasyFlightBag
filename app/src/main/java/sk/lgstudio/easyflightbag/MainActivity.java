@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FragmentHome fHome = new FragmentHome();
+    private FragmentCalc fCalc = new FragmentCalc();
     private FragmentChklist fChk = new FragmentChklist();
     private FragmentSettings fSet  = new FragmentSettings();
     private FragmentAip fAip = new FragmentAip();
@@ -180,6 +181,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        fCalc.folder = new File(rootDir.getPath() + getString(R.string.folder_airplanes));
+        if (!fCalc.folder.exists())
+            fCalc.folder.mkdir();
+
         File aipFolder = new File(rootDir.getPath() + getString(R.string.folder_aip));
         if (!aipFolder.exists())
             aipFolder.mkdir();
@@ -200,7 +205,8 @@ public class MainActivity extends AppCompatActivity {
 
         fHome.track = track;
         fA.addFragment(fHome);
-        fA.addFragment(new FragmentCalc());
+        fCalc.activity = this;
+        fA.addFragment(fCalc);
         fA.addFragment(fAip);
         fA.addFragment(fChk);
         fA.addFragment(new FragmentDocs());

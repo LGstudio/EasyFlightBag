@@ -22,10 +22,22 @@
             android:padding="@dimen/row_padding"
             android:background="@drawable/bck_transparent"/>
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_landscape"
+            android:contentDescription="@string/btn_orient"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/pdf_orientation"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/row_padding"
+            android:background="@drawable/bck_transparent"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toEndOf="@id/pdf_back"
+            android:layout_toStartOf="@+id/pdf_orientation"
             android:text="Title goes here"
             android:textSize="@dimen/row_big_text"
             android:gravity="center_vertical"

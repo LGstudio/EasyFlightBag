@@ -3,4 +3,48 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:background="?attr/primaryColor"
+        android:elevation="@dimen/elevation_12">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plane"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/wb_plane"
+            android:contentDescription="@string/btn_airplane"
+            android:padding="@dimen/row_padding"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bck_transparent"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/bck_transparent"
+            android:src="@drawable/ic_edit"
+            android:id="@+id/wb_edit"
+            android:contentDescription="@string/btn_edit"
+            android:layout_gravity="end"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/row_padding"/>
+
+        <TextView
+            android:id="@+id/wb_airplane_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/row_padding"
+            android:textColor="?attr/highlightColor"
+            android:maxLines="1"
+            android:text="Airplane Name Goes Here"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/wb_plane"
+            android:layout_toStartOf="@id/wb_edit"/>
+
+    </RelativeLayout>
+
 </LinearLayout>

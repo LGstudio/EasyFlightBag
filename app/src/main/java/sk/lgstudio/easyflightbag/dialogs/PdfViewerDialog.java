@@ -18,22 +18,24 @@ import sk.lgstudio.easyflightbag.R;
  * Created by LGstudio on 2017-01-25.
  */
 
-public class PdfViewer extends Dialog implements View.OnClickListener, OnPageChangeListener {
+public class PdfViewerDialog extends Dialog implements View.OnClickListener, OnPageChangeListener {
 
     private ImageButton btnBack;
+    private ImageButton btnOrientation;
     private TextView titleText;
     private PDFView pdfView;
     private SharedPreferences prefs;
 
     private String file;
 
-    public PdfViewer(Context context, int themeStyle) {
+    public PdfViewerDialog(Context context, int themeStyle) {
         super(context, themeStyle);
     }
 
     public void loadContent(String title, String location, String filename){
 
         btnBack = (ImageButton) findViewById(R.id.pdf_back);
+        btnOrientation = (ImageButton) findViewById(R.id.pdf_orientation);
         titleText = (TextView) findViewById(R.id.pdf_title);
         pdfView = (PDFView) findViewById(R.id.pdf_view);
 
@@ -41,6 +43,7 @@ public class PdfViewer extends Dialog implements View.OnClickListener, OnPageCha
         int page = getPage();
 
         btnBack.setOnClickListener(this);
+        btnOrientation.setOnClickListener(this);
         titleText.setText(title);
         pdfView.fromFile(new File(location + "/" + file))
                 .defaultPage(page)

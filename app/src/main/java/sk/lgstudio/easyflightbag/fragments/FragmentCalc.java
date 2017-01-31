@@ -8,14 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.calculations.CalculatorData;
 import sk.lgstudio.easyflightbag.calculations.CalculatorFuelOil;
 import sk.lgstudio.easyflightbag.calculations.CalculatorTemperature;
 import sk.lgstudio.easyflightbag.calculations.Calculator;
 import sk.lgstudio.easyflightbag.calculations.CalculatorTime;
+import sk.lgstudio.easyflightbag.calculations.CalculatorWB;
 
 /**
  *
@@ -27,7 +30,6 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
             R.layout.calc_time,
             R.layout.calc_f_fuel,
             R.layout.calc_wind,
-            R.layout.calc_coord,
             R.layout.calc_fuel,
             R.layout.calc_distance,
             R.layout.calc_speed,
@@ -42,7 +44,6 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
             R.id.calc_func_time,
             R.id.calc_func_fuel,
             R.id.calc_func_wind,
-            R.id.calc_func_coord,
             R.id.calc_conv_fuel,
             R.id.calc_conv_dist,
             R.id.calc_conv_speed,
@@ -53,9 +54,8 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     };
 
     private final Calculator[] calcFunctions = {
-            new Calculator(null, null, null),
+            new CalculatorWB(this, null, null, null),
             new CalculatorTime(null, CalculatorData.timeValues, CalculatorData.timeLayout),
-            new Calculator(null, null, null),
             new Calculator(null, null, null),
             new Calculator(null, null, null),
             new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout),
@@ -73,6 +73,9 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     private int openedViewId = idMenu[0];
     private int openedView = 0;
     private ScrollView frame;
+
+    public File folder;
+    public MainActivity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

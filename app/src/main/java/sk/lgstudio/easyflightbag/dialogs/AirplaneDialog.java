@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
@@ -21,10 +22,11 @@ import sk.lgstudio.easyflightbag.R;
  * Created by L on 16/10/05.
  */
 
-public class ChklistAirplaneDialog extends Dialog implements View.OnClickListener {
+public class AirplaneDialog extends Dialog implements View.OnClickListener {
 
     private File root;
-    public String selectedFolder = null;
+    private boolean files = false;
+    public File selected = null;
 
     private EditText newPlane;
     private Spinner planeSpinner;
@@ -32,14 +34,15 @@ public class ChklistAirplaneDialog extends Dialog implements View.OnClickListene
     private ImageButton deletePlane;
     private ImageButton done;
 
-    private ArrayList<String> folders;
+    private ArrayList<String> content;
 
-    public ChklistAirplaneDialog(Context context) {
+    public AirplaneDialog(Context context) {
         super(context);
     }
 
-    public void loadContent(File f){
+    public void loadContent(File f, boolean areFiles){
         root = f;
+        files = areFiles;
 
         newPlane = (EditText) findViewById(R.id.chk_airplane_new);
         addPlane = (ImageButton) findViewById(R.id.chk_airplane_add);
@@ -56,11 +59,17 @@ public class ChklistAirplaneDialog extends Dialog implements View.OnClickListene
 
     private void fillSpinner(){
 
-        folders = new ArrayList<>();
+        content = new ArrayList<>();
+
 
         for (File inFile : root.listFiles()) {
-            if (inFile.isDirectory()) {
-                folders.add(inFile.getName());
+            if (inFile.isDirectory() && ! files) {
+                content.add(inFile.getName());
+            }
+            else if (files){
+                String str = inFile.getName();
+                int extPos = str.lastIndexOf(".");
+                content.add(str.substring(0, extPos));
             }
         }
 
@@ -71,16 +80,52 @@ public class ChklistAirplaneDialog extends Dialog implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.chk_airplane_add:
-                addNewPlaneFolder();
+                if (files)
+                    addNewJsonFile();
+                else
+                    addNewPlaneFolder();
                 break;
             case R.id.chk_airplane_delete:
-                deletePlaneFolder();
+                if (files)
+                    deleteJsonFile();
+                else
+                    deletePlaneFolder();
                 break;
             case R.id.chk_airplane_done:
-                if (folders.size() > 0)
-                    selectedFolder = folders.get(planeSpinner.getSelectedItemPosition());
+                saveSelection();
                 cancel();
                 break;
+        }
+    }
+
+    private void saveSelection(){
+        if (content.size() > 0){
+            String name =  root + "/" + content.get(planeSpinner.getSelectedItemPosition());
+            if (files)
+                name = name + ".json";
+            selected = new File(name);
+        }
+        else selected = null;
+    }
+
+    private void addNewJsonFile(){
+        if (newPlane.getText() != null){
+            File newFile = new File(root + "/" + newPlane.getText().toString() + ".json");
+            try {
+                newFile.createNewFile();
+                selected = newFile;
+                cancel();
+            } catch (IOException e) {
+                Toast.makeText(getContext(), getContext().getString(R.string.chk_plane_exists_toast), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void deleteJsonFile(){
+        if (content.size() > 0){
+            File del = new File(root.getPath() + "/" + content.get(planeSpinner.getSelectedItemPosition()) + ".json");
+            del.delete();
+            fillSpinner();
         }
     }
 
@@ -90,21 +135,19 @@ public class ChklistAirplaneDialog extends Dialog implements View.OnClickListene
             File newDir = new File(root + "/" + newPlane.getText());
             if(!newDir.exists()) {
                 newDir.mkdir();
-                selectedFolder = newPlane.getText().toString();
+                selected = newDir;
                 cancel();
             }
             else{
                 Toast.makeText(getContext(), getContext().getString(R.string.chk_plane_exists_toast), Toast.LENGTH_SHORT).show();
             }
         }
-
-
     }
 
     private void deletePlaneFolder(){
 
-        if (folders.size() > 0){
-            File del = new File(root.getPath() + "/" + folders.get(planeSpinner.getSelectedItemPosition()));
+        if (content.size() > 0){
+            File del = new File(root.getPath() + "/" + content.get(planeSpinner.getSelectedItemPosition()));
             deleteRecursive(del);
             fillSpinner();
         }
@@ -129,12 +172,12 @@ public class ChklistAirplaneDialog extends Dialog implements View.OnClickListene
 
         @Override
         public int getCount() {
-            return folders.size();
+            return content.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return folders.get(position);
+            return content.get(position);
         }
 
         @Override
@@ -148,7 +191,7 @@ public class ChklistAirplaneDialog extends Dialog implements View.OnClickListene
             View spinnerElement = inflater.inflate(R.layout.spinner_text_item, null);
 
             TextView airplane = (TextView) spinnerElement.findViewById(R.id.spinner_text_item);
-            airplane.setText(folders.get(position));
+            airplane.setText(content.get(position));
 
             return spinnerElement;
         }

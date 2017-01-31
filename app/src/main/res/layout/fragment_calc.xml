@@ -69,15 +69,6 @@
                 android:clickable="true"/>
 
             <TextView
-                android:id="@+id/calc_func_coord"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_func_coord"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/row_height"
                 android:background="?attr/backgroundColorHighlight"

@@ -2,11 +2,9 @@ package sk.lgstudio.easyflightbag.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +24,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
-import sk.lgstudio.easyflightbag.dialogs.PdfViewer;
+import sk.lgstudio.easyflightbag.dialogs.PdfViewerDialog;
 
 /**
  *
@@ -163,7 +161,7 @@ public class FragmentAip extends Fragment {
     private void handleOnItemClick(int lvl, int pos){
         FileStructure struct = getOpenedLevel(lvl+1).get(pos);
         if (struct.files == null){
-            PdfViewer viewer = new PdfViewer(getContext(), R.style.FullScreenDialog);
+            PdfViewerDialog viewer = new PdfViewerDialog(getContext(), R.style.FullScreenDialog);
             viewer.setContentView(R.layout.pdf_viewer);
             viewer.loadContent(struct.title, folder.getPath(), struct.url);
             viewer.show();
