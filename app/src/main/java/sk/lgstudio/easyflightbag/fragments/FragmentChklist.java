@@ -27,7 +27,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
-import sk.lgstudio.easyflightbag.dialogs.AirplaneDialog;
+import sk.lgstudio.easyflightbag.dialogs.AirplaneSelectorDialog;
 import sk.lgstudio.easyflightbag.dialogs.ChklistEditorDialog;
 
 /**
@@ -60,7 +60,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
     private ArrayList<String> tasksNext = new ArrayList<>();
 
     private ChklistEditorDialog dialogListEdit;
-    private AirplaneDialog dialogAirplane;
+    private AirplaneSelectorDialog dialogAirplane;
 
     protected int selectedFile = FILE_NONE;
     protected int actualTask = 0;
@@ -270,9 +270,9 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     private void createAirplaneSelectorDialog(){
 
-        dialogAirplane = new AirplaneDialog(getContext());
+        dialogAirplane = new AirplaneSelectorDialog(getContext());
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogAirplane.setContentView(R.layout.chk_airplane_dialog);
+        dialogAirplane.setContentView(R.layout.dialog_airplane_selector);
         dialogAirplane.loadContent(folder, false);
         dialogAirplane.setOnCancelListener(this);
         dialogAirplane.show();
@@ -305,7 +305,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
         }
 
         dialogListEdit = new ChklistEditorDialog(getContext(), R.style.FullScreenDialog);
-        dialogListEdit.setContentView(R.layout.chk_editor_dialog);
+        dialogListEdit.setContentView(R.layout.dialog_chk_editor);
         dialogListEdit.loadContent(folderActual, isNew, title, tasks);
         dialogListEdit.setOnDismissListener(this);
         dialogListEdit.show();

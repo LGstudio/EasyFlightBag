@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         if (!aipFolder.exists())
             aipFolder.mkdir();
 
-        //TODO: move to AIP downloader to handle this
+        //TODO: move to AIP to handle this
         fAip.folder = new File(aipFolder.getPath() + getString(R.string.folder_cz));
         if (!fAip.folder.exists())
             fAip.folder.mkdir();

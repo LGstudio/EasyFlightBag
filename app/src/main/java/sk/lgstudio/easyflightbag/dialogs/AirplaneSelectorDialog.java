@@ -22,7 +22,7 @@ import sk.lgstudio.easyflightbag.R;
  * Created by L on 16/10/05.
  */
 
-public class AirplaneDialog extends Dialog implements View.OnClickListener {
+public class AirplaneSelectorDialog extends Dialog implements View.OnClickListener {
 
     private File root;
     private boolean files = false;
@@ -36,7 +36,7 @@ public class AirplaneDialog extends Dialog implements View.OnClickListener {
 
     private ArrayList<String> content;
 
-    public AirplaneDialog(Context context) {
+    public AirplaneSelectorDialog(Context context) {
         super(context);
     }
 
