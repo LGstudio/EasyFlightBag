@@ -26,6 +26,11 @@
             />
 
         <EditText
+            android:id="@+id/calc_unit_text_mm"
+            style="@style/Calculator_edit_text_field"
+            />
+
+        <EditText
             android:id="@+id/calc_unit_text_ft"
             style="@style/Calculator_edit_text_field"
             />
@@ -61,6 +66,11 @@
         <TextView
             style="@style/Calculator_text_unit"
             android:text="@string/calc_unit_m"
+            />
+
+        <TextView
+            style="@style/Calculator_text_unit"
+            android:text="@string/calc_unit_mm"
             />
 
         <TextView

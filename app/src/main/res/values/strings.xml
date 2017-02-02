@@ -94,11 +94,13 @@
     <string name="calc_conv">Conversions</string>
     <string name="calc_conv_dist">Distance</string>
     <string name="calc_conv_speed">Speed</string>
+    <string name="calc_conv_v_speed">Vertical speed</string>
     <string name="calc_conv_mass">Mass</string>
     <string name="calc_conv_vol">Volume</string>
     <string name="calc_conv_press">Pressure</string>
     <string name="calc_conv_temp">Temperature</string>
     <string name="calc_conv_fuel">Fuel</string>
+    <string name="calc_conv_moment">Moment (W&amp;B)</string>
     <string name="calc_func">Functions</string>
     <string name="calc_func_coord">Kz/Km/Kk</string>
     <string name="calc_func_time">Time/Speed/Distance</string>
@@ -107,8 +109,17 @@
     <string name="calc_func_wind">Wind</string>
     <string name="calc_bal">Weight/Balance</string>
     <string name="calc_func_time_">Time</string>
+    <string name="calc_units">Units</string>
+    <string name="calc_performances">Performances</string>
+    <string name="calc_cruise_sp">Cruise speed</string>
+    <string name="calc_climb_sp">Climb speed</string>
+    <string name="calc_descent_sp">Descent speed</string>
+    <string name="calc_climb_rt">Climb rate</string>
+    <string name="calc_descent_rt">Descent rate</string>
+    <string name="calc_avg_flow">Average flow</string>
 
     <string name="calc_unit_m">m</string>
+    <string name="calc_unit_mm">mm</string>
     <string name="calc_unit_km">km</string>
     <string name="calc_unit_ft">ft</string>
     <string name="calc_unit_nmi">nm</string>
@@ -116,8 +127,9 @@
     <string name="calc_unit_yd">yd</string>
     <string name="calc_unit_in">in</string>
     <string name="calc_unit_kmh">km/h</string>
-    <string name="calc_unit_kn">kn</string>
+    <string name="calc_unit_kn">knots</string>
     <string name="calc_unit_mph">mph</string>
+    <string name="calc_unit_mps">m/s</string>
     <string name="calc_unit_ftpmin">ft/min</string>
     <string name="calc_unit_kg">Kg</string>
     <string name="calc_unit_t">T</string>
@@ -130,6 +142,8 @@
     <string name="calc_unit_hpa_bma">hPa (mBa)</string>
     <string name="calc_unit_atm">ATM</string>
     <string name="calc_unit_inhg">In. Hg.</string>
+    <string name="calc_unit_kgxm">kg x m</string>
+    <string name="calc_unit_lbxin">lb x in</string>
     <string name="calc_unit_c">C</string>
     <string name="calc_unit_f">F</string>
     <string name="calc_unit_k">k</string>
@@ -137,6 +151,8 @@
     <string name="calc_unit_h">h</string>
     <string name="calc_unit_min">m</string>
     <string name="calc_unit_sec">s</string>
+    <string name="calc_unit_lph">l/hour</string>
+    <string name="calc_unit_gph">gal./hour</string>
 
     <string name="calc_unit_text_density">Density</string>
     <string name="calc_unit_text_fuel">Fuel/Oil</string>

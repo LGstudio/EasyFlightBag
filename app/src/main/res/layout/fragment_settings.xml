@@ -32,9 +32,7 @@
     <TextView
         android:id="@+id/set_aip_text"
         android:text="@string/set_aip"
-        android:textColor="?attr/primaryTextColor"
         style="@style/Settings_country_layout"
-        android:textStyle="bold"
         />
 
     <RelativeLayout

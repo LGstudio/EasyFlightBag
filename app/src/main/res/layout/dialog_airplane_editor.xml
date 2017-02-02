@@ -46,4 +46,250 @@
 
     </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TableLayout
+                style="@style/Airplane_editor_table_layout"
+                android:stretchColumns="2">
+
+                <TableRow style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        android:text="@string/calc_units"/>
+
+                </TableRow>
+
+                <TableRow style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_conv_speed"/>
+
+                    <Button
+                        style="@style/Block_button_style"
+                        android:id="@+id/ap_edit_unit_speed"
+                        android:text="@string/calc_unit_kn"
+                        />
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_conv_v_speed"/>
+
+                    <Button
+                        style="@style/Block_button_style"
+                        android:id="@+id/ap_edit_unit_v_speed"
+                        android:text="@string/calc_unit_ftpmin"/>
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_conv_moment"/>
+
+                    <Button
+                        style="@style/Block_button_style"
+                        android:id="@+id/ap_edit_unit_moment"
+                        android:text="@string/calc_unit_kgxm"/>
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_conv_fuel"/>
+
+                    <Button
+                        style="@style/Block_button_style"
+                        android:id="@+id/ap_edit_unit_fuel"
+                        android:text="@string/calc_unit_l"/>
+
+                </TableRow>
+
+            </TableLayout>
+
+            <TableLayout
+                style="@style/Airplane_editor_table_layout"
+                android:weightSum="3">
+
+                <TableRow style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        android:text="@string/calc_performances"/>
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_cruise_sp"/>
+
+                    <EditText
+                        style="@style/Block_edit_text_number_style"
+                        android:id="@+id/ap_edit_perf_cr_sp"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_unit_kn"
+                        android:id="@+id/ap_edit_perf_cr_sp_txt"
+                        />
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_climb_sp"/>
+
+                    <EditText
+                        style="@style/Block_edit_text_number_style"
+                        android:id="@+id/ap_edit_perf_cl_sp"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_unit_kn"
+                        android:id="@+id/ap_edit_perf_cl_sp_txt"
+                        />
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_descent_sp"/>
+
+                    <EditText
+                        style="@style/Block_edit_text_number_style"
+                        android:id="@+id/ap_edit_perf_de_sp"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_unit_kn"
+                        android:id="@+id/ap_edit_perf_de_sp_txt"
+                        />
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_climb_rt"/>
+
+                    <EditText
+                        style="@style/Block_edit_text_number_style"
+                        android:id="@+id/ap_edit_perf_cl_rt"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_unit_ftpmin"
+                        android:id="@+id/ap_edit_perf_cl_rt_txt"
+                        />
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_descent_rt"/>
+
+                    <EditText
+                        style="@style/Block_edit_text_number_style"
+                        android:id="@+id/ap_edit_perf_de_rt"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_unit_ftpmin"
+                        android:id="@+id/ap_edit_perf_de_rt_txt"
+                        />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <TableLayout
+                style="@style/Airplane_editor_table_layout"
+                android:weightSum="3">
+
+                <TableRow style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        android:text="@string/calc_func_fuel"/>
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_unit_text_density"/>
+
+                    <EditText
+                        style="@style/Block_edit_text_number_style"
+                        android:id="@+id/ap_edit_perf_fuel_dens"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_unit_kg_m3"
+                        android:id="@+id/ap_edit_perf_fuel_dens_txt"
+                        />
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_avg_flow"/>
+
+                    <EditText
+                        style="@style/Block_edit_text_number_style"
+                        android:id="@+id/ap_edit_perf_fuel_flow"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_unit_lph"
+                        android:id="@+id/ap_edit_perf_fuel_flow_txt"
+                        />
+
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
 </LinearLayout>

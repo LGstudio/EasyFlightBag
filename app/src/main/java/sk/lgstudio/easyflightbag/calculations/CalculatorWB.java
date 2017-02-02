@@ -48,7 +48,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
     @Override
     public void initView(View v) {
 
-        String folder = fragment.activity.prefs.getString(fragment.getString(R.string.pref_wb_selected), null);
+        String folder = fragment.prefs.getString(fragment.getString(R.string.pref_wb_selected), null);
         if (folder != null)
             selectedPlane = new File (folder);
 
@@ -109,11 +109,11 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         if (selectorDialogOpened){
             selectedPlane = dialogAirplane.selected;
             if (selectedPlane != null){
-                fragment.activity.prefs.edit().putString(fragment.getString(R.string.pref_wb_selected), selectedPlane.getPath()).apply();
+                fragment.prefs.edit().putString(fragment.getString(R.string.pref_wb_selected), selectedPlane.getPath()).apply();
                 airplaneEditor.setClickable(true);
             }
             else {
-                fragment.activity.prefs.edit().remove(fragment.getString(R.string.pref_wb_selected)).apply();
+                fragment.prefs.edit().remove(fragment.getString(R.string.pref_wb_selected)).apply();
                 airplaneEditor.setClickable(false);
             }
             reloadContent();
@@ -128,7 +128,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
             String name = selectedPlane.getName();
             int suffix = name.lastIndexOf('.');
             airplaneId.setText(name.substring(0, suffix));
-
+            airplaneEditor.setVisibility(View.VISIBLE);
             airplane = loadAirplaneFromJson();
 
             if (airplane != null){
@@ -140,6 +140,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         }
         else {
             airplaneId.setText("");
+            airplaneEditor.setVisibility(View.GONE);
             // TODO: clear/hide other views
         }
     }
@@ -199,11 +200,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
 
             return a;
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
 
@@ -211,34 +208,34 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
     }
 
     public static class Airplane{
-        int unit_speed;
-        int unit_v_speed;
-        int unit_moment;
-        int unit_fuel;
-        int cruise_sp;
-        int climb_sp;
-        int descent_sp;
-        int climb_rate;
-        int desc_rate;
-        int fuel_density;
-        int fuel_flow;
-        int max_takeoff;
-        int max_landing;
-        int empty_weight;
-        int empty_arm;
-        ArrayList<Weights> additional_weight;
-        ArrayList<Limits> limits;
+        public int unit_speed = 0;
+        public int unit_v_speed = 0;
+        public int unit_moment = 0;
+        public int unit_fuel = 0;
+        public int cruise_sp = 0;
+        public int climb_sp = 0;
+        public int descent_sp = 0;
+        public int climb_rate = 0;
+        public int desc_rate = 0;
+        public int fuel_density = 0;
+        public int fuel_flow = 0;
+        public int max_takeoff = 0;
+        public int max_landing = 0;
+        public int empty_weight = 0;
+        public int empty_arm = 0;
+        public ArrayList<Weights> additional_weight = null;
+        public ArrayList<Limits> limits = null;
     }
 
     public static class Weights{
-        String name;
-        int arm;
-        int max_weight;
-        int unus = -1;
+        public String name;
+        public int arm = 0;
+        public int max_weight = 0;
+        public int unus = -1;
     }
 
     public static class Limits{
-        int arm;
-        int weight;
+        public int arm = 0;
+        public int weight = 0;
     }
 }

@@ -128,5 +128,62 @@
         <item name="android:elevation">@dimen/elevation_8</item>
         <item name="android:padding">@dimen/row_padding</item>
         <item name="android:background">?attr/backgroundColor</item>
+        <item name="android:textSize">@dimen/row_big_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">?attr/backgroundColorHighlight</item>
     </style>
+
+    <style name="Airplane_editor_table_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/row_padding</item>
+        <item name="android:layout_marginEnd">@dimen/row_padding</item>
+        <item name="android:layout_marginTop">@dimen/row_padding</item>
+        <item name="android:elevation">@dimen/elevation_8</item>
+        <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:background">?attr/backgroundColor</item>
+    </style>
+
+    <style name="Airplane_editor_table_row_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">@dimen/row_divider</item>
+    </style>
+
+    <style name="Block_title_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/row_big_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">?attr/backgroundColorHighlight</item>
+    </style>
+
+    <style name="Block_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">@dimen/row_padding</item>
+    </style>
+
+    <style name="Block_button_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/backgroundDarkColor</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">@dimen/row_padding</item>
+    </style>
+
+    <style name="Block_edit_text_number_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:inputType">number</item>
+    </style>
+
+
+
 </resources>

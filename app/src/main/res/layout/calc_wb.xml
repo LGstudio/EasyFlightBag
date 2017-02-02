@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height"
-        android:background="?attr/primaryColor"
+        android:background="?attr/dividerColor"
         android:elevation="@dimen/elevation_12">
 
         <ImageButton

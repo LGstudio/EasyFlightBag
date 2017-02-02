@@ -40,6 +40,11 @@
             style="@style/Calculator_edit_text_field"
             />
 
+        <EditText
+            android:id="@+id/calc_unit_text_mps"
+            style="@style/Calculator_edit_text_field"
+            />
+
     </LinearLayout>
 
     <LinearLayout
@@ -66,6 +71,11 @@
         <TextView
             style="@style/Calculator_text_unit"
             android:text="@string/calc_unit_ftpmin"
+            />
+
+        <TextView
+            style="@style/Calculator_text_unit"
+            android:text="@string/calc_unit_mps"
             />
 
     </LinearLayout>

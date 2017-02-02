@@ -75,7 +75,6 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
 
     @Override
     public void onResume(){
-        Log.e("Settings", "Resumed");
         for (int i = 0; i < aip_txt.size(); i++){
             aip_txt.get(i).setText(activity.aipManager.getStatus(i));
         }

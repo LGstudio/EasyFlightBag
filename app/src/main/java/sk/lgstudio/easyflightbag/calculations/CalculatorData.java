@@ -15,6 +15,7 @@ public final class CalculatorData {
 
     public static final float[] dstRatios = {
             1f,                     // Meter to Meter
+            1000.0f,                 // Meter to millimeter
             3.2808410892388f,       // Meter to Feet
             0.000539957f,           // Meter to Nautical Mile
             0.000621371f,           // Meter to Mile
@@ -26,11 +27,12 @@ public final class CalculatorData {
             1f,                     // KiloMeter to Meter
             3280.8410892388f,       // KiloMeter to Feet
             0.539957f,           // KiloMeter to Nautical Mile
-            0.621371f           // KiloMeter to Mile
+            0.621371f,           // KiloMeter to Mile
     };
 
     public static final int[] dstLayout = {
             R.id.calc_unit_text_m,
+            R.id.calc_unit_text_mm,
             R.id.calc_unit_text_ft,
             R.id.calc_unit_text_nm,
             R.id.calc_unit_text_mi,
@@ -38,7 +40,7 @@ public final class CalculatorData {
             R.id.calc_unit_text_in
     };
 
-    public static final float[] dstValues = {0f, 0f, 0f, 0f, 0f, 0f};
+    public static final float[] dstValues = {0f, 0f, 0f, 0f, 0f, 0f, 0f};
 
     /**
      *  ======================================================================
@@ -49,17 +51,19 @@ public final class CalculatorData {
             1f,                     // Km/h to Km/h
             0.539957f,              // Km/h to Knot
             0.621371f,              // Km/h to Mph
-            54.6807f                // Km/h to Ft/min
+            54.6807f,               // Km/h to Ft/min
+            0.277778f,
     };
 
     public static final int[] speLayout = {
             R.id.calc_unit_text_kmh,
             R.id.calc_unit_text_kn,
             R.id.calc_unit_text_mph,
-            R.id.calc_unit_text_ftpmin
+            R.id.calc_unit_text_ftpmin,
+            R.id.calc_unit_text_mps
     };
 
-    public static final float[] speValues = {0f, 0f, 0f, 0f};
+    public static final float[] speValues = {0f, 0f, 0f, 0f, 0f};
 
     /**
      *  ======================================================================

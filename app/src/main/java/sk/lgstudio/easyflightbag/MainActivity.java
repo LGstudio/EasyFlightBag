@@ -1,5 +1,7 @@
 package sk.lgstudio.easyflightbag;
 
+import android.*;
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,11 +9,13 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -31,7 +35,7 @@ import sk.lgstudio.easyflightbag.fragments.FragmentHome;
 import sk.lgstudio.easyflightbag.fragments.FragmentSettings;
 import sk.lgstudio.easyflightbag.menu.TabMenu;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     public final static int MENU_NAV = 0;
     public final static int MENU_CAL = 1;
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentSettings fSet  = new FragmentSettings();
     private FragmentAip fAip = new FragmentAip();
 
-    public TabMenu menu;
+    private TabMenu menu;
 
     private ArrayList<Location> track = new ArrayList<>();
     //private ArrayList<Location> route = new ArrayList<>();
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public AIPManager aipManager;
 
     private boolean isChkTutCreated = false;
+    private boolean inited = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = this.getSharedPreferences(getString(R.string.app_prefs), Context.MODE_PRIVATE);
 
-        // TODO: Permission check for android 6.0 and newer
+        permissionCheck();
+        inited = true;
 
         // checks internal storage for existing files
         checkDirectory();
@@ -80,13 +86,24 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        if (userAllowedLocation()) {
-            this.startGPSService();
-        }
+        startGPSService();
 
         // creates fragments
         initView();
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (!inited)
+            permissionCheck();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        inited = false;
     }
 
     @Override
@@ -111,15 +128,31 @@ public class MainActivity extends AppCompatActivity {
      */
     private void permissionCheck(){
         // Request missing location permission.
-        //ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+            }
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            }
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 0);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+       if (grantResults.length < 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED ){
+           finish();
+       }
     }
 
     /**
      * Loads the saved preferences when application starts
      */
     private void loadSharedPerefs(){
-
-
+        // TODO: MOve to Fragemnt Chklist + extend with autorecovery feature
         // Load last opened Checklist
         if (isChkTutCreated){
             fChk.folderActual = new File(fChk.folder.getPath() + getString(R.string.folder_chklist_demo));
@@ -127,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             String prefChkActual = prefs.getString(getString(R.string.pref_chk_folder), null);
             if (prefChkActual != null) {
-                fChk.folderActual = new File(prefChkActual);
+                fChk.folderActual = new File(fChk.folder.getPath() + prefChkActual);
                 if (!fChk.folderActual.exists()){
                     fChk.folderActual = null;
                 }
@@ -160,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
         fChk.folder = new File(rootDir.getPath() + getString(R.string.folder_chklist));
         if(!fChk.folder.exists()) {
             fChk.folder.mkdir();
+            // TODO: move to Checklist fragment to deal with these stuff
             File chkTutDir = new File(fChk.folder.getPath() + getString(R.string.folder_chklist_demo));
             chkTutDir.mkdir();
             if (chkTutDir.exists()){
@@ -193,8 +227,6 @@ public class MainActivity extends AppCompatActivity {
         fAip.folder = new File(aipFolder.getPath() + getString(R.string.folder_cz));
         if (!fAip.folder.exists())
             fAip.folder.mkdir();
-
-
     }
 
     /**
@@ -205,9 +237,10 @@ public class MainActivity extends AppCompatActivity {
 
         fHome.track = track;
         fA.addFragment(fHome);
-        fCalc.activity = this;
+        fCalc.prefs = prefs;
         fA.addFragment(fCalc);
         fA.addFragment(fAip);
+        fChk.prefs = prefs;
         fA.addFragment(fChk);
         fA.addFragment(new FragmentDocs());
         fSet.activity = this;
@@ -224,23 +257,8 @@ public class MainActivity extends AppCompatActivity {
      * Starts GPS service
      */
     private void startGPSService() {
-        startService(new Intent(this, GPSTrackerService.class));
-        LocalBroadcastManager.getInstance(this).registerReceiver(gpsReceiver, new IntentFilter(this.getString(R.string.gps_intent_filter))
-        );
-    }
-
-    /**
-     * Check if app has permissions for fine location
-     */
-    private boolean userAllowedLocation() {
-
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, getString(R.string.GPS_disabled), Toast.LENGTH_SHORT);
-            return false;
-        } else {
-            // Location permission has been granted, continue as usual.
-            return true;
-        }
+        //startService(new Intent(this, GPSTrackerService.class));
+        //LocalBroadcastManager.getInstance(this).registerReceiver(gpsReceiver, new IntentFilter(this.getString(R.string.gps_intent_filter)));
     }
 
     /**

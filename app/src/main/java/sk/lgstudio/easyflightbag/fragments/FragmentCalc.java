@@ -1,5 +1,6 @@
 package sk.lgstudio.easyflightbag.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -75,7 +76,7 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     private ScrollView frame;
 
     public File folder;
-    public MainActivity activity;
+    public SharedPreferences prefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

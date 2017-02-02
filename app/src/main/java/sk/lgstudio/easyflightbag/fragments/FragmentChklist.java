@@ -3,6 +3,7 @@ package sk.lgstudio.easyflightbag.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.dialogs.AirplaneSelectorDialog;
 import sk.lgstudio.easyflightbag.dialogs.ChklistEditorDialog;
@@ -67,7 +69,8 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
 
     public File folderActual;
     public File folder;
-    private LayoutInflater layoutInflater;
+
+    public SharedPreferences prefs;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -97,7 +100,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        layoutInflater = inflater;
+        LayoutInflater layoutInflater = inflater;
         View view = layoutInflater.inflate(R.layout.fragment_chklist, container, false);
 
         // ---------------------------------------------------------------------------------------------
@@ -217,8 +220,6 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
                         tasks.add(line);
                         line = reader.readLine();
                     }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -287,6 +288,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
         if (dialogAirplane.selected != null){
             folderActual = dialogAirplane.selected;
         }
+        dialogAirplane = null;
         reloadFiles();
     }
 
@@ -330,6 +332,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
             case ChklistEditorDialog.BACK:
                 break;
         }
+        dialogListEdit = null;
     }
 
     /**
