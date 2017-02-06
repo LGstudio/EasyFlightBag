@@ -3,6 +3,7 @@ package sk.lgstudio.easyflightbag.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
@@ -54,20 +56,7 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
             R.id.calc_conv_temp
     };
 
-    private final Calculator[] calcFunctions = {
-            new CalculatorWB(this, null, null, null),
-            new CalculatorTime(null, CalculatorData.timeValues, CalculatorData.timeLayout),
-            new Calculator(null, null, null),
-            new Calculator(null, null, null),
-            new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout),
-            new Calculator(CalculatorData.dstRatios, CalculatorData.dstValues, CalculatorData.dstLayout),
-            new Calculator(CalculatorData.speRatios, CalculatorData.speValues, CalculatorData.speLayout),
-            new Calculator(CalculatorData.masRatios, CalculatorData.masValues, CalculatorData.masLayout),
-            new Calculator(CalculatorData.volRatios, CalculatorData.volValues, CalculatorData.volLayout),
-            new Calculator(CalculatorData.preRatios, CalculatorData.preValues, CalculatorData.preLayout),
-            new CalculatorTemperature(null, CalculatorData.temValues, CalculatorData.temLayout)
-    };
-
+    private ArrayList<Calculator> calcFunctions = null;
     private ArrayList<TextView> menu = new ArrayList<>();
     private ArrayList<View> calcView =  new ArrayList<>();
 
@@ -81,6 +70,9 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calc, container, false);
+
+        if (calcFunctions == null)
+            initCalculators();
 
         menu.clear();
         calcView.clear();
@@ -102,6 +94,7 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
         return view;
     }
 
+
     @Override
     public void onDestroyView(){
         frame.removeAllViewsInLayout();
@@ -117,9 +110,25 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
 
     }
 
+    private void initCalculators(){
+        calcFunctions = new ArrayList<>();
+
+        calcFunctions.add(new CalculatorWB(prefs, getActivity(), folder, null, null, null));
+        calcFunctions.add(new CalculatorTime(null, CalculatorData.timeValues, CalculatorData.timeLayout));
+        calcFunctions.add(new Calculator(null, null, null));
+        calcFunctions.add(new Calculator(null, null, null));
+        calcFunctions.add(new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout));
+        calcFunctions.add(new Calculator(CalculatorData.dstRatios, CalculatorData.dstValues, CalculatorData.dstLayout));
+        calcFunctions.add(new Calculator(CalculatorData.speRatios, CalculatorData.speValues, CalculatorData.speLayout));
+        calcFunctions.add(new Calculator(CalculatorData.masRatios, CalculatorData.masValues, CalculatorData.masLayout));
+        calcFunctions.add(new Calculator(CalculatorData.volRatios, CalculatorData.volValues, CalculatorData.volLayout));
+        calcFunctions.add(new Calculator(CalculatorData.preRatios, CalculatorData.preValues, CalculatorData.preLayout));
+        calcFunctions.add(new CalculatorTemperature(null, CalculatorData.temValues, CalculatorData.temLayout));
+    }
+
     private void addCalcView(int id){
-        if (calcFunctions.length > openedView){
-            calcFunctions[openedView].detachView();
+        if (calcFunctions.size() > openedView){
+            calcFunctions.get(openedView).detachView();
         }
         frame.removeAllViewsInLayout();
 
@@ -127,10 +136,8 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
             if (idMenu[i] == id) {
                 openedView = i;
                 View v = calcView.get(i);
-                if (calcFunctions.length > i){// TODO: remove condition when all convertors done
-                    calcFunctions[i].initView(v);
-                }
                 frame.addView(v);
+                calcFunctions.get(i).initView(v);
                 menu.get(i).setBackgroundResource(R.drawable.bck_item_selected);
             }
             else if (idMenu[i] == openedViewId){

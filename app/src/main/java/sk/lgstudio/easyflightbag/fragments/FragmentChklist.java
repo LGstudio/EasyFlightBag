@@ -69,7 +69,6 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
 
     public File folderActual;
     public File folder;
-
     public SharedPreferences prefs;
 
     @Override

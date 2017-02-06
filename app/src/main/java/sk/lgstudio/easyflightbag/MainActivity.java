@@ -257,8 +257,8 @@ public class MainActivity extends FragmentActivity {
      * Starts GPS service
      */
     private void startGPSService() {
-        //startService(new Intent(this, GPSTrackerService.class));
-        //LocalBroadcastManager.getInstance(this).registerReceiver(gpsReceiver, new IntentFilter(this.getString(R.string.gps_intent_filter)));
+        startService(new Intent(this, GPSTrackerService.class));
+        LocalBroadcastManager.getInstance(this).registerReceiver(gpsReceiver, new IntentFilter(this.getString(R.string.gps_intent_filter)));
     }
 
     /**

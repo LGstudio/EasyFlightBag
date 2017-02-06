@@ -113,14 +113,14 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
                 reloadFuelViews();
             }
 
-            edtCruiseSp.setText(airplane.cruise_sp);
-            edtClimbSp.setText(airplane.climb_sp);
-            edtDescSp.setText(airplane.descent_sp);
-            edtClimbRt.setText(airplane.climb_rate);
-            edtDescRt.setText(airplane.desc_rate);
+            edtCruiseSp.setText(String.valueOf(airplane.cruise_sp));
+            edtClimbSp.setText(String.valueOf(airplane.climb_sp));
+            edtDescSp.setText(String.valueOf(airplane.descent_sp));
+            edtClimbRt.setText(String.valueOf(airplane.climb_rate));
+            edtDescRt.setText(String.valueOf(airplane.desc_rate));
 
-            edtFuelDens.setText(airplane.fuel_density);
-            edtFuelFlow.setText(airplane.fuel_flow);
+            edtFuelDens.setText(String.valueOf(airplane.fuel_density));
+            edtFuelFlow.setText(String.valueOf(airplane.fuel_flow));
         }
     }
 
@@ -195,6 +195,7 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
             id2 = R.string.calc_unit_lph;
         }
         btnUnitFuel.setText(id);
+
         txtFuelFlow.setText(id2);
 
 
