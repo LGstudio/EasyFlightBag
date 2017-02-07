@@ -98,7 +98,7 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         tableLimitsAdd.setOnClickListener(this);
 
         // load content from object
-        if (airplane != null){
+        if (airplane.loaded){
 
             edtCruiseSp.setText(String.valueOf(airplane.cruise_sp));
             edtClimbSp.setText(String.valueOf(airplane.climb_sp));
