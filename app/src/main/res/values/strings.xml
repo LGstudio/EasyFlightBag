@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">EasyFlightBag</string>
-    <string name="app_prefs">sk.lgstudio.efb</string>
-    <string name="gmap_api_key">AIzaSyCxUOrnnZ3KJ5uoTiqBRox_iy0Ifzkjobc</string>
+    <string name="app_name" translatable="false">EasyFlightBag</string>
+    <string name="app_prefs" translatable="false">sk.lgstudio.efb</string>
+    <string name="gmap_api_key" translatable="false">AIzaSyCxUOrnnZ3KJ5uoTiqBRox_iy0Ifzkjobc</string>
 
     <string name="tab_home">Home</string>
     <string name="tab_aip">AIP</string>
@@ -10,25 +10,25 @@
     <string name="tab_functions">Calculations</string>
     <string name="tab_settings">Settings</string>
 
-    <string name="pref_chk_folder">chk_folder</string>
-    <string name="pref_theme">app_theme</string>
-    <string name="pref_aip_last_update_at">aip_last_update_at</string>
-    <string name="pref_aip_last_update_cz">aip_last_update_cz</string>
-    <string name="pref_aip_last_update_sk">aip_last_update_sk</string>
-    <string name="pref_aip_last_update_hu">aip_last_update_hu</string>
-    <string name="pref_document_page">document_page.</string>
-    <string name="pref_wb_selected">wb_file</string>
+    <string name="pref_chk_folder" translatable="false">chk_folder</string>
+    <string name="pref_theme" translatable="false">app_theme</string>
+    <string name="pref_aip_last_update_at" translatable="false">aip_last_update_at</string>
+    <string name="pref_aip_last_update_cz" translatable="false">aip_last_update_cz</string>
+    <string name="pref_aip_last_update_sk" translatable="false">aip_last_update_sk</string>
+    <string name="pref_aip_last_update_hu" translatable="false">aip_last_update_hu</string>
+    <string name="pref_document_page" translatable="false">document_page.</string>
+    <string name="pref_wb_selected" translatable="false">wb_file</string>
 
-    <string name="folder_root">/EasyFlightBag</string>
-    <string name="folder_airplanes">/Airplanes</string>
-    <string name="folder_chklist">/Checklists</string>
-    <string name="folder_chklist_demo">/Tutorial</string>
-    <string name="folder_aip">/AIP</string>
-    <string name="folder_at">/at</string>
-    <string name="folder_cz">/cz</string>
-    <string name="folder_sk">/sk</string>
-    <string name="folder_hu">/hu</string>
-    <string name="file_aip_data">/data.txt</string>
+    <string name="folder_root" translatable="false">/EasyFlightBag</string>
+    <string name="folder_airplanes" translatable="false">/Airplanes</string>
+    <string name="folder_chklist" translatable="false">/Checklists</string>
+    <string name="folder_chklist_demo" translatable="false">/Tutorial</string>
+    <string name="folder_aip" translatable="false">/AIP</string>
+    <string name="folder_at" translatable="false">/at</string>
+    <string name="folder_cz" translatable="false">/cz</string>
+    <string name="folder_sk" translatable="false">/sk</string>
+    <string name="folder_hu" translatable="false">/hu</string>
+    <string name="file_aip_data" translatable="false">/data.txt</string>
 
     <string name="file_chk_plane">Switch Add and Delete airplane type.txt</string>
     <string name="file_chk_plane_">Click on the airplane icon\n
@@ -79,17 +79,17 @@
     <string name="list_name_mandatory">Please enter checklist title here.</string>
     <string name="list_text_hint">Write the tasks to individual lines</string>
 
-    <string name="gps_intent_filter">GPSIntent</string>
+    <string name="gps_intent_filter" translatable="false">GPSIntent</string>
     <string name="GPS_disabled">GPS is off</string>
 
-    <string name="gps_latitude">GPSlat</string>
-    <string name="gps_longitude">GPSlon</string>
-    <string name="gps_accuracy">GPSacc</string>
-    <string name="gps_altitude">GPSalt</string>
-    <string name="gps_speed">GPSspe</string>
-    <string name="gps_time">GPStim</string>
-    <string name="gps_bearing">GPSbea</string>
-    <string name="gps_location">gps_location</string>
+    <string name="gps_latitude" translatable="false">GPSlat</string>
+    <string name="gps_longitude" translatable="false">GPSlon</string>
+    <string name="gps_accuracy" translatable="false">GPSacc</string>
+    <string name="gps_altitude" translatable="false">GPSalt</string>
+    <string name="gps_speed" translatable="false">GPSspe</string>
+    <string name="gps_time" translatable="false">GPStim</string>
+    <string name="gps_bearing" translatable="false">GPSbea</string>
+    <string name="gps_location" translatable="false">gps_location</string>
 
     <string name="calc_conv">Conversions</string>
     <string name="calc_conv_dist">Distance</string>
@@ -117,45 +117,64 @@
     <string name="calc_climb_rt">Climb rate</string>
     <string name="calc_descent_rt">Descent rate</string>
     <string name="calc_avg_flow">Average flow</string>
+    <string name="calc_fuel_tank">Fuel tank</string>
+    <string name="calc_empty_weight">Empty weight</string>
+    <string name="calc_weight">Weight</string>
+    <string name="calc_max_weight">Weight</string>
+    <string name="calc_mtow">Max. takeoff weight (MTOW)</string>
+    <string name="calc_mlw">Max. landing weight (MTOW)</string>
+    <string name="calc_additional_weight">Additional weights</string>
+    <string name="calc_cg_limits">C.G. Limits</string>
+    <string name="calc_arm">Arm</string>
+    <string name="calc_arm_mm">Arm (mm)</string>
+    <string name="calc_arm_ft">Arm (ft)</string>
+    <string name="calc_max_w_kg">Max (kg)</string>
+    <string name="calc_max_w_lb">Max (lb)</string>
+    <string name="calc_weight_kg">Weight (kg)</string>
+    <string name="calc_weight_lb">Weight (lb)</string>
+    <string name="calc_cap_l">Capacity (l)</string>
+    <string name="calc_cap_gal">Capacity (gal)</string>
+    <string name="calc_unu_l">Unus. (l)</string>
+    <string name="calc_unu_gal">Unus. (gal)</string>
+    <string name="calc_name">Name</string>
+    <string name="calc_density">Density</string>
+    <string name="calc_fuel_oil">Fuel/Oil</string>
 
-    <string name="calc_unit_m">m</string>
-    <string name="calc_unit_mm">mm</string>
-    <string name="calc_unit_km">km</string>
-    <string name="calc_unit_ft">ft</string>
-    <string name="calc_unit_nmi">nm</string>
-    <string name="calc_unit_mi">mi</string>
+    <string name="calc_unit_m" translatable="false">m</string>
+    <string name="calc_unit_mm" translatable="false">mm</string>
+    <string name="calc_unit_km" translatable="false">km</string>
+    <string name="calc_unit_ft" translatable="false">ft</string>
+    <string name="calc_unit_nmi" translatable="false">nm</string>
+    <string name="calc_unit_mi" translatable="false">mi</string>
     <string name="calc_unit_yd">yd</string>
-    <string name="calc_unit_in">in</string>
-    <string name="calc_unit_kmh">km/h</string>
-    <string name="calc_unit_kn">knots</string>
-    <string name="calc_unit_mph">mph</string>
-    <string name="calc_unit_mps">m/s</string>
-    <string name="calc_unit_ftpmin">ft/min</string>
-    <string name="calc_unit_kg">Kg</string>
-    <string name="calc_unit_t">T</string>
-    <string name="calc_unit_lb">lb</string>
-    <string name="calc_unit_l">l</string>
-    <string name="calc_unit_m_cube">m^3</string>
-    <string name="calc_unit_g_us">US fl. gal.</string>
-    <string name="calc_unit_g_imp">imp. gal.</string>
-    <string name="calc_unit_oz">fl. oz</string>
-    <string name="calc_unit_hpa_bma">hPa (mBa)</string>
-    <string name="calc_unit_atm">ATM</string>
-    <string name="calc_unit_inhg">In. Hg.</string>
-    <string name="calc_unit_kgxm">kg x m</string>
-    <string name="calc_unit_lbxin">lb x in</string>
-    <string name="calc_unit_c">C</string>
-    <string name="calc_unit_f">F</string>
-    <string name="calc_unit_k">k</string>
-    <string name="calc_unit_kg_m3">kg/m^3</string>
-    <string name="calc_unit_h">h</string>
-    <string name="calc_unit_min">m</string>
-    <string name="calc_unit_sec">s</string>
-    <string name="calc_unit_lph">l/hour</string>
-    <string name="calc_unit_gph">gal./hour</string>
-
-    <string name="calc_unit_text_density">Density</string>
-    <string name="calc_unit_text_fuel">Fuel/Oil</string>
+    <string name="calc_unit_in" translatable="false">in</string>
+    <string name="calc_unit_kmh" translatable="false">km/h</string>
+    <string name="calc_unit_kn" translatable="false">knots</string>
+    <string name="calc_unit_mph" translatable="false">mph</string>
+    <string name="calc_unit_mps" translatable="false">m/s</string>
+    <string name="calc_unit_ftpmin" translatable="false">ft/min</string>
+    <string name="calc_unit_kg" translatable="false">kg</string>
+    <string name="calc_unit_t" translatable="false">T</string>
+    <string name="calc_unit_lb" translatable="false">lb</string>
+    <string name="calc_unit_l" translatable="false">l</string>
+    <string name="calc_unit_m_cube" translatable="false">m^3</string>
+    <string name="calc_unit_g_us" translatable="false">US fl. gal.</string>
+    <string name="calc_unit_g_imp" translatable="false">imp. gal.</string>
+    <string name="calc_unit_oz" translatable="false">fl. oz</string>
+    <string name="calc_unit_hpa_bma" translatable="false">hPa (mBa)</string>
+    <string name="calc_unit_atm" translatable="false">ATM</string>
+    <string name="calc_unit_inhg" translatable="false">In. Hg.</string>
+    <string name="calc_unit_kgxm" translatable="false">kg x m</string>
+    <string name="calc_unit_lbxin" translatable="false">lb x in</string>
+    <string name="calc_unit_c" translatable="false">C</string>
+    <string name="calc_unit_f" translatable="false">F</string>
+    <string name="calc_unit_k" translatable="false">k</string>
+    <string name="calc_unit_kg_m3" translatable="false">kg/m^3</string>
+    <string name="calc_unit_h" translatable="false">h</string>
+    <string name="calc_unit_min" translatable="false">m</string>
+    <string name="calc_unit_sec" translatable="false">s</string>
+    <string name="calc_unit_lph" translatable="false">l/hour</string>
+    <string name="calc_unit_gph" translatable="false">gal./hour</string>
 
     <string name="aip_day_ago">day(s) ago</string>
     <string name="aip_downloading">Downloading…</string>
@@ -166,13 +185,13 @@
     <string name="set_theme">Night mode</string>
     <string name="set_aip">AIP data</string>
 
-    <string name="service_aip_download">intent_aip_download</string>
-    <string name="intent_aip_status">intent_aip_status</string>
-    <string name="intent_aip_count">intent_aip_count</string>
-    <string name="intent_aip_country">intent_aip_country</string>
+    <string name="service_aip_download" translatable="false">intent_aip_download</string>
+    <string name="intent_aip_status" translatable="false">intent_aip_status</string>
+    <string name="intent_aip_count" translatable="false">intent_aip_count</string>
+    <string name="intent_aip_country" translatable="false">intent_aip_country</string>
     
-    <string name="url_cz_ais">http://lis.rlp.cz/ais_data/aip/control/aip_obsah_en.htm</string>
-    <string name="url_cz_ais_data">http://lis.rlp.cz/ais_data</string>
-    <string name="url_at_aip">https://eaip.austrocontrol.at/</string>
+    <string name="url_cz_ais" translatable="false">http://lis.rlp.cz/ais_data/aip/control/aip_obsah_en.htm</string>
+    <string name="url_cz_ais_data" translatable="false">http://lis.rlp.cz/ais_data</string>
+    <string name="url_at_aip" translatable="false">https://eaip.austrocontrol.at/</string>
 
 </resources>

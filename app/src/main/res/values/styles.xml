@@ -180,8 +180,18 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
         <item name="android:padding">@dimen/row_padding</item>
-        <item name="android:inputType">number</item>
+        <item name="android:inputType">numberDecimal</item>
+    </style>
+
+    <style name="Block_edit_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">@dimen/row_padding</item>
     </style>
 
 

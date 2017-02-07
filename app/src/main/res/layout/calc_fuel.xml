@@ -15,14 +15,14 @@
 
         <TextView
             style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_text_fuel"
+            android:text="@string/calc_fuel_oil"
             android:layout_height="@dimen/row_height"
             android:gravity="end"
             />
 
         <TextView
             style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_text_density"
+            android:text="@string/calc_density"
             android:gravity="end"
             />
 

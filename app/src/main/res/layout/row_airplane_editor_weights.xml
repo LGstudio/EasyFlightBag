@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Airplane_editor_table_row_layout">
+
+    <EditText
+        style="@style/Block_edit_text_style"
+        android:id="@+id/ap_edit_weight_row_title"/>
+
+    <EditText
+        style="@style/Block_edit_text_number_style"
+        android:id="@+id/ap_edit_weight_row_arm"/>
+
+    <EditText
+        style="@style/Block_edit_text_number_style"
+        android:id="@+id/ap_edit_weight_row_max"/>
+
+    <ImageButton
+        style="@style/Block_button_style"
+        android:src="@drawable/ic_delete_inv"
+        android:id="@+id/ap_edit_weight_row_del"/>
+
+</TableRow>

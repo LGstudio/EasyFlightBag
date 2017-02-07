@@ -162,7 +162,7 @@ public class FragmentAip extends Fragment {
         FileStructure struct = getOpenedLevel(lvl+1).get(pos);
         if (struct.files == null){
             PdfViewerDialog viewer = new PdfViewerDialog(getContext(), R.style.FullScreenDialog);
-            viewer.setContentView(R.layout.pdf_viewer);
+            viewer.setContentView(R.layout.dialog_pdf_viewer);
             viewer.loadContent(struct.title, folder.getPath(), struct.url);
             viewer.show();
         }

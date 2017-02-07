@@ -6,12 +6,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.calculations.CalculatorWB;
+import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 
 /**
  * Created by LGstudio on 2017-02-01.
@@ -23,40 +28,38 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
     private ImageButton btnSave;
     private TextView airplaneId;
 
-    private Button btnUnitSpeed;
-    private Button btnUnitVSpeed;
-    private Button btnUnitMoment;
-    private Button btnUnitFuel;
-    private boolean isDefaultSepeed = true; //kn
-    private boolean isDefaultVSepeed = true; // ft/min
-    private boolean isDefaultMoment = true; // kg x m
-    private boolean isDefaultFuel = true; // liter
-
     private EditText edtCruiseSp;
     private EditText edtClimbSp;
     private EditText edtDescSp;
     private EditText edtClimbRt;
     private EditText edtDescRt;
-    private TextView txtCruiseSp;
-    private TextView txtClimbSp;
-    private TextView txtDescSp;
-    private TextView txtClimbRt;
-    private TextView txtDescRt;
 
     private EditText edtFuelDens;
     private EditText edtFuelFlow;
-    private TextView txtFuelDens;
-    private TextView txtFuelFlow;
 
-    private File file;
-    public CalculatorWB.Airplane airplane;
+    private EditText edtMtow;
+    private EditText edtMlw;
 
-    public AirplaneEditorDialog(Context context) {
-        super(context);
+    private EditText edtEmptyW;
+    private EditText edtEmptyA;
+
+    private TableLayout tableTanks;
+    private ArrayList<RowTank> tanks = new ArrayList<>();
+
+    private TableLayout tableWeights;
+    private ArrayList<RowWeight> weights = new ArrayList<>();
+
+    private TableLayout tableLimits;
+    private ArrayList<RowLimit> limits = new ArrayList<>();
+
+
+    private AirplaneManager airplane;
+
+    public AirplaneEditorDialog(Context context, int fullScreenDialog) {
+        super(context, fullScreenDialog);
     }
 
-    public void loadContent(CalculatorWB.Airplane ap, File f){
-        file = f;
+    public void loadContent(AirplaneManager ap){
         airplane = ap;
 
         btnBack = (ImageButton) findViewById(R.id.airplane_editor_back);
@@ -65,53 +68,37 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         btnSave.setOnClickListener(this);
 
         airplaneId = (TextView) findViewById(R.id.airplane_editor_name);
-        String name = file.getName();
-        int suffix = name.lastIndexOf('.');
-        airplaneId.setText(name.substring(0, suffix));
-
-        btnUnitSpeed = (Button) findViewById(R.id.ap_edit_unit_speed);
-        btnUnitSpeed.setOnClickListener(this);
-        btnUnitVSpeed = (Button) findViewById(R.id.ap_edit_unit_v_speed);
-        btnUnitVSpeed.setOnClickListener(this);
-        btnUnitMoment = (Button) findViewById(R.id.ap_edit_unit_moment);
-        btnUnitMoment.setOnClickListener(this);
-        btnUnitFuel = (Button) findViewById(R.id.ap_edit_unit_fuel);
-        btnUnitFuel.setOnClickListener(this);
+        airplaneId.setText(airplane.getName());
 
         edtCruiseSp =  (EditText) findViewById(R.id.ap_edit_perf_cr_sp);
         edtClimbSp =  (EditText) findViewById(R.id.ap_edit_perf_cl_sp);
         edtDescSp =  (EditText) findViewById(R.id.ap_edit_perf_de_sp);
         edtClimbRt =  (EditText) findViewById(R.id.ap_edit_perf_cl_rt);
         edtDescRt =  (EditText) findViewById(R.id.ap_edit_perf_de_rt);
-        txtCruiseSp =  (TextView) findViewById(R.id.ap_edit_perf_cr_sp_txt);
-        txtClimbSp =  (TextView) findViewById(R.id.ap_edit_perf_cl_sp_txt);
-        txtDescSp =  (TextView) findViewById(R.id.ap_edit_perf_de_sp_txt);
-        txtClimbRt =  (TextView) findViewById(R.id.ap_edit_perf_cl_rt_txt);
-        txtDescRt =  (TextView) findViewById(R.id.ap_edit_perf_de_rt_txt);
 
         edtFuelDens =  (EditText) findViewById(R.id.ap_edit_perf_fuel_dens);
         edtFuelFlow =  (EditText) findViewById(R.id.ap_edit_perf_fuel_flow);
-        txtFuelDens =  (TextView) findViewById(R.id.ap_edit_perf_fuel_dens_txt);
-        txtFuelFlow =  (TextView) findViewById(R.id.ap_edit_perf_fuel_flow_txt);
+
+        edtMtow = (EditText) findViewById(R.id.ap_edit_perf_mtow);
+        edtMlw = (EditText) findViewById(R.id.ap_edit_perf_mlw);
+
+        edtEmptyW = (EditText) findViewById(R.id.ap_edit_perf_empty_w);
+        edtEmptyA = (EditText) findViewById(R.id.ap_edit_perf_empty_a);
+
+        tableTanks = (TableLayout) findViewById(R.id.ap_edit_pref_table_tanks);
+        ImageButton tableTanksAdd = (ImageButton) findViewById(R.id.ap_edit_pref_table_tanks_add);
+        tableTanksAdd.setOnClickListener(this);
+
+        tableWeights = (TableLayout) findViewById(R.id.ap_edit_pref_table_weights);
+        ImageButton tableWeightsAdd = (ImageButton) findViewById(R.id.ap_edit_pref_table_weights_add);
+        tableWeightsAdd.setOnClickListener(this);
+
+        tableLimits = (TableLayout) findViewById(R.id.ap_edit_pref_table_limits);
+        ImageButton tableLimitsAdd = (ImageButton) findViewById(R.id.ap_edit_pref_table_limits_add);
+        tableLimitsAdd.setOnClickListener(this);
 
         // load content from object
         if (airplane != null){
-            if (airplane.unit_speed == 1){
-                isDefaultSepeed = false;
-                reloadSpeedViews();
-            }
-            if (airplane.unit_v_speed == 1){
-                isDefaultVSepeed = false;
-                reloadVSpeedViews();
-            }
-            if (airplane.unit_moment == 1){
-                isDefaultMoment = false;
-                reloadMomentViews();
-            }
-            if (airplane.unit_fuel == 1){
-                isDefaultFuel = false;
-                reloadFuelViews();
-            }
 
             edtCruiseSp.setText(String.valueOf(airplane.cruise_sp));
             edtClimbSp.setText(String.valueOf(airplane.climb_sp));
@@ -121,6 +108,25 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
             edtFuelDens.setText(String.valueOf(airplane.fuel_density));
             edtFuelFlow.setText(String.valueOf(airplane.fuel_flow));
+
+            edtMtow.setText(String.valueOf(airplane.max_takeoff));
+            edtMlw.setText(String.valueOf(airplane.max_landing));
+
+            edtEmptyW.setText(String.valueOf(airplane.empty_weight));
+            edtEmptyA.setText(String.valueOf(airplane.empty_arm));
+
+            for(AirplaneManager.Weights w: airplane.additional_weight){
+                if (w.unus != -1){
+                    addFuelTank(w.name, w.arm, w.max, w.unus);
+                }
+                else{
+                    addWeights(w.name, w.arm, w.max);
+                }
+            }
+
+            for(AirplaneManager.Limits l: airplane.limits){
+                addLimits(l.arm, l.weight);
+            }
         }
     }
 
@@ -133,75 +139,140 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
             case R.id.airplane_editor_save:
                 saveAirplane();
                 break;
-            case R.id.ap_edit_unit_speed:
-                isDefaultSepeed = !isDefaultSepeed;
-                reloadSpeedViews();
+            case R.id.ap_edit_pref_table_tanks_add:
+                addFuelTank("", 0, 0 ,0);
                 break;
-            case R.id.ap_edit_unit_v_speed:
-                isDefaultVSepeed = !isDefaultVSepeed;
-                reloadVSpeedViews();
+            case R.id.ap_edit_pref_table_weights_add:
+                addWeights("", 0, 0);
                 break;
-            case R.id.ap_edit_unit_moment:
-                isDefaultMoment = !isDefaultMoment;
-                reloadMomentViews();
-                break;
-            case R.id.ap_edit_unit_fuel:
-                isDefaultFuel = !isDefaultFuel;
-                reloadFuelViews();
+            case R.id.ap_edit_pref_table_limits_add:
+                addLimits(0, 0);
                 break;
 
         }
     }
 
-    private void reloadSpeedViews(){
-        int id = R.string.calc_unit_kmh;
-        if (isDefaultSepeed){
-            id = R.string.calc_unit_kn;
-        }
-        btnUnitSpeed.setText(id);
-        txtClimbSp.setText(id);
-        txtCruiseSp.setText(id);
-        txtDescSp.setText(id);
+    private void addFuelTank(String n, double a, double c, double u){
+        RowTank row = new RowTank();
+        row.row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_editor_tank, null);
+        row.name = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_title);
+        row.arm = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_arm);
+        row.cap = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_capacity);
+        row.unu = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_unu);
+        row.del = (ImageButton) row.row.findViewById(R.id.ap_edit_fuel_row_del);
+        //row.del.setOnClickListener();
+
+        row.name.setText(n);
+        row.arm.setText(String.valueOf(a));
+        row.cap.setText(String.valueOf(c));
+        row.unu.setText(String.valueOf(u));
+
+        tanks.add(row);
+        tableTanks.addView(row.row);
     }
 
-    private void reloadVSpeedViews(){
-        int id = R.string.calc_unit_mps;
-        if (isDefaultVSepeed){
-            id = R.string.calc_unit_ftpmin;
-        }
-        btnUnitVSpeed.setText(id);
-        txtClimbRt.setText(id);
-        txtDescRt.setText(id);
+    private void addWeights(String n, double a, double m) {
+        RowWeight row = new RowWeight();
+        row.row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_editor_weights, null);
+        row.name = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_title);
+        row.arm = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_arm);
+        row.max = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_max);
+        row.del = (ImageButton) row.row.findViewById(R.id.ap_edit_weight_row_del);
+        //row.del.setOnClickListener();
+
+        row.name.setText(n);
+        row.arm.setText(String.valueOf(a));
+        row.max.setText(String.valueOf(m));
+
+        weights.add(row);
+        tableWeights.addView(row.row);
     }
 
-    private void reloadMomentViews(){
-        int id = R.string.calc_unit_lbxin;
-        int idW = R.string.calc_unit_lb;
-        int idD = R.string.calc_unit_in;
-        if (isDefaultMoment){
-            id = R.string.calc_unit_kgxm;
-            idW = R.string.calc_unit_kg;
-            idD = R.string.calc_unit_mm;
-        }
-        btnUnitMoment.setText(id);
+    private void addLimits(double a, double w) {
+        RowLimit row = new RowLimit();
+        row.row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_editor_limits, null);
+        row.arm = (EditText) row.row.findViewById(R.id.ap_edit_limit_row_arm);
+        row.weight = (EditText) row.row.findViewById(R.id.ap_edit_limit_row_weight);
+        row.del = (ImageButton) row.row.findViewById(R.id.ap_edit_limit_row_del);
+        //row.del.setOnClickListener();
 
-    }
+        row.arm.setText(String.valueOf(a));
+        row.weight.setText(String.valueOf(w));
 
-    private void reloadFuelViews(){
-        int id = R.string.calc_unit_g_us;
-        int id2 = R.string.calc_unit_gph;
-        if (isDefaultFuel){
-            id = R.string.calc_unit_l;
-            id2 = R.string.calc_unit_lph;
-        }
-        btnUnitFuel.setText(id);
-
-        txtFuelFlow.setText(id2);
+        limits.add(row);
+        tableLimits.addView(row.row);
 
 
     }
+
 
     private void saveAirplane(){
-        //TODO: save to file & Airplane object & make Toast
+        airplane.cruise_sp = Double.parseDouble(edtCruiseSp.getText().toString());
+        airplane.climb_sp = Double.parseDouble(edtClimbSp.getText().toString());
+        airplane.descent_sp = Double.parseDouble(edtDescSp.getText().toString());
+        airplane.climb_rate = Double.parseDouble(edtClimbRt.getText().toString());
+        airplane.desc_rate = Double.parseDouble(edtDescRt.getText().toString());
+        airplane.fuel_density = Double.parseDouble(edtFuelDens.getText().toString());
+        airplane.fuel_flow = Double.parseDouble(edtFuelFlow.getText().toString());
+        airplane.max_takeoff = Double.parseDouble(edtMtow.getText().toString());
+        airplane.max_landing = Double.parseDouble(edtMlw.getText().toString());
+        airplane.empty_weight = Double.parseDouble(edtEmptyW.getText().toString());
+        airplane.empty_arm = Double.parseDouble(edtEmptyA.getText().toString());
+
+        airplane.additional_weight = new ArrayList<>();
+        airplane.limits = new ArrayList<>();
+
+        for (RowTank t : tanks){
+            AirplaneManager.Weights w = new AirplaneManager.Weights();
+            w.arm = Double.parseDouble(t.arm.getText().toString());
+            w.max = Double.parseDouble(t.cap.getText().toString());
+            w.unus = Double.parseDouble(t.unu.getText().toString());
+            w.name = t.name.getText().toString();
+            airplane.additional_weight.add(w);
+        }
+        for (RowWeight t : weights){
+            AirplaneManager.Weights w = new AirplaneManager.Weights();
+            w.arm = Double.parseDouble(t.arm.getText().toString());
+            w.max = Double.parseDouble(t.max.getText().toString());
+            w.name = t.name.getText().toString();
+            airplane.additional_weight.add(w);
+        }
+        for (RowLimit t : limits){
+            AirplaneManager.Limits w = new AirplaneManager.Limits();
+            w.arm = Double.parseDouble(t.arm.getText().toString());
+            w.weight = Double.parseDouble(t.weight.getText().toString());
+            airplane.limits.add(w);
+        }
+
+        airplane.loaded = true;
+
+        if (airplane.saveFile())
+            Toast.makeText(getContext(), "Airplane saved", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getContext(), "Error saving data", Toast.LENGTH_SHORT).show();
+    }
+
+    private class RowTank{
+        TableRow row;
+        EditText name;
+        EditText arm;
+        EditText cap;
+        EditText unu;
+        ImageButton del;
+    }
+
+    private class RowWeight{
+        TableRow row;
+        EditText name;
+        EditText arm;
+        EditText max;
+        ImageButton del;
+    }
+
+    private class RowLimit{
+        TableRow row;
+        EditText arm;
+        EditText weight;
+        ImageButton del;
     }
 }
