@@ -42,13 +42,13 @@
         <item name="colorControlActivated" >@color/colorPrimaryDark</item>
         <item name="colorControlHighlight">@color/colorDarker</item>
 
-        <item name="primaryTextColor">@color/colorLighter</item>
-        <item name="secondaryTextColor">@color/colorLight</item>
-        <item name="fadedTextColor">@color/colorGray</item>
+        <item name="primaryTextColor">@color/colorLight</item>
+        <item name="secondaryTextColor">@color/colorGray</item>
+        <item name="fadedTextColor">@color/colorDark</item>
         <item name="dividerColor">@color/colorPrimaryDark</item>
         <item name="highlightColor">@color/colorLight</item>
-        <item name="backgroundColor">@color/colorDarker</item>
-        <item name="backgroundDarkColor">@color/colorDark</item>
+        <item name="backgroundColor">@color/colorDark</item>
+        <item name="backgroundDarkColor">@color/colorDarker</item>
         <item name="backgroundColorHighlightLight">@color/colorPrimaryDark</item>
         <item name="backgroundColorHighlight">@color/colorPrimary</item>
         <item name="backgroundSnackbar">@color/colorDark</item>
@@ -157,7 +157,7 @@
         <item name="android:textSize">@dimen/row_big_text</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textColor">?attr/backgroundColorHighlight</item>
+        <item name="android:textColor">?attr/primaryColor</item>
     </style>
 
     <style name="Block_text_style">
@@ -173,7 +173,7 @@
     <style name="Block_button_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">?attr/backgroundDarkColor</item>
+        <item name="android:background">?attr/backgroundColorHighlightLight</item>
         <item name="android:layout_weight">1</item>
         <item name="android:maxLines">1</item>
         <item name="android:padding">@dimen/row_padding</item>
@@ -201,6 +201,12 @@
         <item name="android:padding">@dimen/row_padding</item>
     </style>
 
+    <style name="NumberPickerStyle">
+        <item name="android:textColorPrimary">?attr/primaryTextColor</item>
+        <item name="android:divider">?attr/primaryColor</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
 
+    </style>
 
 </resources>

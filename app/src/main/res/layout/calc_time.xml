@@ -116,9 +116,7 @@
 
             <NumberPicker
                 android:id="@+id/calc_unit_time_pick_h"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:divider="?attr/primaryColor"
+                style="@style/NumberPickerStyle"
                 />
 
             <TextView
@@ -130,9 +128,7 @@
 
             <NumberPicker
                 android:id="@+id/calc_unit_time_pick_min"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:divider="?attr/primaryColor"
+                style="@style/NumberPickerStyle"
                 />
 
             <TextView
@@ -145,9 +141,7 @@
 
             <NumberPicker
                 android:id="@+id/calc_unit_time_pick_s"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:divider="?attr/primaryColor"
+                style="@style/NumberPickerStyle"
                 />
 
             <TextView

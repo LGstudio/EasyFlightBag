@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/chklist_item_text"
         android:text="detail"
-        android:textColor="?attr/secondaryTextColor"
+        android:textColor="?attr/fadedTextColor"
         />
 
 </LinearLayout>

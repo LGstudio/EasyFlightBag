@@ -79,6 +79,11 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         scrollView = (ScrollView) v.findViewById(R.id.ap_wb_scroll_layout);
         flightTimeH = (NumberPicker) v.findViewById(R.id.apc_wb_time_pick_h);
         flightTimeM = (NumberPicker) v.findViewById(R.id.ap_wb_time_pick_min);
+        flightTimeH.setMinValue(0);
+        flightTimeH.setMaxValue(99);
+        flightTimeM.setMinValue(0);
+        flightTimeM.setMaxValue(59);
+
         tableFuel = (TableLayout) v.findViewById(R.id.ap_wb_table_tanks);
         tableWeights = (TableLayout) v.findViewById(R.id.ap_wb_table_weights);
         Button btnCalc = (Button) v.findViewById(R.id.ap_wb_calc_btn);
