@@ -20,140 +20,80 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/Side_menu_text.big"
                 android:id="@+id/calc_WB"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_big_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_bal"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"
-                android:gravity="center_vertical" />
+                android:text="@string/calc_bal"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:background="?attr/backgroundColorHighlight"
-                android:textColor="?attr/highlightColor"
+                style="@style/Side_menu_category"
                 android:text="@string/calc_func"
-                android:padding="@dimen/row_padding"
-                android:textAllCaps="true"
-                android:elevation="@dimen/elevation_4"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"/>
+                />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
+                style="@style/Side_menu_text"
                 android:text="@string/calc_func_time"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"
                 android:id="@+id/calc_func_time"/>
 
             <TextView
+                style="@style/Side_menu_text"
                 android:id="@+id/calc_func_fuel"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_func_fuel"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:text="@string/calc_func_fuel"/>
 
             <TextView
+                style="@style/Side_menu_text"
                 android:id="@+id/calc_func_wind"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_func_wind"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:text="@string/calc_func_wind" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:background="?attr/backgroundColorHighlight"
-                android:textColor="?attr/highlightColor"
-                android:text="@string/calc_conv"
-                android:padding="@dimen/row_padding"
-                android:textAllCaps="true"
-                android:elevation="@dimen/elevation_4"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"/>
+                style="@style/Side_menu_category"
+                android:text="@string/calc_conv"/>
 
             <TextView
+                style="@style/Side_menu_text"
                 android:id="@+id/calc_conv_fuel"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_conv_fuel"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:text="@string/calc_conv_fuel" />
 
             <TextView
+                style="@style/Side_menu_text"
                 android:id="@+id/calc_conv_dist"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_conv_dist"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:text="@string/calc_conv_dist" />
 
             <TextView
+                style="@style/Side_menu_text"
                 android:id="@+id/calc_conv_speed"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_conv_speed"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:text="@string/calc_conv_speed"/>
 
             <TextView
+                style="@style/Side_menu_text"
                 android:id="@+id/calc_conv_mass"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_conv_mass"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:text="@string/calc_conv_mass"/>
 
             <TextView
+                style="@style/Side_menu_text"
                 android:id="@+id/calc_conv_vol"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_conv_vol"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:text="@string/calc_conv_vol" />
 
             <TextView
+                style="@style/Side_menu_text"
                 android:id="@+id/calc_conv_press"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_conv_press"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:text="@string/calc_conv_press" />
 
             <TextView
+                style="@style/Side_menu_text"
                 android:id="@+id/calc_conv_temp"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/row_height"
-                android:textColor="?attr/primaryTextColor"
-                android:text="@string/calc_conv_temp"
-                android:padding="@dimen/row_padding"
-                android:clickable="true"/>
+                android:text="@string/calc_conv_temp" />
 
         </LinearLayout>
 
     </ScrollView>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.70"
         android:id="@+id/calc_frame"
         android:background="?attr/backgroundDarkColor">
 
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>

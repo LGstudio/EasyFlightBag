@@ -76,6 +76,7 @@
                         <NumberPicker
                             android:id="@+id/apc_wb_time_pick_h"
                             style="@style/NumberPickerStyle"
+                            android:theme="@style/NumberPickerStyleText"
                             />
 
                         <TextView
@@ -88,6 +89,7 @@
                         <NumberPicker
                             android:id="@+id/ap_wb_time_pick_min"
                             style="@style/NumberPickerStyle"
+                            android:theme="@style/NumberPickerStyleText"
                             />
 
                         <TextView

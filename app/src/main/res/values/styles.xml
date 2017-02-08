@@ -24,6 +24,7 @@
         <item name="backgroundColorHighlightLight">@color/colorBlueLight</item>
         <item name="backgroundColorHighlight">@color/colorBlue</item>
         <item name="backgroundSnackbar">@color/colorGray</item>
+        <item name="backgroundSelected">@color/colorPrimarySelectLight</item>
         <item name="greenColor">@color/colorGreen</item>
 
     </style>
@@ -52,6 +53,7 @@
         <item name="backgroundColorHighlightLight">@color/colorPrimaryDark</item>
         <item name="backgroundColorHighlight">@color/colorPrimary</item>
         <item name="backgroundSnackbar">@color/colorDark</item>
+        <item name="backgroundSelected">@color/colorPrimarySelectDark</item>
         <item name="greenColor">@color/colorGreenDark</item>
 
 
@@ -66,6 +68,15 @@
         <item name="android:windowBackground">?attr/backgroundColor</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="CalculatorLinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">@dimen/tab_padding</item>
+        <item name="android:paddingBottom">@dimen/tab_padding</item>
+        <item name="android:weightSum">1</item>
     </style>
 
     <style name="Calculator_edit_text_field">
@@ -120,19 +131,6 @@
         <item name="android:minWidth">@dimen/tab_min_w</item>
     </style>
 
-    <style name="Settings_country_layout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/row_padding</item>
-        <item name="android:layout_marginEnd">@dimen/row_padding</item>
-        <item name="android:elevation">@dimen/elevation_8</item>
-        <item name="android:padding">@dimen/row_padding</item>
-        <item name="android:background">?attr/backgroundColor</item>
-        <item name="android:textSize">@dimen/row_big_text</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">?attr/backgroundColorHighlight</item>
-    </style>
-
     <style name="Airplane_editor_table_layout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -157,7 +155,16 @@
         <item name="android:textSize">@dimen/row_big_text</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textColor">?attr/primaryColor</item>
+        <item name="android:textColor">?attr/secondaryTextColor</item>
+    </style>
+
+    <style name="Block_title_text_style.inSettings">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">@dimen/row_padding</item>
+        <item name="android:layout_marginEnd">@dimen/row_padding</item>
+        <item name="android:elevation">@dimen/elevation_8</item>
+        <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:background">?attr/backgroundColor</item>
     </style>
 
     <style name="Block_text_style">
@@ -202,11 +209,37 @@
     </style>
 
     <style name="NumberPickerStyle">
-        <item name="android:textColorPrimary">?attr/primaryTextColor</item>
         <item name="android:divider">?attr/primaryColor</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
+    </style>
+    <style name="NumberPickerStyleText">
+        <item name="android:textColorPrimary">?attr/primaryTextColor</item>
+    </style>
 
+    <style name="Side_menu_category">
+        <item name="android:layout_height">@dimen/row_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">?attr/primaryColor</item>
+        <item name="android:textColor">?attr/highlightColor</item>
+        <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:elevation">@dimen/elevation_4</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="Side_menu_text">
+        <item name="android:layout_height">@dimen/row_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Side_menu_text.big">
+        <item name="android:layout_height">@dimen/row_big_height</item>
     </style>
 
 </resources>

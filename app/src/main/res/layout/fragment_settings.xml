@@ -32,11 +32,11 @@
     <TextView
         android:id="@+id/set_aip_text"
         android:text="@string/set_aip"
-        style="@style/Settings_country_layout"
+        style="@style/Block_title_text_style.inSettings"
         />
 
     <RelativeLayout
-        style="@style/Settings_country_layout">
+        style="@style/Block_title_text_style.inSettings">
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        style="@style/Settings_country_layout">
+        style="@style/Block_title_text_style.inSettings">
 
         <TextView
             android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        style="@style/Settings_country_layout">
+        style="@style/Block_title_text_style.inSettings">
 
         <TextView
             android:layout_width="wrap_content"
@@ -123,7 +123,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        style="@style/Settings_country_layout">
+        style="@style/Block_title_text_style.inSettings">
 
         <TextView
             android:layout_width="wrap_content"

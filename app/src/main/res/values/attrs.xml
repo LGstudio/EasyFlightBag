@@ -18,6 +18,7 @@
         <attr name="backgroundColorHighlightLight" format="color"/>
         <attr name="backgroundColorHighlight" format="color"/>
         <attr name="backgroundSnackbar" format="color"/>
+        <attr name="backgroundSelected" format="color"/>
 
         <attr name="greenColor" format="color"/>
 

@@ -1,104 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal"
-              android:weightSum="1"
-              android:paddingTop="@dimen/tab_padding"
-              android:paddingBottom="@dimen/tab_padding">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.2"
-        android:orientation="vertical">
+          style="@style/CalculatorLinearLayout">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:orientation="vertical">
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/calc_unit_text_m"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_mm"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_ft"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_mi"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_nm"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_yd"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_in"
+                style="@style/Calculator_edit_text_field"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_m"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_mm"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_ft"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_mi"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_nmi"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_yd"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_in"
+                />
+
+        </LinearLayout>
+
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/calc_unit_text_m"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_mm"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_ft"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_mi"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_nm"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_yd"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_in"
-            style="@style/Calculator_edit_text_field"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_m"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_mm"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_ft"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_mi"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_nmi"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_yd"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_in"
-            />
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>
