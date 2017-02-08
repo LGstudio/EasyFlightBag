@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundDarkColor">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,5 +47,159 @@
             android:layout_toStartOf="@id/wb_edit"/>
 
     </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ap_wb_scroll_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/Airplane_editor_table_layout"
+                android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        android:text="@string/calc_fly_time"/>
+
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center">
+
+                        <NumberPicker
+                            android:id="@+id/apc_wb_time_pick_h"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:divider="?attr/primaryColor"
+                            />
+
+                        <TextView
+                            style="@style/Calculator_text_unit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/calc_unit_h"
+                            android:textStyle="bold" />
+
+                        <NumberPicker
+                            android:id="@+id/ap_wb_time_pick_min"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:divider="?attr/primaryColor"
+                            />
+
+                        <TextView
+                            style="@style/Calculator_text_unit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/calc_unit_min"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TableLayout
+                style="@style/Airplane_editor_table_layout"
+                android:weightSum="4"
+                android:id="@+id/ap_wb_table_tanks">
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        android:text="@string/calc_fuel_tank"
+                        android:layout_weight="4"/>
+
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text=""
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_cont_l"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_cap_l"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_unu_l"
+                        android:layout_weight="1"/>
+
+                </TableRow>
+
+            </TableLayout>
+
+            <TableLayout
+                style="@style/Airplane_editor_table_layout"
+                android:weightSum="3"
+                android:id="@+id/ap_wb_table_weights">
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        android:text="@string/calc_additional_weight"
+                        android:layout_weight="3"/>
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text=""
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_weight_kg"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_max_w_kg"
+                        android:layout_weight="1"/>
+
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/backgroundColorHighlight"
+                android:textAllCaps="true"
+                android:textColor="?attr/highlightColor"
+                android:layout_margin="@dimen/row_padding"
+                android:elevation="@dimen/elevation_8"
+                android:id="@+id/ap_wb_calc_btn"
+                android:text="@string/calc_calculate" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

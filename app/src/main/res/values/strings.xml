@@ -127,18 +127,16 @@
     <string name="calc_cg_limits">C.G. Limits</string>
     <string name="calc_arm">Arm</string>
     <string name="calc_arm_mm">Arm (mm)</string>
-    <string name="calc_arm_ft">Arm (ft)</string>
     <string name="calc_max_w_kg">Max (kg)</string>
-    <string name="calc_max_w_lb">Max (lb)</string>
     <string name="calc_weight_kg">Weight (kg)</string>
-    <string name="calc_weight_lb">Weight (lb)</string>
     <string name="calc_cap_l">Capacity (l)</string>
-    <string name="calc_cap_gal">Capacity (gal)</string>
-    <string name="calc_unu_l">Unus. (l)</string>
-    <string name="calc_unu_gal">Unus. (gal)</string>
+    <string name="calc_cont_l">Content (l)</string>
+    <string name="calc_unu_l">Unusable (l)</string>
     <string name="calc_name">Name</string>
     <string name="calc_density">Density</string>
     <string name="calc_fuel_oil">Fuel/Oil</string>
+    <string name="calc_fly_time">Fly time</string>
+    <string name="calc_calculate">Calculate</string>
 
     <string name="calc_unit_m" translatable="false">m</string>
     <string name="calc_unit_mm" translatable="false">mm</string>

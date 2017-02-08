@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Airplane_editor_table_row_layout">
+
+    <TextView
+        style="@style/Block_edit_text_style"
+        android:id="@+id/ap_wb_fuel_name"
+        android:maxLines="1"/>
+
+    <EditText
+        style="@style/Block_edit_text_number_style"
+        android:id="@+id/ap_wb_fuel_content"/>
+
+    <TextView
+        style="@style/Block_edit_text_number_style"
+        android:id="@+id/ap_wb_fuel_capacity"
+        android:maxLines="1"/>
+
+    <TextView
+        style="@style/Block_edit_text_number_style"
+        android:id="@+id/ap_wb_fuel_unus"
+        android:maxLines="1"/>
+
+</TableRow>

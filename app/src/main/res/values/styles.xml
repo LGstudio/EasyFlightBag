@@ -103,7 +103,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/calc_text_size</item>
         <item name="android:layout_margin">@dimen/calc_field_button_margin</item>
-        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:textColor">?attr/highlightColor</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:gravity">center</item>
         <item name="android:background">?attr/backgroundColorHighlight</item>
@@ -139,7 +139,7 @@
         <item name="android:layout_marginStart">@dimen/row_padding</item>
         <item name="android:layout_marginEnd">@dimen/row_padding</item>
         <item name="android:layout_marginTop">@dimen/row_padding</item>
-        <item name="android:elevation">@dimen/elevation_8</item>
+        <item name="android:elevation">@dimen/elevation_4</item>
         <item name="android:padding">@dimen/row_padding</item>
         <item name="android:background">?attr/backgroundColor</item>
     </style>
@@ -152,10 +152,11 @@
     </style>
 
     <style name="Block_title_text_style">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/row_big_text</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:maxLines">1</item>
         <item name="android:textColor">?attr/backgroundColorHighlight</item>
     </style>
 
@@ -164,32 +165,38 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:gravity">center_horizontal</item>
         <item name="android:padding">@dimen/row_padding</item>
     </style>
 
     <style name="Block_button_style">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">?attr/backgroundDarkColor</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:maxLines">1</item>
         <item name="android:padding">@dimen/row_padding</item>
     </style>
 
     <style name="Block_edit_text_number_style">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_gravity">center_vertical|end</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textAlignment">textEnd</item>
         <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:maxLines">1</item>
         <item name="android:inputType">numberDecimal</item>
     </style>
 
     <style name="Block_edit_text_style">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:maxLines">1</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:padding">@dimen/row_padding</item>
     </style>

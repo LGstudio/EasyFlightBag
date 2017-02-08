@@ -1,8 +1,5 @@
 package sk.lgstudio.easyflightbag.managers;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import sk.lgstudio.easyflightbag.calculations.CalculatorWB;
 
 /**
  * Created by LGstudio on 2017-02-07.
@@ -39,6 +35,7 @@ public class AirplaneManager {
     public double empty_weight = 0;
     public double empty_arm = 0;
     public ArrayList<Weights> additional_weight;
+    public ArrayList<Tanks> tanks;
     public ArrayList<Limits> limits;
 
     public AirplaneManager(File f){
@@ -70,18 +67,28 @@ public class AirplaneManager {
             empty_arm = json.getDouble("empty_arm");
 
             additional_weight = new ArrayList<>();
+            tanks = new ArrayList<>();
             limits = new ArrayList<>();
 
             JSONArray jAW = json.getJSONArray("additional_weight");
             for (int i = 0; i < jAW.length(); i++){
                 JSONArray j = jAW.getJSONArray(i);
-                Weights w = new Weights();
-                w.name = j.getString(0);
-                w.arm = j.getDouble(1);
-                w.max = j.getDouble(2);
-                if (j.length() > 3)
+                if (j.length() > 3){
+                    Tanks w = new Tanks();
+                    w.name = j.getString(0);
+                    w.arm = j.getDouble(1);
+                    w.max = j.getDouble(2);
                     w.unus = j.getDouble(3);
-                additional_weight.add(w);
+                    tanks.add(w);
+                }
+                else{
+                    Weights w = new Weights();
+                    w.name = j.getString(0);
+                    w.arm = j.getDouble(1);
+                    w.max = j.getDouble(2);
+                    additional_weight.add(w);
+                }
+
             }
 
             JSONArray jL = json.getJSONArray("limits");
@@ -115,14 +122,19 @@ public class AirplaneManager {
             json.put("empty_arm", empty_arm);
 
             JSONArray jAW = new JSONArray();
+            for (Tanks t: tanks){
+                JSONArray j = new JSONArray();
+                j.put(t.name);
+                j.put(t.arm);
+                j.put(t.max);
+                j.put(t.unus);
+                jAW.put(j);
+            }
             for (Weights w: additional_weight){
                 JSONArray j = new JSONArray();
                 j.put(w.name);
                 j.put(w.arm);
                 j.put(w.max);
-                if (w.unus > -1){
-                    j.put(w.unus);
-                }
                 jAW.put(j);
             }
             json.put("additional_weight", jAW);
@@ -154,28 +166,19 @@ public class AirplaneManager {
         return (name.substring(0, suffix));
     }
 
-    @Override
-    public String toString(){
-        String str = "";
-
-        str = str + cruise_sp + ", " + climb_sp + ", " + descent_sp + ", " + climb_rate +  ", " + desc_rate + " \n";
-        str = str + fuel_density + ", " + fuel_flow + ", " + max_takeoff + ", " + max_landing + " \n";
-        str = str + empty_weight + ", " + empty_arm + " \n";
-        for (Weights w : additional_weight){
-            str = str + w.name + ", " + w.arm + ", " + w.max + ", " + w.unus + " \n";
-        }
-        for (Limits l : limits){
-            str = str + l.arm + ", " + l.weight + " \n";
-        }
-
-        return str;
-    }
-
     public static class Weights{
         public String name;
         public double arm = 0;
         public double max = 0;
-        public double unus = -1;
+        public double actual = 0;
+    }
+
+    public static class Tanks{
+        public String name;
+        public double arm = 0;
+        public double max = 0;
+        public double unus = 0;
+        public double actual = 0;
     }
 
     public static class Limits{

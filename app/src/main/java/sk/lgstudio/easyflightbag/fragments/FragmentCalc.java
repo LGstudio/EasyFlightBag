@@ -66,9 +66,11 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
 
     public File folder;
     public SharedPreferences prefs;
+    private LayoutInflater layoutInflater;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        layoutInflater = inflater;
         View view = inflater.inflate(R.layout.fragment_calc, container, false);
 
         if (calcFunctions == null)
@@ -113,7 +115,7 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     private void initCalculators(){
         calcFunctions = new ArrayList<>();
 
-        calcFunctions.add(new CalculatorWB(prefs, getActivity(), folder, null, null, null));
+        calcFunctions.add(new CalculatorWB(prefs, getActivity(), layoutInflater, folder, null, null, null));
         calcFunctions.add(new CalculatorTime(null, CalculatorData.timeValues, CalculatorData.timeLayout));
         calcFunctions.add(new Calculator(null, null, null));
         calcFunctions.add(new Calculator(null, null, null));

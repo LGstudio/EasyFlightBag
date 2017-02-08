@@ -115,13 +115,12 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
             edtEmptyW.setText(String.valueOf(airplane.empty_weight));
             edtEmptyA.setText(String.valueOf(airplane.empty_arm));
 
+            for(AirplaneManager.Tanks w: airplane.tanks){
+                addFuelTank(w.name, w.arm, w.max, w.unus);
+            }
+
             for(AirplaneManager.Weights w: airplane.additional_weight){
-                if (w.unus != -1){
-                    addFuelTank(w.name, w.arm, w.max, w.unus);
-                }
-                else{
-                    addWeights(w.name, w.arm, w.max);
-                }
+                addWeights(w.name, w.arm, w.max);
             }
 
             for(AirplaneManager.Limits l: airplane.limits){
@@ -178,7 +177,7 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         row.arm = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_arm);
         row.max = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_max);
         row.del = (ImageButton) row.row.findViewById(R.id.ap_edit_weight_row_del);
-        //row.del.setOnClickListener();
+        //row.del.setOnClickListener(); TODO: delete row (3x)
 
         row.name.setText(n);
         row.arm.setText(String.valueOf(a));
@@ -207,49 +206,102 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
 
     private void saveAirplane(){
-        airplane.cruise_sp = Double.parseDouble(edtCruiseSp.getText().toString());
-        airplane.climb_sp = Double.parseDouble(edtClimbSp.getText().toString());
-        airplane.descent_sp = Double.parseDouble(edtDescSp.getText().toString());
-        airplane.climb_rate = Double.parseDouble(edtClimbRt.getText().toString());
-        airplane.desc_rate = Double.parseDouble(edtDescRt.getText().toString());
-        airplane.fuel_density = Double.parseDouble(edtFuelDens.getText().toString());
-        airplane.fuel_flow = Double.parseDouble(edtFuelFlow.getText().toString());
-        airplane.max_takeoff = Double.parseDouble(edtMtow.getText().toString());
-        airplane.max_landing = Double.parseDouble(edtMlw.getText().toString());
-        airplane.empty_weight = Double.parseDouble(edtEmptyW.getText().toString());
-        airplane.empty_arm = Double.parseDouble(edtEmptyA.getText().toString());
-
-        airplane.additional_weight = new ArrayList<>();
-        airplane.limits = new ArrayList<>();
-
-        for (RowTank t : tanks){
-            AirplaneManager.Weights w = new AirplaneManager.Weights();
-            w.arm = Double.parseDouble(t.arm.getText().toString());
-            w.max = Double.parseDouble(t.cap.getText().toString());
-            w.unus = Double.parseDouble(t.unu.getText().toString());
-            w.name = t.name.getText().toString();
-            airplane.additional_weight.add(w);
+        if (tanks.size() < 1){
+            Toast.makeText(getContext(), "Add at least 1 fuel tank to save", Toast.LENGTH_SHORT).show();
+            return;
         }
-        for (RowWeight t : weights){
-            AirplaneManager.Weights w = new AirplaneManager.Weights();
-            w.arm = Double.parseDouble(t.arm.getText().toString());
-            w.max = Double.parseDouble(t.max.getText().toString());
-            w.name = t.name.getText().toString();
-            airplane.additional_weight.add(w);
+        if (weights.size() < 1){
+            Toast.makeText(getContext(), "Add at least 1 additional weight to save", Toast.LENGTH_SHORT).show();
+            return;
         }
-        for (RowLimit t : limits){
-            AirplaneManager.Limits w = new AirplaneManager.Limits();
-            w.arm = Double.parseDouble(t.arm.getText().toString());
-            w.weight = Double.parseDouble(t.weight.getText().toString());
-            airplane.limits.add(w);
+        if (limits.size() < 3){
+            Toast.makeText(getContext(), "Add at least 3 c.g. limits to save", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        airplane.loaded = true;
+        if (!isEmpty()) {
+            airplane.cruise_sp = Double.parseDouble(edtCruiseSp.getText().toString());
+            airplane.climb_sp = Double.parseDouble(edtClimbSp.getText().toString());
+            airplane.descent_sp = Double.parseDouble(edtDescSp.getText().toString());
+            airplane.climb_rate = Double.parseDouble(edtClimbRt.getText().toString());
+            airplane.desc_rate = Double.parseDouble(edtDescRt.getText().toString());
+            airplane.fuel_density = Double.parseDouble(edtFuelDens.getText().toString());
+            airplane.fuel_flow = Double.parseDouble(edtFuelFlow.getText().toString());
+            airplane.max_takeoff = Double.parseDouble(edtMtow.getText().toString());
+            airplane.max_landing = Double.parseDouble(edtMlw.getText().toString());
+            airplane.empty_weight = Double.parseDouble(edtEmptyW.getText().toString());
+            airplane.empty_arm = Double.parseDouble(edtEmptyA.getText().toString());
 
-        if (airplane.saveFile())
-            Toast.makeText(getContext(), "Airplane saved", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(getContext(), "Error saving data", Toast.LENGTH_SHORT).show();
+            airplane.tanks = new ArrayList<>();
+            airplane.additional_weight = new ArrayList<>();
+            airplane.limits = new ArrayList<>();
+
+            for (RowTank t : tanks) {
+                AirplaneManager.Tanks w = new AirplaneManager.Tanks();
+                w.arm = Double.parseDouble(t.arm.getText().toString());
+                w.max = Double.parseDouble(t.cap.getText().toString());
+                w.unus = Double.parseDouble(t.unu.getText().toString());
+                w.name = t.name.getText().toString();
+                airplane.tanks.add(w);
+            }
+            for (RowWeight t : weights) {
+                AirplaneManager.Weights w = new AirplaneManager.Weights();
+                w.arm = Double.parseDouble(t.arm.getText().toString());
+                w.max = Double.parseDouble(t.max.getText().toString());
+                w.name = t.name.getText().toString();
+                airplane.additional_weight.add(w);
+            }
+            for (RowLimit t : limits) {
+                AirplaneManager.Limits w = new AirplaneManager.Limits();
+                w.arm = Double.parseDouble(t.arm.getText().toString());
+                w.weight = Double.parseDouble(t.weight.getText().toString());
+                airplane.limits.add(w);
+            }
+
+            if (airplane.saveFile()){
+                airplane.loaded = true;
+                Toast.makeText(getContext(), "Airplane saved", Toast.LENGTH_SHORT).show();
+            }
+            else
+                Toast.makeText(getContext(), "Error saving data", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getContext(), "Fill all data before saving", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isEmpty(){
+        boolean empty = (edtCruiseSp.getText().length() == 0)
+                && (edtClimbSp.getText().length() == 0)
+                && (edtDescSp.getText().length() == 0)
+                && (edtClimbRt.getText().length() == 0)
+                && (edtDescRt.getText().length() == 0)
+                && (edtFuelDens.getText().length() == 0)
+                && (edtFuelFlow.getText().length() == 0)
+                && (edtMtow.getText().length() == 0)
+                && (edtMlw.getText().length() == 0)
+                && (edtEmptyW.getText().length() == 0)
+                && (edtEmptyA.getText().length() == 0);
+
+        for (RowTank t : tanks) {
+            empty = empty
+                    && (t.arm.getText().length() == 0)
+                    && (t.cap.getText().length() == 0)
+                    && (t.unu.getText().length() == 0)
+                    && (t.name.getText().length() == 0);
+        }
+        for (RowWeight t : weights) {
+            empty = empty
+                    && (t.arm.getText().length() == 0)
+                    && (t.max.getText().length() == 0)
+                    && (t.name.getText().length() == 0);
+        }
+        for (RowLimit t : limits) {
+            empty = empty
+                    && (t.arm.getText().length() == 0)
+                    && (t.weight.getText().length() == 0);
+        }
+        return empty;
     }
 
     private class RowTank{
