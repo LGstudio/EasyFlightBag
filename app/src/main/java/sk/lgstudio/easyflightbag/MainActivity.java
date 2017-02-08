@@ -60,7 +60,6 @@ public class MainActivity extends FragmentActivity {
     public boolean nightMode = false;
     public AIPManager aipManager;
 
-    private boolean isChkTutCreated = false;
     private boolean inited = false;
 
     @Override
@@ -74,9 +73,6 @@ public class MainActivity extends FragmentActivity {
 
         // checks internal storage for existing files
         checkDirectory();
-
-        // loads shared preferences
-        loadSharedPerefs();
 
         // Load selected theme
         changeToNight();
@@ -149,27 +145,6 @@ public class MainActivity extends FragmentActivity {
     }
 
     /**
-     * Loads the saved preferences when application starts
-     */
-    private void loadSharedPerefs(){
-        // TODO: MOve to Fragemnt Chklist + extend with autorecovery feature
-        // Load last opened Checklist
-        if (isChkTutCreated){
-            fChk.folderActual = new File(fChk.folder.getPath() + getString(R.string.folder_chklist_demo));
-        }
-        else {
-            String prefChkActual = prefs.getString(getString(R.string.pref_chk_folder), null);
-            if (prefChkActual != null) {
-                fChk.folderActual = new File(fChk.folder.getPath() + prefChkActual);
-                if (!fChk.folderActual.exists()){
-                    fChk.folderActual = null;
-                }
-            }
-        }
-    }
-
-
-    /**
      * Changes between day and night mode
      */
     public void changeToNight(){
@@ -197,7 +172,7 @@ public class MainActivity extends FragmentActivity {
             File chkTutDir = new File(fChk.folder.getPath() + getString(R.string.folder_chklist_demo));
             chkTutDir.mkdir();
             if (chkTutDir.exists()){
-                isChkTutCreated = true;
+                prefs.edit().putString(getString(R.string.pref_chk_folder), chkTutDir.getPath()).apply();
                 int files[] = {R.string.file_chk_plane, R.string.file_chk_add_list, R.string.file_chk_edit_list};
                 int texts[] = {R.string.file_chk_plane_, R.string.file_chk_add_list_, R.string.file_chk_edit_list_};
 

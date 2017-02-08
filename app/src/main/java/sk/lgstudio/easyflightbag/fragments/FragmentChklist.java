@@ -102,6 +102,14 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
         LayoutInflater layoutInflater = inflater;
         View view = layoutInflater.inflate(R.layout.fragment_chklist, container, false);
 
+        String prefChkActual = prefs.getString(getString(R.string.pref_chk_folder), null);
+        if (prefChkActual != null) {
+            folderActual = new File(prefChkActual);
+            if (!folderActual.exists()){
+                folderActual = null;
+            }
+        }
+
         // ---------------------------------------------------------------------------------------------
         check = (ImageButton) view.findViewById(R.id.chklist_done);
         check.setOnClickListener(this);
@@ -285,6 +293,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
     @Override
     public void onCancel(DialogInterface dialog) {
         if (dialogAirplane.selected != null){
+            prefs.edit().putString(getString(R.string.pref_chk_folder), dialogAirplane.selected.getPath()).apply();
             folderActual = dialogAirplane.selected;
         }
         dialogAirplane = null;

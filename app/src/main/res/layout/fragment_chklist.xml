@@ -2,13 +2,14 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundDarkColor">
 
     <LinearLayout
                   android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                  android:background="?attr/backgroundColor"
+
                   android:weightSum="1">
 
         <LinearLayout
@@ -16,7 +17,9 @@
             android:layout_height="match_parent"
             android:layout_weight="0.7"
             android:elevation="@dimen/elevation_8"
-            android:id="@+id/chklist_scroll_left">
+            android:id="@+id/chklist_scroll_left"
+            android:background="?attr/backgroundColor"
+            android:layout_marginRight="@dimen/row_padding">
 
             <ListView
                 android:layout_width="match_parent"
@@ -34,8 +37,7 @@
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/row_padding"
-            android:paddingRight="@dimen/row_padding"
+            android:layout_marginRight="@dimen/row_padding"
 
             >
 

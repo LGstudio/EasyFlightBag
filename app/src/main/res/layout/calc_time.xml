@@ -6,155 +6,154 @@
     <LinearLayout
         style="@style/CalculatorLinearLayout">
 
-    <RadioGroup
-        android:id="@+id/calc_func_time_radio"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3"
-        android:orientation="vertical"
-        android:layout_gravity="end"
-        >
+        <RadioGroup
+            android:id="@+id/calc_func_time_radio"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:orientation="vertical"
+            android:layout_gravity="end"
+            >
 
-        <RadioButton
-            style="@style/Calculator_text_unit"
-            android:id="@+id/calc_func_time_radio_speed"
-            android:text="@string/calc_conv_speed"
-            android:layoutDirection="rtl"
-            android:gravity="end|center_vertical"
-            android:textAlignment="textEnd"
-            android:layout_gravity="start"
-            android:buttonTint="?attr/backgroundColorHighlight"
-            />
+            <RadioButton
+                style="@style/Calculator_text_unit"
+                android:id="@+id/calc_func_time_radio_speed"
+                android:text="@string/calc_conv_speed"
+                android:layoutDirection="rtl"
+                android:gravity="end|center_vertical"
+                android:textAlignment="textEnd"
+                android:layout_gravity="start"
+                android:buttonTint="?attr/backgroundColorHighlight"
+                />
 
-        <RadioButton
-            style="@style/Calculator_text_unit"
-            android:id="@+id/calc_func_time_radio_dst"
-            android:text="@string/calc_conv_dist"
-            android:layoutDirection="rtl"
-            android:gravity="end|center_vertical"
-            android:textAlignment="textEnd"
-            android:layout_gravity="start"
-            android:buttonTint="?attr/backgroundColorHighlight"
-            />
+            <RadioButton
+                style="@style/Calculator_text_unit"
+                android:id="@+id/calc_func_time_radio_dst"
+                android:text="@string/calc_conv_dist"
+                android:layoutDirection="rtl"
+                android:gravity="end|center_vertical"
+                android:textAlignment="textEnd"
+                android:layout_gravity="start"
+                android:buttonTint="?attr/backgroundColorHighlight"
+                />
 
-        <RadioButton
-            style="@style/Calculator_text_unit"
-            android:id="@+id/calc_func_time_radio_time"
-            android:text="@string/calc_func_time_"
-            android:layoutDirection="rtl"
-            android:gravity="center_vertical|end"
-            android:textAlignment="textEnd"
-            android:layout_gravity="start"
-            android:buttonTint="?attr/backgroundColorHighlight"
-            android:layout_height="match_parent" />
+            <RadioButton
+                style="@style/Calculator_text_unit"
+                android:id="@+id/calc_func_time_radio_time"
+                android:text="@string/calc_func_time_"
+                android:layoutDirection="rtl"
+                android:gravity="center_vertical|end"
+                android:textAlignment="textEnd"
+                android:layout_gravity="start"
+                android:buttonTint="?attr/backgroundColorHighlight"
+                android:layout_height="match_parent" />
 
-    </RadioGroup>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="0.7"
-        >
+        </RadioGroup>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
-
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.65"
+            >
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:orientation="vertical">
+                android:weightSum="1"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
 
-                <EditText
-                    android:id="@+id/calc_unit_text_time_s"
-                    style="@style/Calculator_edit_text_field"
-                    />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/calc_unit_text_time_d"
-                    style="@style/Calculator_edit_text_field"
-                    />
+
+                    <EditText
+                        android:id="@+id/calc_unit_text_time_s"
+                        style="@style/Calculator_edit_text_field"
+                        />
+
+                    <EditText
+                        android:id="@+id/calc_unit_text_time_d"
+                        style="@style/Calculator_edit_text_field"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="0.4">
+
+                    <Button
+                        android:id="@+id/calc_func_time_s_btn"
+                        style="@style/Calculator_button_unit"
+                        android:text="@string/calc_unit_kmh"
+                        />
+
+                    <Button
+                        android:id="@+id/calc_func_time_d_btn"
+                        style="@style/Calculator_button_unit"
+                        android:text="@string/calc_unit_km" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="0.4">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/calc_field_margin"
+                android:gravity="center">
 
-                <Button
-                    android:id="@+id/calc_func_time_s_btn"
-                    style="@style/Calculator_button_unit"
-                    android:text="@string/calc_unit_kmh"
+                <NumberPicker
+                    android:id="@+id/calc_unit_time_pick_h"
+                    style="@style/NumberPickerStyle"
                     />
 
-                <Button
-                    android:id="@+id/calc_func_time_d_btn"
-                    style="@style/Calculator_button_unit"
-                    android:text="@string/calc_unit_km" />
+                <TextView
+                    style="@style/Calculator_text_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/calc_unit_h"
+                    android:textStyle="bold" />
+
+                <NumberPicker
+                    android:id="@+id/calc_unit_time_pick_min"
+                    style="@style/NumberPickerStyle"
+                    />
+
+                <TextView
+                    style="@style/Calculator_text_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/calc_unit_min"
+                    android:textStyle="bold" />
+
+
+                <NumberPicker
+                    android:id="@+id/calc_unit_time_pick_s"
+                    style="@style/NumberPickerStyle"
+                    />
+
+                <TextView
+                    style="@style/Calculator_text_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/calc_unit_sec"
+                    android:textStyle="bold" />
+
 
             </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/calc_field_margin"
-            android:gravity="center">
-
-            <NumberPicker
-                android:id="@+id/calc_unit_time_pick_h"
-                style="@style/NumberPickerStyle"
-                />
-
-            <TextView
-                style="@style/Calculator_text_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/calc_unit_h"
-                android:textStyle="bold" />
-
-            <NumberPicker
-                android:id="@+id/calc_unit_time_pick_min"
-                style="@style/NumberPickerStyle"
-                />
-
-            <TextView
-                style="@style/Calculator_text_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/calc_unit_min"
-                android:textStyle="bold" />
-
-
-            <NumberPicker
-                android:id="@+id/calc_unit_time_pick_s"
-                style="@style/NumberPickerStyle"
-                />
-
-            <TextView
-                style="@style/Calculator_text_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/calc_unit_sec"
-                android:textStyle="bold" />
-
 
         </LinearLayout>
 
     </LinearLayout>
 
-
-
-
-</LinearLayout></ScrollView>
+</ScrollView>

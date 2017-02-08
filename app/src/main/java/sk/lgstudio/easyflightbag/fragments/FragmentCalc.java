@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -63,7 +64,7 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
 
     private int openedViewId = idMenu[0];
     private int openedView = 0;
-    private LinearLayout frame;
+    private FrameLayout frame;
 
     public File folder;
     public SharedPreferences prefs;
@@ -86,7 +87,7 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
             menu.add(tv);
         }
 
-        frame = (LinearLayout) view.findViewById(R.id.calc_frame);
+        frame = (FrameLayout) view.findViewById(R.id.calc_frame);
 
         for (int id: idLayout){
             View v = inflater.inflate(id, frame, false);

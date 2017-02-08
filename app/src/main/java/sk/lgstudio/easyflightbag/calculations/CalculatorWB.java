@@ -17,8 +17,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.dialogs.AirplaneEditorDialog;
