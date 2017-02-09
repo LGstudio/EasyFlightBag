@@ -21,6 +21,8 @@
         <attr name="backgroundSelected" format="color"/>
 
         <attr name="greenColor" format="color"/>
+        <attr name="redColor" format="color"/>
+        <attr name="orangeColor" format="color"/>
 
 
 

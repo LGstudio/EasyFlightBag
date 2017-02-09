@@ -52,7 +52,6 @@
     <string name="country_hu">Hungary</string>
 
     <string name="chk_menu">Checklists</string>
-    <string name="chk_no_airplane"></string>
     <string name="chk_add_airplane">Add new airplane</string>
     <string name="chk_plane_exists_toast">Airplane already exists</string>
     <string name="chk_plane_delete_toast">Airplane deleted</string>
@@ -135,8 +134,20 @@
     <string name="calc_name">Name</string>
     <string name="calc_density">Density</string>
     <string name="calc_fuel_oil">Fuel/Oil</string>
+    <string name="calc_fuel_consumption">Fuel consumption</string>
     <string name="calc_fly_time">Fly time</string>
     <string name="calc_calculate">Calculate</string>
+
+    <string name="calc_warning_tank">Add at least 1 fuel tank to save</string>
+    <string name="calc_warning_weight">Add at least 1 additional weight to save</string>
+    <string name="calc_warning_limit">Add at least 3 c.g. limits to save</string>
+    <string name="calc_warning_saved">Airplane saved</string>
+    <string name="calc_warning_save_error">Error saving dat</string>
+    <string name="calc_warning_notfilled">Fill all data before saving</string>
+    <string name="calc_warning">Warning:</string>
+    <string name="calc_warning_out_of_fuel">Not enough fuel on board to fly</string>
+    <string name="calc_warning_takeoff_offlimit">Take off weight is out of limits</string>
+    <string name="calc_warning_landing_offlimit">Landing weight is out of limits</string>
 
     <string name="calc_unit_m" translatable="false">m</string>
     <string name="calc_unit_mm" translatable="false">mm</string>
@@ -144,7 +155,7 @@
     <string name="calc_unit_ft" translatable="false">ft</string>
     <string name="calc_unit_nmi" translatable="false">nm</string>
     <string name="calc_unit_mi" translatable="false">mi</string>
-    <string name="calc_unit_yd">yd</string>
+    <string name="calc_unit_yd" translatable="false">yd</string>
     <string name="calc_unit_in" translatable="false">in</string>
     <string name="calc_unit_kmh" translatable="false">km/h</string>
     <string name="calc_unit_kn" translatable="false">knots</string>

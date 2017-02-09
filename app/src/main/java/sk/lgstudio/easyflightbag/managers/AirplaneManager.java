@@ -23,6 +23,9 @@ public class AirplaneManager {
 
     public boolean loaded = false;
 
+    public int flightTimeH = 0;
+    public int flightTimeM = 0;
+
     public double cruise_sp = 0;
     public double climb_sp = 0;
     public double descent_sp = 0;

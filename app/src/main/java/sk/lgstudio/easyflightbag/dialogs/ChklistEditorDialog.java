@@ -97,9 +97,9 @@ public class ChklistEditorDialog extends Dialog implements View.OnClickListener 
         if (textTitle.getText().length() == 0){
             textTitle.setHint(getContext().getString(R.string.list_name_mandatory));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                textTitle.setHintTextColor(getContext().getColor(R.color.colorRedLight));
+                textTitle.setHintTextColor(getContext().getColor(R.color.colorRed));
             else
-                textTitle.setHintTextColor(getContext().getResources().getColor(R.color.colorRedLight));
+                textTitle.setHintTextColor(getContext().getResources().getColor(R.color.colorRed));
         }
         else{
             try {

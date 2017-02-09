@@ -366,7 +366,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
         }
 
         if (folderActual == null) {
-            airplaneType.setText(getString(R.string.chk_no_airplane));
+            airplaneType.setText("");
             createNew.setVisibility(View.GONE);
         }
         else {

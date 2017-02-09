@@ -207,15 +207,15 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
     private void saveAirplane(){
         if (tanks.size() < 1){
-            Toast.makeText(getContext(), "Add at least 1 fuel tank to save", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.calc_warning_tank), Toast.LENGTH_SHORT).show();
             return;
         }
         if (weights.size() < 1){
-            Toast.makeText(getContext(), "Add at least 1 additional weight to save", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.calc_warning_weight), Toast.LENGTH_SHORT).show();
             return;
         }
         if (limits.size() < 3){
-            Toast.makeText(getContext(), "Add at least 3 c.g. limits to save", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.calc_warning_limit), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -260,13 +260,13 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
             if (airplane.saveFile()){
                 airplane.loaded = true;
-                Toast.makeText(getContext(), "Airplane saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.calc_warning_saved), Toast.LENGTH_SHORT).show();
             }
             else
-                Toast.makeText(getContext(), "Error saving data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.calc_warning_save_error), Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(getContext(), "Fill all data before saving", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.calc_warning_notfilled), Toast.LENGTH_SHORT).show();
         }
     }
 

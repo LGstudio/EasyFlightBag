@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/tab_padding"
+    android:background="?attr/backgroundColor">
+
+
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/wb_chart"
+        android:layout_width="match_parent"
+        android:layout_height="400dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:paddingTop="@dimen/row_padding"
+        android:paddingBottom="@dimen/row_padding">
+
+        <TextView
+            android:id="@+id/wb_flight_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textColor="?attr/primaryTextColor"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/wb_flight_fuel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textColor="?attr/primaryTextColor"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:paddingTop="@dimen/row_padding"
+        android:paddingBottom="@dimen/row_padding">
+
+        <TextView
+            android:id="@+id/wb_flight_takeoff_weight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textColor="?attr/primaryTextColor"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/wb_flight_takeoff_arm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textColor="?attr/primaryTextColor"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:paddingTop="@dimen/row_padding"
+        android:paddingBottom="@dimen/row_padding">
+
+        <TextView
+            android:id="@+id/wb_flight_landing_weight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textColor="?attr/primaryTextColor"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/wb_flight_landing_arm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textColor="?attr/primaryTextColor"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/row_padding"
+        android:text="@string/calc_warning"
+        android:id="@+id/wb_flight_warning"
+        android:textColor="?attr/redColor"
+        android:textAllCaps="true"
+        android:textSize="@dimen/row_big_text"/>
+
+    <ImageButton
+        android:id="@+id/wb_close"
+        android:layout_width="match_parent"
+        android:background="?attr/primaryColor"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/row_padding"
+        android:src="@drawable/ic_done"
+        android:layout_marginTop="@dimen/row_height"
+        android:layout_marginBottom="@dimen/row_padding" />
+
+
+
+</LinearLayout>

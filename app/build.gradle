@@ -32,4 +32,5 @@ dependencies {
     compile 'com.diogobernardino:williamchart:2.0.1'
     compile 'org.jsoup:jsoup:1.9.2'
     compile 'com.github.barteksc:android-pdf-viewer:2.4.0'
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
 }

@@ -26,7 +26,8 @@
         <item name="backgroundSnackbar">@color/colorGray</item>
         <item name="backgroundSelected">@color/colorPrimarySelectLight</item>
         <item name="greenColor">@color/colorGreen</item>
-
+        <item name="redColor">@color/colorRed</item>
+        <item name="orangeColor">@color/colorOrange</item>
     </style>
 
     <!-- Base application theme. DARK -->
@@ -55,7 +56,8 @@
         <item name="backgroundSnackbar">@color/colorDark</item>
         <item name="backgroundSelected">@color/colorPrimarySelectDark</item>
         <item name="greenColor">@color/colorGreenDark</item>
-
+        <item name="redColor">@color/colorRedDark</item>
+        <item name="orangeColor">@color/colorOrangeDark</item>
 
     </style>
 

@@ -25,6 +25,10 @@
     <color name="colorBlueLight">#a5d1ff</color>
     <color name="colorBlue">#5091d9</color>
 
-    <color name="colorRed">#d95950</color>
-    <color name="colorRedLight">#ec948e</color>
+    <color name="colorRedDark">#cc362c</color>
+    <color name="colorRed">#e97169</color>
+
+    <color name="colorOrangeDark">#d0742e</color>
+    <color name="colorOrange">#fcb680</color>
+
 </resources>

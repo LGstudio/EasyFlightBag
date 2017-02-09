@@ -21,13 +21,14 @@ import java.io.File;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.dialogs.AirplaneEditorDialog;
 import sk.lgstudio.easyflightbag.dialogs.AirplaneSelectorDialog;
+import sk.lgstudio.easyflightbag.dialogs.WbGraphDialog;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 
 /**
  * Created by LGstudio on 2017-01-31.
  */
 
-public class CalculatorWB extends Calculator implements View.OnClickListener, DialogInterface.OnCancelListener {
+public class CalculatorWB extends Calculator implements View.OnClickListener, DialogInterface.OnCancelListener, NumberPicker.OnValueChangeListener {
 
     private File selectedPlane = null;
     private File parentFolder = null;
@@ -75,12 +76,13 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         airplaneEditor.setOnClickListener(this);
 
         scrollView = (ScrollView) v.findViewById(R.id.ap_wb_scroll_layout);
-        flightTimeH = (NumberPicker) v.findViewById(R.id.apc_wb_time_pick_h);
+        flightTimeH = (NumberPicker) v.findViewById(R.id.ac_wb_time_pick_h);
         flightTimeM = (NumberPicker) v.findViewById(R.id.ap_wb_time_pick_min);
         flightTimeH.setMinValue(0);
         flightTimeH.setMaxValue(99);
         flightTimeM.setMinValue(0);
         flightTimeM.setMaxValue(59);
+        flightTimeH.setOnValueChangedListener(this);
 
         tableFuel = (TableLayout) v.findViewById(R.id.ap_wb_table_tanks);
         tableWeights = (TableLayout) v.findViewById(R.id.ap_wb_table_weights);
@@ -105,9 +107,21 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
                 createAirplaneEditorDialog();
                 break;
             case R.id.ap_wb_calc_btn:
-                // TODO: calculate
+                createGraphDialog();
                 break;
         }
+    }
+
+
+    /**
+     * Creates W&B graph Dialog
+     */
+    private void createGraphDialog(){
+        WbGraphDialog dialog = new WbGraphDialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_wb_graph);
+        dialog.loadContent(airplane);
+        dialog.show();
     }
 
     /**
@@ -232,6 +246,18 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
             airplaneId.setText("");
             airplaneEditor.setVisibility(View.GONE);
             scrollView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        switch (picker.getId()){
+            case R.id.ac_wb_time_pick_h:
+                airplane.flightTimeH = newVal;
+                break;
+            case R.id.ap_wb_time_pick_min:
+                airplane.flightTimeM = newVal;
+                break;
         }
     }
 }
