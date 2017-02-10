@@ -198,6 +198,7 @@
         <item name="android:padding">@dimen/row_padding</item>
         <item name="android:maxLines">1</item>
         <item name="android:inputType">numberDecimal</item>
+        <item name="android:selectAllOnFocus">true</item>
     </style>
 
     <style name="Block_edit_text_style">
@@ -208,6 +209,7 @@
         <item name="android:maxLines">1</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:selectAllOnFocus">true</item>
     </style>
 
     <style name="NumberPickerStyle">

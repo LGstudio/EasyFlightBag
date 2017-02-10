@@ -137,7 +137,12 @@
     <string name="calc_fuel_consumption">Fuel consumption</string>
     <string name="calc_fly_time">Fly time</string>
     <string name="calc_calculate">Calculate</string>
+    <string name="calc_takeoff">Takeoff</string>
+    <string name="calc_landing">Landing</string>
+    <string name="calc_out_of_fuel">Out of fuel</string>
+    <string name="calc_switch">Twitch to</string>
 
+    <string name="calc_note_tank">Note: The W&amp;B calculator will calculate by draining the lower positioned fuel tanks in the list first.</string>
     <string name="calc_warning_tank">Add at least 1 fuel tank to save</string>
     <string name="calc_warning_weight">Add at least 1 additional weight to save</string>
     <string name="calc_warning_limit">Add at least 3 c.g. limits to save</string>
@@ -145,9 +150,12 @@
     <string name="calc_warning_save_error">Error saving dat</string>
     <string name="calc_warning_notfilled">Fill all data before saving</string>
     <string name="calc_warning">Warning:</string>
+    <string name="calc_warning_oflimit">Some values are filled off-limit</string>
     <string name="calc_warning_out_of_fuel">Not enough fuel on board to fly</string>
     <string name="calc_warning_takeoff_offlimit">Take off weight is out of limits</string>
     <string name="calc_warning_landing_offlimit">Landing weight is out of limits</string>
+    <string name="calc_warning_set_time">Set flight time to proceed</string>
+
 
     <string name="calc_unit_m" translatable="false">m</string>
     <string name="calc_unit_mm" translatable="false">mm</string>
@@ -179,6 +187,7 @@
     <string name="calc_unit_f" translatable="false">F</string>
     <string name="calc_unit_k" translatable="false">k</string>
     <string name="calc_unit_kg_m3" translatable="false">kg/m^3</string>
+    <string name="calc_unit_kg_l" translatable="false">kg/l</string>
     <string name="calc_unit_h" translatable="false">h</string>
     <string name="calc_unit_min" translatable="false">m</string>
     <string name="calc_unit_sec" translatable="false">s</string>

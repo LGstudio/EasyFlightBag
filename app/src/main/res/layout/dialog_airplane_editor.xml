@@ -185,7 +185,7 @@
 
                 <TextView
                     style="@style/Block_text_style"
-                    android:text="@string/calc_unit_kg_m3"
+                    android:text="@string/calc_unit_kg_l"
                     android:id="@+id/ap_edit_perf_fuel_dens_txt"
                     />
 
@@ -453,6 +453,13 @@
                 </TableRow>
 
             </TableLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/calc_note_tank"
+                android:layout_margin="@dimen/row_padding"
+                android:textColor="?attr/fadedTextColor"/>
 
         </LinearLayout>
 

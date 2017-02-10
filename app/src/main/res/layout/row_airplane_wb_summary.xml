@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Airplane_editor_table_row_layout">
+
+    <TextView
+        style="@style/Block_edit_text_style"
+        android:id="@+id/wb_sum_title"
+        />
+
+    <TextView
+        style="@style/Block_edit_text_number_style"
+        android:id="@+id/wb_sum_weight"
+        android:maxLines="1"/>
+
+    <TextView
+        style="@style/Block_edit_text_number_style"
+        android:id="@+id/wb_sum_arm"
+        android:maxLines="1"/>
+
+</TableRow>

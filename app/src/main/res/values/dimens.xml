@@ -32,4 +32,5 @@
     <dimen name="aip_list_margin">12dp</dimen>
     <dimen name="row_big_height">72dp</dimen>
     <dimen name="list_icon_margin">12dp</dimen>
+    <dimen name="graph_height">400dp</dimen>
 </resources>

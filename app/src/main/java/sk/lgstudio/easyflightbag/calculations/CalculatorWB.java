@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +17,8 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.File;
 
 import sk.lgstudio.easyflightbag.R;
@@ -28,7 +31,7 @@ import sk.lgstudio.easyflightbag.managers.AirplaneManager;
  * Created by LGstudio on 2017-01-31.
  */
 
-public class CalculatorWB extends Calculator implements View.OnClickListener, DialogInterface.OnCancelListener, NumberPicker.OnValueChangeListener {
+public class CalculatorWB extends Calculator implements View.OnClickListener, DialogInterface.OnCancelListener {
 
     private File selectedPlane = null;
     private File parentFolder = null;
@@ -82,7 +85,6 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         flightTimeH.setMaxValue(99);
         flightTimeM.setMinValue(0);
         flightTimeM.setMaxValue(59);
-        flightTimeH.setOnValueChangedListener(this);
 
         tableFuel = (TableLayout) v.findViewById(R.id.ap_wb_table_tanks);
         tableWeights = (TableLayout) v.findViewById(R.id.ap_wb_table_weights);
@@ -117,11 +119,38 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
      * Creates W&B graph Dialog
      */
     private void createGraphDialog(){
+        boolean isOk = true;
+
+        for (AirplaneManager.Tanks t: airplane.tanks){
+            if (t.actual > t.max || t.actual < t.unus){
+                isOk = false;
+            }
+        }
+        for (AirplaneManager.Weights w: airplane.additional_weight){
+            if (w.max > 0 && w.actual > w.max){
+                isOk = false;
+            }
+        }
+
+        if (!isOk){
+            Toast.makeText(context, context.getString(R.string.calc_warning_oflimit), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (flightTimeH.getValue() == 0 && flightTimeM.getValue() == 0){
+            Toast.makeText(context, context.getString(R.string.calc_warning_set_time), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        airplane.flightTimeH = flightTimeH.getValue();
+        airplane.flightTimeM = flightTimeM.getValue();
+
         WbGraphDialog dialog = new WbGraphDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_wb_graph);
         dialog.loadContent(airplane);
         dialog.show();
+
+
     }
 
     /**
@@ -205,7 +234,10 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
 
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            t.actual = Double.parseDouble(s.toString());
+                            if (s.length() > 0)
+                                t.actual = Double.parseDouble(s.toString());
+                            else
+                                t.actual = 0;
                         }
 
                         @Override
@@ -229,7 +261,10 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
 
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            w.actual = Double.parseDouble(s.toString());
+                            if (s.length() > 0)
+                                w.actual = Double.parseDouble(s.toString());
+                            else
+                                w.actual = 0;
                         }
 
                         @Override
@@ -246,18 +281,6 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
             airplaneId.setText("");
             airplaneEditor.setVisibility(View.GONE);
             scrollView.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        switch (picker.getId()){
-            case R.id.ac_wb_time_pick_h:
-                airplane.flightTimeH = newVal;
-                break;
-            case R.id.ap_wb_time_pick_min:
-                airplane.flightTimeM = newVal;
-                break;
         }
     }
 }
