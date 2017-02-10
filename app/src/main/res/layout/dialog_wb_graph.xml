@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/tab_padding"
-    android:background="?attr/backgroundColor">
+    android:background="?attr/backgroundColor"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -85,19 +86,17 @@
 
             </TableLayout>
 
-
-            <ImageButton
-                android:id="@+id/wb_close"
-                android:layout_width="match_parent"
-                android:background="?attr/primaryColor"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/row_padding"
-                android:src="@drawable/ic_done"
-                android:layout_marginTop="@dimen/row_height"
-                android:layout_marginBottom="@dimen/row_padding" />
-
         </LinearLayout>
 
     </ScrollView>
 
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/wb_close"
+        android:layout_width="match_parent"
+        android:background="?attr/primaryColor"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/row_padding"
+        android:src="@drawable/ic_done"
+        android:layout_marginTop="@dimen/row_height" />
+
+</LinearLayout>

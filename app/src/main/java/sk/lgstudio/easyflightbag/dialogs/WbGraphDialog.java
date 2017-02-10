@@ -84,8 +84,14 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
         double landingWeight = baseWeight;
         double landingMoment = baseMoment;
 
+        boolean switched = false;
         for (int i = airplane.tanks.size(); i > 0; i--){
             if (consumptionLeft <= 0) break;
+
+            if (switched){
+                switched = false;
+                fuelSwitch.add(i-1);
+            }
 
             AirplaneManager.Tanks t = airplane.tanks.get(i-1);
 
@@ -104,7 +110,7 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
                 if (consumedFuel > 0){
                     double emptyArm = landingMoment/landingWeight;
                     fuelPoints.add(new PointValue((float) emptyArm, (float) landingWeight));
-                    fuelSwitch.add(i);
+                    switched = true;
                 }
             }
             else { // tank contains enough fuel
