@@ -313,6 +313,7 @@
             <TableLayout
                 style="@style/Airplane_editor_table_layout"
                 android:weightSum="5"
+                android:stretchColumns="0,1,2,3"
                 android:id="@+id/ap_edit_pref_table_tanks">
 
                 <TableRow
@@ -321,7 +322,16 @@
                     <TextView
                         style="@style/Block_title_text_style"
                         android:text="@string/calc_fuel_tank"
-                        android:layout_weight="4"/>
+                        />
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        />
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        />
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        />
 
                     <ImageButton
                         style="@style/Block_button_style"
@@ -366,6 +376,7 @@
             <TableLayout
                 style="@style/Airplane_editor_table_layout"
                 android:weightSum="4"
+                android:stretchColumns="0,1,2"
                 android:id="@+id/ap_edit_pref_table_weights">
 
                 <TableRow
@@ -373,8 +384,13 @@
 
                     <TextView
                         style="@style/Block_title_text_style"
-                        android:text="@string/calc_additional_weight"
-                        android:layout_weight="3"/>
+                        android:text="@string/calc_additional_weight"/>
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        />
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        />
 
                     <ImageButton
                         style="@style/Block_button_style"
@@ -414,6 +430,7 @@
             <TableLayout
                 style="@style/Airplane_editor_table_layout"
                 android:weightSum="3"
+                android:stretchColumns="0,1"
                 android:id="@+id/ap_edit_pref_table_limits">
 
                 <TableRow
@@ -421,8 +438,10 @@
 
                     <TextView
                         style="@style/Block_title_text_style"
-                        android:text="@string/calc_cg_limits"
-                        android:layout_weight="2"/>
+                        android:text="@string/calc_cg_limits"/>
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        />
 
                     <ImageButton
                         style="@style/Block_button_style"

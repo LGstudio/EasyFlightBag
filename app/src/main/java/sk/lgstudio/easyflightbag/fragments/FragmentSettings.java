@@ -46,15 +46,13 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
     private ArrayList<TextView> aip_txt;
     private ArrayList<ImageButton> aip_btn;
 
-    private Switch nightSwith;
-
     public MainActivity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        nightSwith = (Switch) view.findViewById(R.id.set_night_switch);
+        Switch nightSwith = (Switch) view.findViewById(R.id.set_night_switch);
         nightSwith.setChecked(activity.nightMode);
         nightSwith.setOnCheckedChangeListener(this);
 

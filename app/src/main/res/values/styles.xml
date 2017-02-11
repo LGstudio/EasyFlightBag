@@ -182,10 +182,12 @@
     <style name="Block_button_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">?attr/backgroundColorHighlightLight</item>
+        <item name="android:background">@drawable/bck_transparent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:maxLines">1</item>
         <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:layout_gravity">end|right</item>
+        <item name="android:gravity">end|right</item>
     </style>
 
     <style name="Block_edit_text_number_style">

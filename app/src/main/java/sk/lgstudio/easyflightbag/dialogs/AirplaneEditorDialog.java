@@ -152,14 +152,20 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
     }
 
     private void addFuelTank(String n, double a, double c, double u){
-        RowTank row = new RowTank();
+        final RowTank row = new RowTank();
         row.row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_editor_tank, null);
         row.name = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_title);
         row.arm = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_arm);
         row.cap = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_capacity);
         row.unu = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_unu);
         row.del = (ImageButton) row.row.findViewById(R.id.ap_edit_fuel_row_del);
-        //row.del.setOnClickListener();
+        row.del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tableTanks.removeView(row.row);
+                tanks.remove(row);
+            }
+        });
 
         row.name.setText(n);
         row.arm.setText(String.valueOf(a));
@@ -171,13 +177,19 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
     }
 
     private void addWeights(String n, double a, double m) {
-        RowWeight row = new RowWeight();
+        final RowWeight row = new RowWeight();
         row.row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_editor_weights, null);
         row.name = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_title);
         row.arm = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_arm);
         row.max = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_max);
         row.del = (ImageButton) row.row.findViewById(R.id.ap_edit_weight_row_del);
-        //row.del.setOnClickListener(); TODO: delete row (3x)
+        row.del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tableWeights.removeView(row.row);
+                weights.remove(row);
+            }
+        });
 
         row.name.setText(n);
         row.arm.setText(String.valueOf(a));
@@ -188,12 +200,18 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
     }
 
     private void addLimits(double a, double w) {
-        RowLimit row = new RowLimit();
+        final RowLimit row = new RowLimit();
         row.row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_editor_limits, null);
         row.arm = (EditText) row.row.findViewById(R.id.ap_edit_limit_row_arm);
         row.weight = (EditText) row.row.findViewById(R.id.ap_edit_limit_row_weight);
         row.del = (ImageButton) row.row.findViewById(R.id.ap_edit_limit_row_del);
-        //row.del.setOnClickListener();
+        row.del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tableLimits.removeView(row.row);
+                limits.remove(row);
+            }
+        });
 
         row.arm.setText(String.valueOf(a));
         row.weight.setText(String.valueOf(w));

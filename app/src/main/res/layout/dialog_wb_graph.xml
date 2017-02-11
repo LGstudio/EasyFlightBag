@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/tab_padding"
-    android:background="?attr/backgroundColor"
+    android:background="?attr/backgroundDarkColor"
     android:orientation="vertical">
 
     <ScrollView
@@ -16,48 +15,40 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/row_padding"
-                android:text="@string/calc_warning"
+                style="@style/Airplane_editor_table_layout"
                 android:id="@+id/wb_flight_warning"
                 android:textColor="?attr/redColor"
                 android:textAllCaps="true"
                 android:textSize="@dimen/row_big_text"/>
 
-            <lecho.lib.hellocharts.view.LineChartView
-                android:id="@+id/wb_chart"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/graph_height" />
-
-
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Airplane_editor_table_layout"
                 android:orientation="horizontal"
-                android:weightSum="2"
-                android:paddingTop="@dimen/row_padding"
-                android:paddingBottom="@dimen/row_padding">
+                android:weightSum="2">
 
                 <TextView
                     android:id="@+id/wb_flight_time"
                     style="@style/Block_text_style"
+                    android:textStyle="bold"
                     />
 
                 <TextView
                     android:id="@+id/wb_flight_fuel"
                     style="@style/Block_text_style"
+                    android:textStyle="bold"
                     />
 
             </LinearLayout>
 
+            <lecho.lib.hellocharts.view.LineChartView
+                android:id="@+id/wb_chart"
+                style="@style/Airplane_editor_table_layout"
+                android:layout_height="@dimen/graph_height" />
+
             <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Airplane_editor_table_layout"
                 android:id="@+id/wb_flight_summary"
-                android:paddingTop="@dimen/row_padding"
-                android:paddingBottom="@dimen/row_padding">
+                >
 
                 <TableRow
                     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -96,6 +87,9 @@
         android:background="?attr/primaryColor"
         android:layout_height="wrap_content"
         android:padding="@dimen/row_padding"
+        android:layout_marginLeft="@dimen/row_padding"
+        android:layout_marginRight="@dimen/row_padding"
+        android:layout_marginBottom="@dimen/row_padding"
         android:src="@drawable/ic_done"
         android:layout_marginTop="@dimen/row_height" />
 

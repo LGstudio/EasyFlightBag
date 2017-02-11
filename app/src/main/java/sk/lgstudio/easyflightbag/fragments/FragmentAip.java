@@ -63,8 +63,6 @@ public class FragmentAip extends Fragment {
         //}
         fillView();
 
-
-
         return view;
     }
 
