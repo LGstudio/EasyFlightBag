@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/backgroundDarkColor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/row_padding">
+
+    <ImageButton
+        android:id="@+id/wb_close"
+        android:layout_width="match_parent"
+        android:background="?attr/primaryColor"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/row_padding"
+        android:layout_marginLeft="@dimen/row_padding"
+        android:layout_marginRight="@dimen/row_padding"
+        android:src="@drawable/ic_done"
+        android:layout_marginTop="@dimen/row_padding"
+        android:layout_alignParentBottom="true"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_above="@id/wb_close">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,7 +62,7 @@
             <TableLayout
                 style="@style/Airplane_editor_table_layout"
                 android:id="@+id/wb_flight_summary"
-                >
+                android:layout_marginBottom="@dimen/row_padding">
 
                 <TableRow
                     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -81,16 +95,6 @@
 
     </ScrollView>
 
-    <ImageButton
-        android:id="@+id/wb_close"
-        android:layout_width="match_parent"
-        android:background="?attr/primaryColor"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/row_padding"
-        android:layout_marginLeft="@dimen/row_padding"
-        android:layout_marginRight="@dimen/row_padding"
-        android:layout_marginBottom="@dimen/row_padding"
-        android:src="@drawable/ic_done"
-        android:layout_marginTop="@dimen/row_height" />
 
-</LinearLayout>
+
+</RelativeLayout>

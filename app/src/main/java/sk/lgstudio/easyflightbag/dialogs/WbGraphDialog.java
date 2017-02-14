@@ -119,7 +119,6 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
                 landingMoment += fuelWeight * t.arm;
             }
             consumptionLeft -= consumedFuel;
-
         }
 
         // take off ----------------------------
@@ -132,7 +131,7 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
         summary.addView(createRow(getContext().getString(R.string.calc_takeoff), takeoffWeight, takeoffArm));
 
         // fuel --------------------------------
-        for (int i = 0 ; i < fuelPoints.size(); i++){
+        for (int i = 0 ; i < fuelSwitch.size(); i++){
             pointsCalculated.add(fuelPoints.get(i));
             String txtSwitch = getContext().getString(R.string.calc_switch) + " " + airplane.tanks.get(fuelSwitch.get(i)).name;
             summary.addView(createRow(txtSwitch, fuelPoints.get(i).getY(), fuelPoints.get(i).getX()));
@@ -231,7 +230,7 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
         chart.setLineChartData(data);
 
         if (isWarning)
-            txtWarning.setText(strWarning);
+            txtWarning.setText(strWarning.substring(0,strWarning.length()-1));
         else
             txtWarning.setVisibility(View.GONE);
 
