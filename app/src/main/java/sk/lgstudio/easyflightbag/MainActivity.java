@@ -53,9 +53,6 @@ public class MainActivity extends FragmentActivity {
 
     private TabMenu menu;
 
-    private ArrayList<Location> track = new ArrayList<>();
-    //private ArrayList<Location> route = new ArrayList<>();
-
     public SharedPreferences prefs;
     public boolean nightMode = false;
     public AIPManager aipManager;
@@ -210,7 +207,6 @@ public class MainActivity extends FragmentActivity {
     public void initView(){
         final TabFragmentAdapter fA = new TabFragmentAdapter(getSupportFragmentManager());
 
-        fHome.track = track;
         fA.addFragment(fHome);
         fCalc.prefs = prefs;
         fA.addFragment(fCalc);
@@ -258,6 +254,10 @@ public class MainActivity extends FragmentActivity {
         }
     };
 
+    /**
+     * reloads AIP data status in settings
+     * @param c
+     */
     public void aipDataChange(int c){
         if (menu.selected == MENU_SET){
             fSet.reloadAipData(c);

@@ -21,6 +21,7 @@
     <dimen name="big_text">32sp</dimen>
     <dimen name="row_big_text">20sp</dimen>
     <dimen name="row_small_text">16sp</dimen>
+    <dimen name="row_xsmall_text">12sp</dimen>
 
     <dimen name="panel_closed">44dp</dimen>
 

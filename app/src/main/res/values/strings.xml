@@ -212,4 +212,12 @@
     <string name="url_cz_ais_data" translatable="false">http://lis.rlp.cz/ais_data</string>
     <string name="url_at_aip" translatable="false">https://eaip.austrocontrol.at/</string>
 
+    <string name="no_gps">NO GPS</string>
+    <string name="no_net">NO INTERNET</string>
+    <string name="home_fl_plan">Flight plan</string>
+    <string name="home_gps_acc">GPS accuracy</string>
+    <string name="home_gps_speed">Speed</string>
+    <string name="home_gps_alt">Altitude</string>
+    <string name="home_gps_bear">Bearing</string>
+
 </resources>

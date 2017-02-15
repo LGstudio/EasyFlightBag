@@ -12,56 +12,64 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25"
-        android:id="@+id/home_panel_top"
-        android:orientation="vertical"
-        android:elevation="@dimen/elevation_8"
-        android:background="?attr/backgroundDarkColor"
-        >
+        android:layout_weight="0.7">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_start"
-            android:textAllCaps="true"
-            android:background="@drawable/bck_transparent"
-            android:id="@+id/home_button_start_stop"
-            android:layout_margin="@dimen/float_button_margin"
-            android:textColor="?attr/primaryTextColor"/>
-
-        <TextView
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/home_map_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="ELEVATION GRAPH AND DATA"
-            android:gravity="center"
-            android:id="@+id/home_data_test"/>
+            />
 
-        <ImageButton
-            android:id="@+id/home_panel_top_btn"
-            android:layout_width="@dimen/float_button_size"
-            android:layout_height="@dimen/float_button_size"
-            android:layout_alignParentBottom="true"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/home_nonet"
+            android:text="@string/no_net"
+            android:textSize="@dimen/big_text"
+            android:textColor="?attr/redColor"
+            android:layout_margin="@dimen/bar_spacing"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/home_nogps"
+            android:text="@string/no_gps"
+            android:textSize="@dimen/big_text"
+            android:textColor="?attr/redColor"
+            android:layout_below="@id/home_nonet"
+            android:layout_margin="@dimen/bar_spacing"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_expand_up_inv"
-            android:background="@drawable/bck_transparent"/>
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_fl_plan"
+                android:background="?attr/backgroundDarkColor"
+                android:padding="@dimen/row_padding"
+                android:textColor="?attr/primaryTextColor"
+                android:id="@+id/home_fl_plan_btn" />
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/home_plan_list"
+                android:visibility="gone"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
-
-
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/home_map_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        />
-
-
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25"
+        android:layout_weight="0.3"
         android:id="@+id/home_panel_bottom"
         android:orientation="vertical"
         android:elevation="@dimen/elevation_8"
@@ -71,17 +79,89 @@
             android:id="@+id/home_panel_bottom_btn"
             android:layout_width="@dimen/float_button_size"
             android:layout_height="@dimen/float_button_size"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
             android:src="@drawable/ic_expand_down_inv"
-            android:background="@drawable/bck_transparent"/>
+            android:background="@drawable/bck_transparent"
+            android:gravity="end|center_vertical"
+            android:layout_gravity="end|center_vertical"
+            android:layout_alignParentEnd="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="4"
+            android:orientation="horizontal"
+            android:id="@+id/home_gps_info_panel"
+            android:layout_marginEnd="@dimen/float_button_size">
+
+            <LinearLayout style="@style/Home_gps_data_layout">
+
+                <TextView
+                    style="@style/Home_gps_data_text_small"
+                    android:text="@string/home_gps_acc"/>
+
+                <TextView
+                    style="@style/Home_gps_data_text_big"
+                    android:text="12"/>
+
+                <TextView
+                    style="@style/Home_gps_data_text_small"
+                    android:text="@string/calc_unit_m"/>
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/Home_gps_data_layout">
+
+                <TextView
+                    style="@style/Home_gps_data_text_small"
+                    android:text="@string/home_gps_speed"/>
+
+                <TextView
+                    style="@style/Home_gps_data_text_big"
+                    android:text="12"/>
+
+                <TextView
+                    style="@style/Home_gps_data_text_small"
+                    android:text="@string/calc_unit_kn"/>
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/Home_gps_data_layout">
+
+                <TextView
+                    style="@style/Home_gps_data_text_small"
+                    android:text="@string/home_gps_alt"/>
+
+                <TextView
+                    style="@style/Home_gps_data_text_big"
+                    android:text="12"/>
+
+                <TextView
+                    style="@style/Home_gps_data_text_small"
+                    android:text="@string/calc_unit_m"/>
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/Home_gps_data_layout">
+                <TextView
+                    style="@style/Home_gps_data_text_small"
+                    android:text="@string/home_gps_bear"/>
+
+                <TextView
+                    style="@style/Home_gps_data_text_big"
+                    android:text="12"/>
 
 
-        <TextView
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <lecho.lib.hellocharts.view.LineChartView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="WARNIGS"
-            android:gravity="center"/>
+            android:layout_below="@id/home_gps_info_panel"
+            android:id="@+id/home_elevation_graph"
+            android:padding="@dimen/row_padding"
+            />
 
     </RelativeLayout>
 </LinearLayout>

@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 
+import lecho.lib.hellocharts.view.LineChartView;
 import sk.lgstudio.easyflightbag.R;
 
 /**
@@ -35,20 +36,17 @@ import sk.lgstudio.easyflightbag.R;
  */
 public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener {
 
-    private RelativeLayout panelTop;
     private RelativeLayout panelBottom;
     private LinearLayout fullLayout;
-    private ImageButton panelTopBtn;
-    private ImageButton panelBottomBtn;
-    private Button startStop;
-    private TextView textViewTest;
+    private ImageButton btnPanelBottom;
+    private Button btnFlightPlan;
+    private LineChartView elevationChart;
+    private LinearLayout infoPanel;
 
     protected MapView mapLayout;
     protected GoogleMap map;
 
-    private boolean isPanelTop = true;
-    private boolean isPanelBottom = true;
-    private int isTracking = 0; // 0 - cleared | 1 - tracking | 2 - stopped
+    private boolean isElevationGraphVisible = true;
     private boolean mapReady = false;
     private boolean mapFollow = false;
     private float mapZoomLevel = 14f;
@@ -56,47 +54,55 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private LatLng mapTargetArea = null;
     private BitmapDescriptor mapLocationBmp = null;
 
-    public ArrayList<Location> track;
-    //public ArrayList<Location> route;
 
+    /**
+     * Reload view settings after fragment reopened
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            isPanelTop = savedInstanceState.getBoolean("PTop");
-            isPanelBottom = savedInstanceState.getBoolean("PBottom");
+            isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
             if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
         }
     }
 
+    /**
+     * Save view settings befor closing fragment
+     * @param outState
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putBoolean("PTop", isPanelTop);
-        outState.putBoolean("PBottom", isPanelBottom);
+        outState.putBoolean("PBottom", isElevationGraphVisible);
 
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Create layout and load default settings for the layout
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        textViewTest = (TextView) view.findViewById(R.id.home_data_test);
+        btnPanelBottom = (ImageButton) view.findViewById(R.id.home_panel_bottom_btn);
+        btnFlightPlan = (Button) view.findViewById(R.id.home_fl_plan_btn);
 
-        panelTopBtn = (ImageButton) view.findViewById(R.id.home_panel_top_btn);
-        panelBottomBtn = (ImageButton) view.findViewById(R.id.home_panel_bottom_btn);
-        startStop = (Button) view.findViewById(R.id.home_button_start_stop);
-        setTrackingButton();
-
-        panelTopBtn.setOnClickListener(this);
-        panelBottomBtn.setOnClickListener(this);
-        startStop.setOnClickListener(this);
+        btnPanelBottom.setOnClickListener(this);
+        btnFlightPlan.setOnClickListener(this);
 
         fullLayout = (LinearLayout) view.findViewById(R.id.home_screen);
-        panelTop = (RelativeLayout) view.findViewById(R.id.home_panel_top);
         panelBottom = (RelativeLayout) view.findViewById(R.id.home_panel_bottom);
+        infoPanel = (LinearLayout) view.findViewById(R.id.home_gps_info_panel);
+
+        elevationChart = (LineChartView) view.findViewById(R.id.home_elevation_graph);
 
         mapLayout = (MapView) view.findViewById(R.id.home_map_view);
         mapLayout.onCreate(savedInstanceState);
@@ -106,13 +112,18 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         return view;
     }
 
+    /**
+     * Fragment resumed
+     */
     @Override
     public void onResume() {
         super.onResume();
         if (mapLayout != null) mapLayout.onResume();
-        //changePanelState(isPanelTop,isPanelBottom);
     }
 
+    /**
+     * Fragment paused
+     */
     @Override
     public void onPause() {
         if (mapLayout != null) mapLayout.onPause();
@@ -120,6 +131,9 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         super.onPause();
     }
 
+    /**
+     * Destroy fragment
+     */
     @Override
     public void onDestroy() {
         if (mapLayout != null) {
@@ -132,70 +146,67 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         super.onDestroy();
     }
 
+    /**
+     * Low mamory google map action
+     */
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         if (mapLayout != null) mapLayout.onLowMemory();
     }
 
+    /**
+     * Button click listener
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.home_panel_top_btn:
-                changePanelState(!isPanelTop, isPanelBottom);
-                break;
             case R.id.home_panel_bottom_btn:
-                changePanelState(isPanelTop, !isPanelBottom);
+                changePanelState(!isElevationGraphVisible);
                 break;
-            case R.id.home_button_start_stop:
-                isTracking = (isTracking + 1) % 3;
-                setTrackingButton();
+            case R.id.home_fl_plan_btn:
+                openFlightPlans();
                 break;
+
         }
     }
 
-    private void setTrackingButton(){
-        if (isTracking == 1) startStop.setText(getString(R.string.btn_stop));
-        else if (isTracking == 2) startStop.setText(getString(R.string.btn_clear));
+    /**
+     * Create flight plan chooser dialog
+     */
+    private void openFlightPlans(){
+        // todo: create flight plan selector
+    }
+
+    /**
+     * Show/Hide elevaton graph on the bottom
+     * @param isGraph
+     */
+    private void changePanelState(boolean isGraph) {
+        isElevationGraphVisible = isGraph;
+
+        int panelSize = 0;
+
+        if (isElevationGraphVisible){
+            panelSize = infoPanel.getHeight();
+            elevationChart.setVisibility(View.VISIBLE);
+            btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
+        }
         else {
-            track.clear();
-            startStop.setText(getString(R.string.btn_start));
+            panelSize = (int) (fullLayout.getHeight() * 0.3);
+            elevationChart.setVisibility(View.GONE);
+            btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
         }
-    }
-
-    private void changePanelState(boolean top, boolean bottom) {
-        isPanelTop = top;
-        isPanelBottom = bottom;
-
-        int panels = 0;
-        int open = fullLayout.getHeight() / 4;
-        int close = panelTopBtn.getHeight();
-
-        if (isPanelTop) {
-            panels += open;
-            panelTop.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, open));
-            panelTopBtn.setImageResource(R.drawable.ic_expand_up_inv);
-        } else {
-            panels += close;
-            panelTop.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, close));
-            panelTopBtn.setImageResource(R.drawable.ic_expand_down_inv);
-        }
-
-        if (isPanelBottom) {
-            panels += open;
-            panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, open));
-            panelBottomBtn.setImageResource(R.drawable.ic_expand_down_inv);
-        } else {
-            panels += close;
-            panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, close));
-            panelBottomBtn.setImageResource(R.drawable.ic_expand_up_inv);
-        }
-
-        int mapH = fullLayout.getHeight() - panels;
-        mapLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mapH));
+        panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, panelSize));
+        mapLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullLayout.getHeight() - panelSize));
 
     }
 
+    /**
+     * Called from activity to handle new location
+     * @param loc
+     */
     public void addNewLocation(Location loc) {
 
         lastPosition = new LatLng(loc.getLatitude(), loc.getLongitude());
@@ -210,31 +221,23 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
             else changeMapPosition(mapTargetArea);
 
         }
-        if (isTracking == 1) {
-            track.add(loc);
 
-            if (isPanelTop) {
-                RedrawElevationGraphTask task = new RedrawElevationGraphTask();
-                task.execute((Void) null);
-            }
 
-            Location l = track.get(track.size() - 1);
-            String num = String.valueOf(track.size()) + ": ";
-            String posit = String.valueOf(l.getLongitude()) + "/" + String.valueOf(l.getLatitude()) + " @ " + String.valueOf(l.getAltitude());
-            String acc = " | A:" + String.valueOf(l.getAccuracy() + " | S:" + String.valueOf(l.getSpeed()));
-            String head = " | B:" + String.valueOf(l.getBearing());
+        RedrawElevationGraphTask task = new RedrawElevationGraphTask();
+        task.execute((Void) null);
 
-            textViewTest.setText(num + posit + acc + head);
 
-        }
-        else if (isTracking == 2){
-            textViewTest.setText("Tracking stopped");
-        }
-        else{
-            textViewTest.setText("No tracked data");
-        }
+        String str = String.valueOf(loc.getLongitude()) + "/" + String.valueOf(loc.getLatitude()) + " @ " + String.valueOf(loc.getAltitude());
+        str = str + " | A:" + String.valueOf(loc.getAccuracy() + " | S:" + String.valueOf(loc.getSpeed()));
+        str = str + " | B:" + String.valueOf(loc.getBearing());
+        Log.d("Location", str);
+
     }
 
+    /**
+     * Jump to position on the map
+     * @param pos
+     */
     private void changeMapPosition(LatLng pos){
         CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(pos).zoom(mapZoomLevel).build());
         map.moveCamera(myLoc);
@@ -245,7 +248,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     public void onMapReady(GoogleMap googleMap) {
 
         map = googleMap;
-// TODO: fix        map.setMyLocationEnabled(true);
+        // TODO: fix        map.setMyLocationEnabled(true);
         map.setOnCameraMoveListener(this);
         map.setOnMarkerClickListener(this);
         map.setOnMyLocationButtonClickListener(this);
@@ -290,6 +293,10 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         return false;
     }
 
+
+    /**
+     * Redraw elevation graph
+     */
     public class RedrawElevationGraphTask extends AsyncTask<Void, Void, Void>{
 
         @Override
