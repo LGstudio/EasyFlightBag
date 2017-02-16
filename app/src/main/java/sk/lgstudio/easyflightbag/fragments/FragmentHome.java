@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,7 +25,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-import java.util.ArrayList;
 
 import lecho.lib.hellocharts.view.LineChartView;
 import sk.lgstudio.easyflightbag.R;
@@ -37,11 +35,12 @@ import sk.lgstudio.easyflightbag.R;
 public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener {
 
     private RelativeLayout panelBottom;
+    private RelativeLayout panelMap;
     private LinearLayout fullLayout;
     private ImageButton btnPanelBottom;
     private Button btnFlightPlan;
     private LineChartView elevationChart;
-    private LinearLayout infoPanel;
+    private LinearLayout panelInfo;
 
     protected MapView mapLayout;
     protected GoogleMap map;
@@ -65,6 +64,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         if (savedInstanceState != null) {
             isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
+            changePanelState(isElevationGraphVisible);
             if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
         }
     }
@@ -100,7 +100,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         fullLayout = (LinearLayout) view.findViewById(R.id.home_screen);
         panelBottom = (RelativeLayout) view.findViewById(R.id.home_panel_bottom);
-        infoPanel = (LinearLayout) view.findViewById(R.id.home_gps_info_panel);
+        panelInfo = (LinearLayout) view.findViewById(R.id.home_gps_info_panel);
+        panelMap = (RelativeLayout) view.findViewById(R.id.home_map_layout);
 
         elevationChart = (LineChartView) view.findViewById(R.id.home_elevation_graph);
 
@@ -184,23 +185,23 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
      * @param isGraph
      */
     private void changePanelState(boolean isGraph) {
-        isElevationGraphVisible = isGraph;
 
-        int panelSize = 0;
+            isElevationGraphVisible = isGraph;
 
-        if (isElevationGraphVisible){
-            panelSize = infoPanel.getHeight();
-            elevationChart.setVisibility(View.VISIBLE);
-            btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
-        }
-        else {
-            panelSize = (int) (fullLayout.getHeight() * 0.3);
-            elevationChart.setVisibility(View.GONE);
-            btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
-        }
-        panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, panelSize));
-        mapLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullLayout.getHeight() - panelSize));
+            int panelSize = 0;
 
+            if (isElevationGraphVisible) {
+                panelSize = (int) (fullLayout.getHeight() * 0.3);
+                elevationChart.setVisibility(View.VISIBLE);
+                btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
+            } else {
+                panelSize = panelInfo.getHeight();
+                elevationChart.setVisibility(View.GONE);
+                btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
+            }
+
+            panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, panelSize));
+            panelMap.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullLayout.getHeight() - panelSize));
     }
 
     /**
@@ -227,10 +228,10 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         task.execute((Void) null);
 
 
-        String str = String.valueOf(loc.getLongitude()) + "/" + String.valueOf(loc.getLatitude()) + " @ " + String.valueOf(loc.getAltitude());
-        str = str + " | A:" + String.valueOf(loc.getAccuracy() + " | S:" + String.valueOf(loc.getSpeed()));
-        str = str + " | B:" + String.valueOf(loc.getBearing());
-        Log.d("Location", str);
+        //String str = String.valueOf(loc.getLongitude()) + "/" + String.valueOf(loc.getLatitude()) + " @ " + String.valueOf(loc.getAltitude());
+        //str = str + " | A:" + String.valueOf(loc.getAccuracy() + " | S:" + String.valueOf(loc.getSpeed()));
+        //str = str + " | B:" + String.valueOf(loc.getBearing());
+        //Log.d("Location", str);
 
     }
 
@@ -248,7 +249,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     public void onMapReady(GoogleMap googleMap) {
 
         map = googleMap;
-        // TODO: fix        map.setMyLocationEnabled(true);
+        map.setMyLocationEnabled(true); // TODO: change to airplane icon
         map.setOnCameraMoveListener(this);
         map.setOnMarkerClickListener(this);
         map.setOnMyLocationButtonClickListener(this);
@@ -262,8 +263,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         settings.setCompassEnabled(true);
         settings.setMyLocationButtonEnabled(true);
         settings.setRotateGesturesEnabled(false);
-        settings.setZoomControlsEnabled(true);
-        settings.setZoomGesturesEnabled(false);
+        settings.setZoomControlsEnabled(false);
+        settings.setZoomGesturesEnabled(true);
         settings.setMapToolbarEnabled(false);
 
         mapReady = true;

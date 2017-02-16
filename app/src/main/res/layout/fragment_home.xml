@@ -12,7 +12,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7">
+        android:layout_weight="0.7"
+        android:id="@+id/home_map_layout">
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/home_map_view"
@@ -28,6 +29,7 @@
             android:textSize="@dimen/big_text"
             android:textColor="?attr/redColor"
             android:layout_margin="@dimen/bar_spacing"
+            android:layout_alignParentEnd="true"
             />
 
         <TextView
@@ -39,12 +41,12 @@
             android:textColor="?attr/redColor"
             android:layout_below="@id/home_nonet"
             android:layout_margin="@dimen/bar_spacing"
+            android:layout_alignParentEnd="true"
             />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
             android:orientation="vertical">
 
             <Button
