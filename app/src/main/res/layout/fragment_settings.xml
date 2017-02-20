@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/backgroundColor"
-        android:layout_margin="@dimen/row_padding"
+        android:layout_marginTop="@dimen/row_padding"
+        android:layout_marginEnd="@dimen/row_padding"
+        android:layout_marginStart="@dimen/row_padding"
         android:padding="@dimen/row_padding"
         android:elevation="@dimen/elevation_8">
 
@@ -29,8 +31,39 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        style="@style/Block_title_text_style.inSettings"
+        android:layout_marginBottom="@dimen/row_padding"
+        android:layout_marginTop="@dimen/row_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"
+            android:text="@string/set_airspace"/>
+
+        <ImageButton
+            android:src="@drawable/ic_refresh"
+            android:background="@drawable/bck_transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/set_refresh_airspace" />
+
+        <TextView
+            android:id="@+id/set_text_airspace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/row_padding"
+            android:layout_toStartOf="@+id/set_refresh_airspace"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+    </RelativeLayout>
+
     <TextView
-        android:id="@+id/set_aip_text"
         android:text="@string/set_aip"
         style="@style/Block_title_text_style.inSettings"
         />
@@ -117,6 +150,35 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/row_padding"
             android:layout_toStartOf="@+id/set_aip_refresh_hu"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/Block_title_text_style.inSettings">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/country_pl"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <ImageButton
+            android:src="@drawable/ic_refresh"
+            android:background="@drawable/bck_transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/set_aip_refresh_pl"/>
+
+        <TextView
+            android:id="@+id/set_aip_text_pl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/row_padding"
+            android:layout_toStartOf="@+id/set_aip_refresh_pl"
             android:layout_centerVertical="true"
             android:textColor="?attr/primaryTextColor"/>
 

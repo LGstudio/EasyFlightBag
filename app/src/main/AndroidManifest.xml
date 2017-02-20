@@ -55,6 +55,16 @@
             android:exported="false">
         </service>
 
+        <service
+            android:name=".services.AIPDownloader.AIPat"
+            android:exported="false">
+        </service>
+
+        <service
+            android:name=".services.AirspaceDownloader"
+            android:exported="false">
+        </service>
+
     </application>
 
 </manifest>

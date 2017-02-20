@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.managers.AIPManager;
+import sk.lgstudio.easyflightbag.managers.AirspaceManager;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.menu.TabFragmentAdapter;
 import sk.lgstudio.easyflightbag.menu.TabViewPager;
@@ -44,6 +45,10 @@ public class MainActivity extends FragmentActivity {
     public final static int MENU_DOCS = 4;
     public final static int MENU_SET = 5;
 
+    public final static int NOTIFICATION_AIRSAPCE = 0;
+    public final static int NOTIFICATION_AIP = 1;
+
+    public final static int DAYS_IN_MILLISECONDS = 24*60*60*1000;
 
     private FragmentHome fHome = new FragmentHome();
     private FragmentCalc fCalc = new FragmentCalc();
@@ -56,6 +61,7 @@ public class MainActivity extends FragmentActivity {
     public SharedPreferences prefs;
     public boolean nightMode = false;
     public AIPManager aipManager;
+    public AirspaceManager airspaceManager;
 
     private boolean inited = false;
 
@@ -74,8 +80,9 @@ public class MainActivity extends FragmentActivity {
         // Load selected theme
         changeToNight();
 
-        // create AIP manager
+        // create managers
         aipManager = new AIPManager(this);
+        airspaceManager = new AirspaceManager(this);
 
         setContentView(R.layout.activity_main);
 
@@ -195,6 +202,10 @@ public class MainActivity extends FragmentActivity {
         if (!aipFolder.exists())
             aipFolder.mkdir();
 
+        File airFolder = new File(rootDir.getPath() + getString(R.string.folder_airspace));
+        if (!airFolder.exists())
+            airFolder.mkdir();
+
         //TODO: move to AIP to handle this
         fAip.folder = new File(aipFolder.getPath() + getString(R.string.folder_cz));
         if (!fAip.folder.exists())
@@ -261,6 +272,15 @@ public class MainActivity extends FragmentActivity {
     public void aipDataChange(int c){
         if (menu.selected == MENU_SET){
             fSet.reloadAipData(c);
+        }
+    }
+
+    /**
+     * reloads Airspace data status in settings
+     */
+    public void airDataChange(){
+        if (menu.selected == MENU_SET){
+            fSet.reloadAirspaceData();
         }
     }
 

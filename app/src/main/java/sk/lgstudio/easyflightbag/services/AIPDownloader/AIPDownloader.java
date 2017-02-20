@@ -1,8 +1,10 @@
 package sk.lgstudio.easyflightbag.services.AIPDownloader;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
 import org.jsoup.nodes.Element;
@@ -12,7 +14,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.managers.AirspaceManager;
 
 /**
  * Created by LGstudio on 2016-10-18.
@@ -27,6 +31,9 @@ public abstract class AIPDownloader extends IntentService {
     protected File aipFolder;
 
     protected int country;
+
+    private NotificationCompat.Builder builder = null;
+    private NotificationManager notificationManager;
 
     protected ArrayList<Element> parents = new ArrayList<>();
     protected ArrayList<Integer> docDepth = new ArrayList<>();
@@ -69,13 +76,37 @@ public abstract class AIPDownloader extends IntentService {
 
 
     protected void sendReport(int status){
-        Context context = getApplicationContext();
-        Intent intent = new Intent(context.getString(R.string.service_aip_download));
+        switch (status){
+            case STATUS_STARTED:
+                if (builder != null){
+                    builder.setContentText(String.valueOf(downloadedcount));
+                    notificationManager.notify(MainActivity.NOTIFICATION_AIP, builder.build());
+                }
+                else {
+                    notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        intent.putExtra(context.getString(R.string.intent_aip_status), status);
-        intent.putExtra(context.getString(R.string.intent_aip_count), downloadedcount);
-        intent.putExtra(context.getString(R.string.intent_aip_country), country);
+                    builder = new NotificationCompat.Builder(getApplicationContext())
+                            .setContentTitle(getString(R.string.aip_progress_download))
+                            .setContentText(String.valueOf(downloadedcount))
+                            .setSmallIcon(R.drawable.ic_plane)
+                            .setAutoCancel(false)
+                            .setOngoing(true)
+                            .setOnlyAlertOnce(true);
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                    notificationManager.notify(MainActivity.NOTIFICATION_AIP ,builder.build());
+                }
+                break;
+            case STATUS_FINISHED:
+                notificationManager.cancel(MainActivity.NOTIFICATION_AIP);
+            case STATUS_ERROR:
+                Context context = getApplicationContext();
+                Intent intent = new Intent(context.getString(R.string.service_aip_download));
+
+                intent.putExtra(context.getString(R.string.intent_aip_status), status);
+                intent.putExtra(context.getString(R.string.intent_aip_count), downloadedcount);
+                intent.putExtra(context.getString(R.string.intent_aip_country), country);
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }
     }
 }

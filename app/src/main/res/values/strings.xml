@@ -16,6 +16,8 @@
     <string name="pref_aip_last_update_cz" translatable="false">aip_last_update_cz</string>
     <string name="pref_aip_last_update_sk" translatable="false">aip_last_update_sk</string>
     <string name="pref_aip_last_update_hu" translatable="false">aip_last_update_hu</string>
+    <string name="pref_aip_last_update_pl" translatable="false">aip_last_update_pl</string>
+    <string name="pref_air_last_update" translatable="false">air_last_update</string>
     <string name="pref_document_page" translatable="false">document_page.</string>
     <string name="pref_wb_selected" translatable="false">wb_file</string>
 
@@ -29,6 +31,7 @@
     <string name="folder_sk" translatable="false">/sk</string>
     <string name="folder_hu" translatable="false">/hu</string>
     <string name="file_aip_data" translatable="false">/data.txt</string>
+    <string name="folder_airspace" translatable="false">/Airspace</string>
 
     <string name="file_chk_plane">Switch Add and Delete airplane type.txt</string>
     <string name="file_chk_plane_">Click on the airplane icon\n
@@ -50,6 +53,7 @@
     <string name="country_cz">Czech Republic</string>
     <string name="country_sk">Slovakia</string>
     <string name="country_hu">Hungary</string>
+    <string name="country_pl">Poland</string>
 
     <string name="chk_menu">Checklists</string>
     <string name="chk_add_airplane">Add new airplane</string>
@@ -197,20 +201,32 @@
     <string name="aip_day_ago">day(s) ago</string>
     <string name="aip_downloading">Downloading…</string>
     <string name="aip_waiting">Waiting</string>
+    <string name="aip_progress_download">AIP is downloading</string>
     <string name="aip_error_download">Error downloading AIP</string>
     <string name="aip_done_download">Finished downloading AIP</string>
+    <string name="air_progress_download">Downloading airspace data</string>
+    <string name="air_error_download">Error downloading some airspace data</string>
+    <string name="air_done_download">Finished downloading airspace data</string>
 
     <string name="set_theme">Night mode</string>
     <string name="set_aip">AIP data</string>
+    <string name="set_airspace">Airspace and Airports</string>
 
     <string name="service_aip_download" translatable="false">intent_aip_download</string>
     <string name="intent_aip_status" translatable="false">intent_aip_status</string>
     <string name="intent_aip_count" translatable="false">intent_aip_count</string>
     <string name="intent_aip_country" translatable="false">intent_aip_country</string>
+    <string name="service_air_download" translatable="false">intent_air_download</string>
     
     <string name="url_cz_ais" translatable="false">http://lis.rlp.cz/ais_data/aip/control/aip_obsah_en.htm</string>
     <string name="url_cz_ais_data" translatable="false">http://lis.rlp.cz/ais_data</string>
     <string name="url_at_aip" translatable="false">https://eaip.austrocontrol.at/</string>
+
+    <string name="url_open_aip">http://www.openaip.net/customer_export_fj28JDP2053Jdlpczqi3kLv/</string>
+    <string name="file_airports">_wpt.aip</string>
+    <string name="file_airspace">_asp.aip</string>
+    <string name="file_navaids">_nav.aip</string>
+    <string name="file_hotspots">_hot.aip</string>
 
     <string name="no_gps">NO GPS</string>
     <string name="no_net">NO INTERNET</string>

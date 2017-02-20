@@ -25,12 +25,11 @@ import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPcz;
 
 public class AIPManager {
 
-    private final static int DAYS_IN_MILLISECONDS = 24*60*60*1000;
-
     public final static int AIP_AT = 0;
     public final static int AIP_CZ = 1;
     public final static int AIP_HU = 2;
-    public final static int AIP_SK = 3;
+    public final static int AIP_PL = 3;
+    public final static int AIP_SK = 4;
 
     private SharedPreferences prefs;
     private MainActivity activity;
@@ -68,7 +67,7 @@ public class AIPManager {
             Long saveTime = prefs.getLong(str, 0);
             if (saveTime > 0) {
                 Long timeDiff = (new Date(System.currentTimeMillis()).getTime()) - saveTime;
-                return String.valueOf(format.format(timeDiff / DAYS_IN_MILLISECONDS)) + " " + activity.getString(R.string.aip_day_ago);
+                return String.valueOf(format.format(timeDiff / MainActivity.DAYS_IN_MILLISECONDS)) + " " + activity.getString(R.string.aip_day_ago);
             }
         }
         return "";
@@ -95,6 +94,8 @@ public class AIPManager {
                 return activity.getString(R.string.pref_aip_last_update_sk);
             case AIP_HU:
                 return activity.getString(R.string.pref_aip_last_update_hu);
+            case AIP_PL:
+                return activity.getString(R.string.pref_aip_last_update_pl);
         }
         return null;
     }
@@ -105,7 +106,7 @@ public class AIPManager {
     }
 
     public void stopUpdate(int country){
-        // force stop update
+        // TODO: force stop update
     }
 
     public void getUpdate(int country){
@@ -167,12 +168,10 @@ public class AIPManager {
 
             switch (code){
                 case AIPDownloader.STATUS_STARTED:
-                    // TODO: Show/update notification
-                    Log.e("AIP downloading", String.valueOf(country) + " - " + String.valueOf(fileCount));
+                    Log.i("AIP downloading", String.valueOf(country) + " - " + String.valueOf(fileCount));
                     break;
                 case AIPDownloader.STATUS_ERROR:
                 case AIPDownloader.STATUS_FINISHED:
-                    // TODO: Hide notification
                     if (code == AIPDownloader.STATUS_FINISHED) {
                         saveSharedPref();
                         Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.aip_done_download), Toast.LENGTH_SHORT).show();
