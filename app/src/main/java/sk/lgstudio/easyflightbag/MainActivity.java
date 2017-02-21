@@ -2,6 +2,7 @@ package sk.lgstudio.easyflightbag;
 
 import android.*;
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.managers.AIPManager;
 import sk.lgstudio.easyflightbag.managers.AirspaceManager;
+import sk.lgstudio.easyflightbag.openAIP.Airspace;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.menu.TabFragmentAdapter;
 import sk.lgstudio.easyflightbag.menu.TabViewPager;
@@ -62,12 +64,15 @@ public class MainActivity extends FragmentActivity {
     public boolean nightMode = false;
     public AIPManager aipManager;
     public AirspaceManager airspaceManager;
+    public File airFolder;
 
     private boolean inited = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
 
         prefs = this.getSharedPreferences(getString(R.string.app_prefs), Context.MODE_PRIVATE);
 
@@ -84,13 +89,10 @@ public class MainActivity extends FragmentActivity {
         aipManager = new AIPManager(this);
         airspaceManager = new AirspaceManager(this);
 
-        setContentView(R.layout.activity_main);
-
         startGPSService();
 
         // creates fragments
         initView();
-
     }
 
     @Override
@@ -202,7 +204,7 @@ public class MainActivity extends FragmentActivity {
         if (!aipFolder.exists())
             aipFolder.mkdir();
 
-        File airFolder = new File(rootDir.getPath() + getString(R.string.folder_airspace));
+        airFolder = new File(rootDir.getPath() + getString(R.string.folder_airspace));
         if (!airFolder.exists())
             airFolder.mkdir();
 
@@ -218,6 +220,7 @@ public class MainActivity extends FragmentActivity {
     public void initView(){
         final TabFragmentAdapter fA = new TabFragmentAdapter(getSupportFragmentManager());
 
+        fHome.airspaceManager = airspaceManager;
         fA.addFragment(fHome);
         fCalc.prefs = prefs;
         fA.addFragment(fCalc);
@@ -283,7 +286,6 @@ public class MainActivity extends FragmentActivity {
             fSet.reloadAirspaceData();
         }
     }
-
 
     @Override
     public void onBackPressed() {

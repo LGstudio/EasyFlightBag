@@ -2,7 +2,6 @@ package sk.lgstudio.easyflightbag.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
@@ -11,7 +10,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,10 +19,8 @@ import java.net.URL;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.managers.AirspaceManager;
+import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader;
 
-import static sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader.STATUS_ERROR;
-import static sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader.STATUS_FINISHED;
-import static sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader.STATUS_STARTED;
 
 /**
  * Created by LGstudio on 2017-02-20.
@@ -55,7 +51,7 @@ public class AirspaceDownloader extends IntentService {
         builder = new NotificationCompat.Builder(getApplicationContext())
                 .setContentTitle(getString(R.string.air_progress_download))
                 .setContentText(String.valueOf(fileCount)+ "/" + String.valueOf(AirspaceManager.fileCount))
-                .setSmallIcon(R.drawable.ic_plane)
+                .setSmallIcon(R.drawable.ic_download)
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setOnlyAlertOnce(true);
@@ -67,28 +63,28 @@ public class AirspaceDownloader extends IntentService {
                 fileCount += 1;
                 String name = AirspaceManager.countries[i]+AirspaceManager.filetypes[j];
                 if (downloadFile(name))
-                    sendReport(name, STATUS_STARTED);
+                    sendReport(name, AIPDownloader.STATUS_STARTED);
                 else{
-                    sendReport(name, STATUS_ERROR);
+                    sendReport(name, AIPDownloader.STATUS_ERROR);
                 }
             }
         }
 
-        sendReport("done", STATUS_FINISHED);
+        sendReport("done", AIPDownloader.STATUS_FINISHED);
 
     }
 
     private void sendReport(String name, int status) {
         switch (status) {
-            case STATUS_STARTED:
+            case AIPDownloader.STATUS_STARTED:
                 if (builder != null){
                     builder.setContentText(String.valueOf(fileCount)+ "/" + String.valueOf(AirspaceManager.fileCount));
                     notificationManager.notify(MainActivity.NOTIFICATION_AIRSAPCE ,builder.build());
                 }
                 break;
-            case STATUS_FINISHED:
+            case AIPDownloader.STATUS_FINISHED:
                 notificationManager.cancel(MainActivity.NOTIFICATION_AIRSAPCE);
-            case STATUS_ERROR:
+            case AIPDownloader.STATUS_ERROR:
                 Context context = getApplicationContext();
                 Intent intent = new Intent(context.getString(R.string.service_air_download));
 

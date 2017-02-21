@@ -9,11 +9,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.openAIP.Airspace;
 import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader;
 import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
 
@@ -31,9 +34,24 @@ public class AirspaceManager {
     private MainActivity activity;
     private boolean started = false;
 
+    public ArrayList<Airspace.Data> airspaces = null;
+
     public AirspaceManager(MainActivity a){
         activity = a;
         prefs = a.prefs;
+        if (exists())
+            loadData();
+    }
+
+    private void loadData(){
+        airspaces = new ArrayList<>();
+        for (int i = 0; i < countries.length; i++){
+            String fileName = activity.airFolder.getPath()+"/"+countries[i]+filetypes[1];
+            File f = new File(fileName);
+            if (f.exists())
+                airspaces.addAll(new Airspace.Parser().parse(f));
+        }
+
     }
 
     public boolean exists(){

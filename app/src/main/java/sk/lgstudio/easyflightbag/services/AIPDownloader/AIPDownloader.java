@@ -88,7 +88,7 @@ public abstract class AIPDownloader extends IntentService {
                     builder = new NotificationCompat.Builder(getApplicationContext())
                             .setContentTitle(getString(R.string.aip_progress_download))
                             .setContentText(String.valueOf(downloadedcount))
-                            .setSmallIcon(R.drawable.ic_plane)
+                            .setSmallIcon(R.drawable.ic_download)
                             .setAutoCancel(false)
                             .setOngoing(true)
                             .setOnlyAlertOnce(true);

@@ -1,5 +1,6 @@
 package sk.lgstudio.easyflightbag.fragments;
 
+import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,10 +25,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 
+
+import java.util.List;
 
 import lecho.lib.hellocharts.view.LineChartView;
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.managers.AirplaneManager;
+import sk.lgstudio.easyflightbag.managers.AirspaceManager;
+import sk.lgstudio.easyflightbag.openAIP.Airspace;
 
 /**
  *
@@ -42,8 +50,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private LineChartView elevationChart;
     private LinearLayout panelInfo;
 
-    protected MapView mapLayout;
-    protected GoogleMap map;
+    protected MapView mapLayout = null;
+    protected GoogleMap map = null;
 
     private boolean isElevationGraphVisible = true;
     private boolean mapReady = false;
@@ -53,6 +61,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private LatLng mapTargetArea = null;
     private BitmapDescriptor mapLocationBmp = null;
 
+    public AirspaceManager airspaceManager = null;
 
     /**
      * Reload view settings after fragment reopened
@@ -63,8 +72,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
-            changePanelState(isElevationGraphVisible);
+            //isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
+            //changePanelState(isElevationGraphVisible);
             if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
         }
     }
@@ -254,6 +263,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         map.setOnMarkerClickListener(this);
         map.setOnMyLocationButtonClickListener(this);
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        map.setBuildingsEnabled(false);
+        map.setTrafficEnabled(false);
 
         mapFollow = true;
 
@@ -268,6 +279,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         settings.setMapToolbarEnabled(false);
 
         mapReady = true;
+
+        if (airspaceManager != null) loadOverlays();
 
         // TODO: Night mode
         //if (isNightMode) googleMap.setMapStyle(new MapStyleOptions(getString(R.string.map_style_night)));
@@ -294,6 +307,20 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         return false;
     }
 
+
+    /**
+     * Load map overlays from airspaceManager
+     */
+    private void loadOverlays(){
+        if (airspaceManager.airspaces != null){
+            for (Airspace.Data d: airspaceManager.airspaces){
+                Polygon p = map.addPolygon(new PolygonOptions()
+                    .addAll(d.polygon)
+                    .strokeColor(Color.CYAN)
+                    .strokeWidth(4));
+            }
+        }
+    }
 
     /**
      * Redraw elevation graph

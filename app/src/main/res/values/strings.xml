@@ -3,6 +3,8 @@
     <string name="app_prefs" translatable="false">sk.lgstudio.efb</string>
     <string name="gmap_api_key" translatable="false">AIzaSyCxUOrnnZ3KJ5uoTiqBRox_iy0Ifzkjobc</string>
 
+    <string name="loading">EasyFlightBag is opening&#8230;</string>
+
     <string name="tab_home">Home</string>
     <string name="tab_aip">AIP</string>
     <string name="tab_chklist">Checklists</string>

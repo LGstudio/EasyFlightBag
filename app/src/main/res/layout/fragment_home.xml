@@ -30,6 +30,7 @@
             android:textColor="?attr/redColor"
             android:layout_margin="@dimen/bar_spacing"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             />
 
         <TextView
@@ -39,7 +40,7 @@
             android:text="@string/no_gps"
             android:textSize="@dimen/big_text"
             android:textColor="?attr/redColor"
-            android:layout_below="@id/home_nonet"
+            android:layout_above="@id/home_nonet"
             android:layout_margin="@dimen/bar_spacing"
             android:layout_alignParentEnd="true"
             />
