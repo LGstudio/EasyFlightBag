@@ -1,8 +1,7 @@
 package sk.lgstudio.easyflightbag;
 
-import android.*;
 import android.Manifest;
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,23 +9,23 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
+import sk.lgstudio.easyflightbag.dialogs.SplashDialog;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
 import sk.lgstudio.easyflightbag.managers.AirspaceManager;
-import sk.lgstudio.easyflightbag.openAIP.Airspace;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.menu.TabFragmentAdapter;
 import sk.lgstudio.easyflightbag.menu.TabViewPager;
@@ -67,32 +66,22 @@ public class MainActivity extends FragmentActivity {
     public File airFolder;
 
     private boolean inited = false;
+    private MainActivity activity;
+    private SplashDialog splash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        activity = this;
         setContentView(R.layout.activity_main);
 
-        prefs = this.getSharedPreferences(getString(R.string.app_prefs), Context.MODE_PRIVATE);
+        splash = new SplashDialog(this, R.style.FullScreenDialog);
+        splash.setContentView(R.layout.dialog_splash);
+        splash.setCancelable(false);
+        splash.show();
 
-        permissionCheck();
-        inited = true;
-
-        // checks internal storage for existing files
-        checkDirectory();
-
-        // Load selected theme
-        changeToNight();
-
-        // create managers
-        aipManager = new AIPManager(this);
-        airspaceManager = new AirspaceManager(this);
-
-        startGPSService();
-
-        // creates fragments
-        initView();
+        (new LoadContentTask()).execute((Void) null);
     }
 
     @Override
@@ -294,6 +283,39 @@ public class MainActivity extends FragmentActivity {
             menu.change(MENU_NAV);
         else
             super.onBackPressed();
+    }
+
+    private class LoadContentTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            prefs = getSharedPreferences(getString(R.string.app_prefs), Context.MODE_PRIVATE);
+
+            permissionCheck();
+            inited = true;
+
+            // checks internal storage for existing files
+            checkDirectory();
+
+            // Load selected theme
+            changeToNight();
+
+            // create managers
+            aipManager = new AIPManager(activity);
+            airspaceManager = new AirspaceManager(activity);
+
+            startGPSService();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+            // creates fragments
+            initView();
+            splash.dismiss();
+        }
     }
 
 }
