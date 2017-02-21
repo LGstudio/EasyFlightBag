@@ -17,11 +17,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.dialogs.SplashDialog;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
@@ -35,9 +37,8 @@ import sk.lgstudio.easyflightbag.fragments.FragmentChklist;
 import sk.lgstudio.easyflightbag.fragments.FragmentDocs;
 import sk.lgstudio.easyflightbag.fragments.FragmentHome;
 import sk.lgstudio.easyflightbag.fragments.FragmentSettings;
-import sk.lgstudio.easyflightbag.menu.TabMenu;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     public final static int MENU_NAV = 0;
     public final static int MENU_CAL = 1;
@@ -51,13 +52,24 @@ public class MainActivity extends FragmentActivity {
 
     public final static int DAYS_IN_MILLISECONDS = 24*60*60*1000;
 
+    private final int[] tabIds = {
+            R.id.tab_home,
+            R.id.tab_calc,
+            R.id.tab_aip,
+            R.id.tab_chklist,
+            R.id.tab_docs,
+            R.id.tab_set
+    };
+
     private FragmentHome fHome = new FragmentHome();
     private FragmentCalc fCalc = new FragmentCalc();
     private FragmentChklist fChk = new FragmentChklist();
     private FragmentSettings fSet  = new FragmentSettings();
     private FragmentAip fAip = new FragmentAip();
 
-    private TabMenu menu;
+    private TabViewPager viewPager;
+    public ArrayList<ImageButton> menuTabs = new ArrayList<>();
+    private int selectedTab = 0;
 
     public SharedPreferences prefs;
     public boolean nightMode = false;
@@ -210,6 +222,7 @@ public class MainActivity extends FragmentActivity {
         final TabFragmentAdapter fA = new TabFragmentAdapter(getSupportFragmentManager());
 
         fHome.airspaceManager = airspaceManager;
+        fHome.activity = this;
         fA.addFragment(fHome);
         fCalc.prefs = prefs;
         fA.addFragment(fCalc);
@@ -220,11 +233,39 @@ public class MainActivity extends FragmentActivity {
         fSet.activity = this;
         fA.addFragment(fSet);
 
-        TabViewPager viewPager = (TabViewPager) findViewById(R.id.view_fragment_pager);
+        viewPager = (TabViewPager) findViewById(R.id.view_fragment_pager);
         viewPager.setAdapter(fA);
         viewPager.setPagingEnabled(false);
 
-        menu = new TabMenu(this, viewPager);
+        for (int id : tabIds)
+            activity.menuTabs.add((ImageButton) findViewById(id));
+
+        for (ImageButton ib : activity.menuTabs)
+            ib.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int clicked = 0;
+        for (int i = 0; i < tabIds.length; i++)
+            if (tabIds[i] == v.getId())
+                clicked = i;
+
+        if (selectedTab != clicked)
+            changeTab(clicked);
+    }
+
+    /**
+     * Changes the opened tab to a new one
+     * @param clicked
+     */
+    public void changeTab(int clicked){
+        activity.menuTabs.get(selectedTab).setBackgroundResource(R.drawable.bck_transparent);
+        activity.menuTabs.get(selectedTab).setAlpha((float) 0.5);
+        activity.menuTabs.get(clicked).setBackgroundResource(R.drawable.bck_tab_selected);
+        activity.menuTabs.get(clicked).setAlpha((float) 1.0);
+        viewPager.setCurrentItem(clicked, false);
+        selectedTab = clicked;
     }
 
     /**
@@ -262,7 +303,7 @@ public class MainActivity extends FragmentActivity {
      * @param c
      */
     public void aipDataChange(int c){
-        if (menu.selected == MENU_SET){
+        if (selectedTab == MENU_SET){
             fSet.reloadAipData(c);
         }
     }
@@ -271,7 +312,7 @@ public class MainActivity extends FragmentActivity {
      * reloads Airspace data status in settings
      */
     public void airDataChange(){
-        if (menu.selected == MENU_SET){
+        if (selectedTab == MENU_SET){
             fSet.reloadAirspaceData();
         }
     }
@@ -279,8 +320,8 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
 
-        if (menu.selected != MENU_NAV)
-            menu.change(MENU_NAV);
+        if (selectedTab != MENU_NAV)
+            changeTab(MENU_NAV);
         else
             super.onBackPressed();
     }

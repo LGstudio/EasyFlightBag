@@ -88,7 +88,6 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
             ft.detach(this);
             ft.attach(this);
             ft.commit();
-
         }
     }
 

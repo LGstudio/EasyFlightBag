@@ -9,14 +9,75 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     tools:context="sk.lgstudio.easyflightbag.MainActivity"
+    android:background="@color/colorDark"
     >
 
-    <include
-        layout="@layout/menu_tab"
+    <HorizontalScrollView
         android:id="@+id/menu_tab"
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height"
-        />
+        android:background="?attr/primaryColor"
+        android:fillViewport="false"
+        android:elevation="@dimen/elevation_12"
+        android:layout_centerHorizontal="false"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="false">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <ImageButton
+                style="@style/Menu_icon_style"
+                android:id="@+id/tab_home"
+                android:src="@drawable/ic_home"
+                android:contentDescription="@string/tab_home"
+                />
+
+            <ImageButton
+                style="@style/Menu_icon_style"
+                android:id="@+id/tab_calc"
+                android:src="@drawable/ic_plane"
+                android:contentDescription="@string/tab_functions"
+                android:alpha="0.5"
+                />
+
+            <ImageButton
+                style="@style/Menu_icon_style"
+                android:id="@+id/tab_aip"
+                android:src="@drawable/ic_library"
+                android:contentDescription="@string/tab_aip"
+                android:alpha="0.5"
+                />
+
+            <ImageButton
+                style="@style/Menu_icon_style"
+                android:id="@+id/tab_chklist"
+                android:src="@drawable/ic_check"
+                android:contentDescription="@string/tab_chklist"
+                android:alpha="0.5"
+                />
+
+            <ImageButton
+                style="@style/Menu_icon_style"
+                android:id="@+id/tab_docs"
+                android:src="@drawable/ic_docs"
+                android:contentDescription="@string/tab_docs"
+                android:alpha="0.5"
+                />
+
+            <ImageButton
+                style="@style/Menu_icon_style"
+                android:id="@+id/tab_set"
+                android:src="@drawable/ic_settings"
+                android:contentDescription="@string/tab_settings"
+                android:alpha="0.5"
+                />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <sk.lgstudio.easyflightbag.menu.TabViewPager
         android:id="@+id/view_fragment_pager"

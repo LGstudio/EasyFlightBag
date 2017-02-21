@@ -1,7 +1,5 @@
 package sk.lgstudio.easyflightbag.openAIP;
 
-import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
 
 import org.jsoup.Jsoup;
@@ -52,7 +50,7 @@ public class Airspace {
                     Data d = new Data();
 
                     d.category = getCategory(asp.attr("CATEGORY"));
-                    d.ID = Integer.parseInt(asp.getElementsByTag("ID").text());
+                    d.id = Integer.parseInt(asp.getElementsByTag("id").text());
                     d.name = asp.getElementsByTag("NAME").text();
                     d.country = asp.getElementsByTag("COUNTRY").text();
 
@@ -122,7 +120,7 @@ public class Airspace {
 
     public static class Data{
         public short category;
-        public int ID;
+        public int id;
         public String country;
         public String name;
         public short altlimit_top;

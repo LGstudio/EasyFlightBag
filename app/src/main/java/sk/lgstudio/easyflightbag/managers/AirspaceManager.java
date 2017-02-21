@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -52,6 +53,56 @@ public class AirspaceManager {
                 airspaces.addAll(new Airspace.Parser().parse(f));
         }
 
+    }
+
+    public int airspaceStrokeColor(short category){
+
+        switch (category){
+            case Airspace.CATEGORY_RESTRICTED:
+                return Color.YELLOW;
+            case Airspace.CATEGORY_PROHIBITED:
+                return Color.RED;
+            case Airspace.CATEGORY_GLIDING:
+                return Color.BLACK;
+            case Airspace.CATEGORY_FIR:
+                return Color.BLUE;
+            case Airspace.CATEGORY_RMZ:
+                return Color.GREEN;
+            case Airspace.CATEGORY_TMA:
+                return Color.WHITE;
+            case Airspace.CATEGORY_UIR:
+                return Color.GRAY;
+            case Airspace.CATEGORY_WAVE:
+                return Color.CYAN;
+            case Airspace.CATEGORY_OTH:
+                return Color.MAGENTA;
+        }
+        return 0;
+    }
+
+    public int airspaceFillColor(short category){
+
+        switch (category){
+            case Airspace.CATEGORY_RESTRICTED:
+                return Color.argb(10, 255, 128, 0);
+            case Airspace.CATEGORY_PROHIBITED:
+                return Color.argb(10, 255, 20, 20);
+            case Airspace.CATEGORY_GLIDING:
+                return Color.argb(10, 0, 0, 0);
+            case Airspace.CATEGORY_FIR:
+                return Color.argb(10, 20, 20, 255);
+            case Airspace.CATEGORY_RMZ:
+                return Color.argb(10, 20, 255, 20);
+            case Airspace.CATEGORY_TMA:
+                return Color.argb(10, 255, 255, 255);
+            case Airspace.CATEGORY_UIR:
+                return Color.argb(10, 125, 125, 125);
+            case Airspace.CATEGORY_WAVE:
+                return Color.argb(10, 0, 240, 240);
+            case Airspace.CATEGORY_OTH:
+                return Color.argb(10, 255, 0, 240);
+        }
+        return 0;
     }
 
     public boolean exists(){

@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
@@ -32,6 +33,7 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import java.util.List;
 
 import lecho.lib.hellocharts.view.LineChartView;
+import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 import sk.lgstudio.easyflightbag.managers.AirspaceManager;
@@ -62,6 +64,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private BitmapDescriptor mapLocationBmp = null;
 
     public AirspaceManager airspaceManager = null;
+    public MainActivity activity;
 
     /**
      * Reload view settings after fragment reopened
@@ -282,9 +285,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         if (airspaceManager != null) loadOverlays();
 
-        // TODO: Night mode
-        //if (isNightMode) googleMap.setMapStyle(new MapStyleOptions(getString(R.string.map_style_night)));
-        //else googleMap.setMapStyle(new MapStyleOptions(getString(R.string.map_style_day)));
+        if (activity.nightMode) googleMap.setMapStyle(new MapStyleOptions(getString(R.raw.map_style_dark)));
+        else googleMap.setMapStyle(new MapStyleOptions(getString(R.raw.map_style_light)));
 
     }
 
@@ -314,10 +316,14 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private void loadOverlays(){
         if (airspaceManager.airspaces != null){
             for (Airspace.Data d: airspaceManager.airspaces){
-                Polygon p = map.addPolygon(new PolygonOptions()
-                    .addAll(d.polygon)
-                    .strokeColor(Color.CYAN)
-                    .strokeWidth(4));
+                PolygonOptions options = new PolygonOptions()
+                        .addAll(d.polygon)
+                        .strokeWidth(4)
+                        .clickable(true)
+                        .strokeColor(airspaceManager.airspaceStrokeColor(d.category))
+                        .fillColor(airspaceManager.airspaceFillColor(d.category));
+
+                map.addPolygon(options);
             }
         }
     }
