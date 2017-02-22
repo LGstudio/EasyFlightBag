@@ -34,6 +34,7 @@
                 android:id="@+id/tab_home"
                 android:src="@drawable/ic_home"
                 android:contentDescription="@string/tab_home"
+                android:background="@drawable/bck_tab_selected"
                 />
 
             <ImageButton

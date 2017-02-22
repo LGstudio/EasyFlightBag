@@ -1,6 +1,7 @@
 package sk.lgstudio.easyflightbag.openAIP;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polygon;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,23 +21,32 @@ import java.util.ArrayList;
 
 public class Airspace {
 
-    public static final short CATEGORY_GLIDING = 0;
-    public static final short CATEGORY_OTH = 1;
-    public static final short CATEGORY_RESTRICTED = 2;
-    public static final short CATEGORY_TMA = 4;
-    public static final short CATEGORY_TMZ = 5;
-    public static final short CATEGORY_WAVE = 6;
-    public static final short CATEGORY_PROHIBITED = 7;
-    public static final short CATEGORY_FIR = 8;
-    public static final short CATEGORY_UIR = 9;
-    public static final short CATEGORY_RMZ = 10;
+    public static final short CATEGORY_A = 0;
+    public static final short CATEGORY_B = 1;
+    public static final short CATEGORY_C = 2;
+    public static final short CATEGORY_CTR = 3;
+    public static final short CATEGORY_D = 4;
+    public static final short CATEGORY_DANGER = 5;
+    public static final short CATEGORY_E = 6;
+    public static final short CATEGORY_F = 7;
+    public static final short CATEGORY_G = 8;
+    public static final short CATEGORY_GLIDING = 9;
+    public static final short CATEGORY_OTH = 10;
+    public static final short CATEGORY_RESTRICTED = 11;
+    public static final short CATEGORY_TMA = 12;
+    public static final short CATEGORY_TMZ = 13;
+    public static final short CATEGORY_WAVE = 14;
+    public static final short CATEGORY_PROHIBITED = 15;
+    public static final short CATEGORY_FIR = 16;
+    public static final short CATEGORY_UIR = 17;
+    public static final short CATEGORY_RMZ = 18;
 
-    public static final short ALT_REF_GND = 11;
-    public static final short ALT_REF_MSL = 12;
-    public static final short ALT_REF_STD = 13;
+    public static final short ALT_REF_GND = 19;
+    public static final short ALT_REF_MSL = 20;
+    public static final short ALT_REF_STD = 21;
 
-    public static final short ALT_UNIT_F = 14;
-    public static final short ALT_UNIT_FL = 15;
+    public static final short ALT_UNIT_F = 22;
+    public static final short ALT_UNIT_FL = 23;
 
 
     public static class Parser {
@@ -94,6 +104,15 @@ public class Airspace {
     }
 
     private static short getCategory(String str){
+        if (str.compareTo("A") == 0) return CATEGORY_A;
+        if (str.compareTo("B") == 0) return CATEGORY_B;
+        if (str.compareTo("C") == 0) return CATEGORY_C;
+        if (str.compareTo("CTR") == 0) return CATEGORY_CTR;
+        if (str.compareTo("D") == 0) return CATEGORY_D;
+        if (str.compareTo("DANGER") == 0) return CATEGORY_DANGER;
+        if (str.compareTo("E") == 0) return CATEGORY_E;
+        if (str.compareTo("F") == 0) return CATEGORY_F;
+        if (str.compareTo("G") == 0) return CATEGORY_G;
         if (str.compareTo("GLIDING") == 0) return CATEGORY_GLIDING;
         if (str.compareTo("RESTRICTED") == 0) return CATEGORY_RESTRICTED;
         if (str.compareTo("TMA") == 0) return CATEGORY_TMA;
@@ -130,7 +149,6 @@ public class Airspace {
         public short altlimit_bottom_unit;
         public int altlimit_bottom_value;
         public ArrayList<LatLng> polygon;
-
     }
 
 }

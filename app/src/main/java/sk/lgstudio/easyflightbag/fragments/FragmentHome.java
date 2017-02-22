@@ -1,6 +1,5 @@
 package sk.lgstudio.easyflightbag.fragments;
 
-import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,24 +24,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
-
-import java.util.List;
 
 import lecho.lib.hellocharts.view.LineChartView;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
-import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 import sk.lgstudio.easyflightbag.managers.AirspaceManager;
 import sk.lgstudio.easyflightbag.openAIP.Airspace;
 
 /**
  *
  */
-public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMyLocationButtonClickListener {
+public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMapClickListener {
 
     private RelativeLayout panelBottom;
     private RelativeLayout panelMap;
@@ -263,8 +257,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         map = googleMap;
         map.setMyLocationEnabled(true); // TODO: change to airplane icon
         map.setOnCameraMoveListener(this);
-        map.setOnMarkerClickListener(this);
         map.setOnMyLocationButtonClickListener(this);
+        map.setOnMapClickListener(this);
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         map.setBuildingsEnabled(false);
         map.setTrafficEnabled(false);
@@ -305,10 +299,9 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
-        return false;
+    public void onMapClick(LatLng latLng) {
+        (new GetPOITask()).execute((LatLng) latLng);
     }
-
 
     /**
      * Load map overlays from airspaceManager
@@ -319,12 +312,30 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
                 PolygonOptions options = new PolygonOptions()
                         .addAll(d.polygon)
                         .strokeWidth(4)
-                        .clickable(true)
                         .strokeColor(airspaceManager.airspaceStrokeColor(d.category))
                         .fillColor(airspaceManager.airspaceFillColor(d.category));
 
                 map.addPolygon(options);
             }
+        }
+    }
+
+
+    /**
+     * Get POIs at map coordinates
+     */
+    public class GetPOITask extends AsyncTask<LatLng, Void, Void>{
+
+        @Override
+        protected Void doInBackground(LatLng... params) {
+
+            LatLng coord = params[0];
+            Log.e("Clicked",String.valueOf(coord.latitude) + " / " + String.valueOf(coord.longitude));
+            for(Airspace.Data d: airspaceManager.getAirspacesAt(coord)){
+                Log.e("Airspace " + String.valueOf(d.category), d.country + "/" + d.name);
+            }
+
+            return null;
         }
     }
 

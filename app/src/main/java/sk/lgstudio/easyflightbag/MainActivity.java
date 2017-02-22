@@ -40,6 +40,7 @@ import sk.lgstudio.easyflightbag.fragments.FragmentSettings;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
+    // static values
     public final static int MENU_NAV = 0;
     public final static int MENU_CAL = 1;
     public final static int MENU_AIP = 2;
@@ -52,6 +53,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     public final static int DAYS_IN_MILLISECONDS = 24*60*60*1000;
 
+    // menu button ids
     private final int[] tabIds = {
             R.id.tab_home,
             R.id.tab_calc,
@@ -61,26 +63,36 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             R.id.tab_set
     };
 
+    // framnets
     private FragmentHome fHome = new FragmentHome();
     private FragmentCalc fCalc = new FragmentCalc();
     private FragmentChklist fChk = new FragmentChklist();
     private FragmentSettings fSet  = new FragmentSettings();
     private FragmentAip fAip = new FragmentAip();
 
+    // menu paging related
     private TabViewPager viewPager;
     public ArrayList<ImageButton> menuTabs = new ArrayList<>();
     private int selectedTab = 0;
 
+    // public variables for fragments
     public SharedPreferences prefs;
     public boolean nightMode = false;
     public AIPManager aipManager;
     public AirspaceManager airspaceManager;
     public File airFolder;
 
+    // random private variables needed for some reason
     private boolean inited = false;
     private MainActivity activity;
     private SplashDialog splash;
 
+    /**
+     * ------------------------------------------
+     * Lifecycle
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +125,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onDestroy(){
         super.onDestroy();
 
-
         if (fChk.folderActual != null)
             prefs.edit().putString(getString(R.string.pref_chk_folder), fChk.folderActual.getPath()).apply();
         else
@@ -144,6 +155,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * Permission check result handling
+     * Close if not all permissions are granted
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
        if (grantResults.length < 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED ){
@@ -216,7 +234,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     /**
-     * initializes fragments and top menu on the view
+     * Initializes fragments and top menu on the view
      */
     public void initView(){
         final TabFragmentAdapter fA = new TabFragmentAdapter(getSupportFragmentManager());
@@ -244,6 +262,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             ib.setOnClickListener(this);
     }
 
+    /**
+     * Click listener only for the menu items
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         int clicked = 0;
@@ -256,7 +278,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     /**
-     * Changes the opened tab to a new one
+     * Changes the opened tab int the viewPager
      * @param clicked
      */
     public void changeTab(int clicked){
@@ -319,13 +341,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
-
         if (selectedTab != MENU_NAV)
             changeTab(MENU_NAV);
         else
             super.onBackPressed();
     }
 
+    /**
+     * Background task to initialize the application and load content
+     */
     private class LoadContentTask extends AsyncTask<Void, Void, Void>{
 
         @Override
@@ -333,6 +357,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             prefs = getSharedPreferences(getString(R.string.app_prefs), Context.MODE_PRIVATE);
 
+            // check permissions
             permissionCheck();
             inited = true;
 
@@ -346,6 +371,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             aipManager = new AIPManager(activity);
             airspaceManager = new AirspaceManager(activity);
 
+            // start gps service
             startGPSService();
 
             return null;
@@ -355,6 +381,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         protected void onPostExecute(Void param) {
             // creates fragments
             initView();
+
+            // show the screen
             splash.dismiss();
         }
     }
