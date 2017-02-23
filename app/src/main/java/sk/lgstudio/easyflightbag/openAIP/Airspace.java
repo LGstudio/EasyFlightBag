@@ -148,7 +148,7 @@ public class Airspace {
         public short altlimit_bottom;
         public short altlimit_bottom_unit;
         public int altlimit_bottom_value;
-        public ArrayList<LatLng> polygon;
+        public ArrayList<LatLng> polygon = null;
     }
 
 }
