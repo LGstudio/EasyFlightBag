@@ -122,19 +122,57 @@ public class Airspace {
         if (str.compareTo("FIR") == 0) return CATEGORY_FIR;
         if (str.compareTo("UIR") == 0) return CATEGORY_UIR;
         if (str.compareTo("RMZ") == 0) return CATEGORY_RMZ;
+        if (str.compareTo("OTH") == 0) return CATEGORY_OTH;
+        return -1;
+    }
 
-        return CATEGORY_OTH;
+    public static String getCategory(short c){
+        if (c == CATEGORY_A) return "A";
+        if (c == CATEGORY_B) return "B";
+        if (c == CATEGORY_C) return "C";
+        if (c == CATEGORY_CTR) return "CTR";
+        if (c == CATEGORY_D) return "D";
+        if (c == CATEGORY_DANGER) return "Danger";
+        if (c == CATEGORY_E) return "E";
+        if (c == CATEGORY_F) return "F";
+        if (c == CATEGORY_FIR) return "FIR";
+        if (c == CATEGORY_G) return "G";
+        if (c == CATEGORY_GLIDING) return "Gliding";
+        if (c == CATEGORY_RESTRICTED) return "Restricted";
+        if (c == CATEGORY_RMZ) return "RMZ";
+        if (c == CATEGORY_TMA) return "TMA";
+        if (c == CATEGORY_TMZ) return "TMZ";
+        if (c == CATEGORY_WAVE) return "Wave";
+        if (c == CATEGORY_PROHIBITED) return "Prohibited";
+        if (c == CATEGORY_UIR) return "UIR";
+        if (c == CATEGORY_OTH) return "Other";
+        return "";
     }
 
     private static short getReference(String str){
         if (str.compareTo("GND") == 0) return ALT_REF_GND;
         if (str.compareTo("STD") == 0) return ALT_REF_STD;
-        return ALT_REF_MSL;
+        if (str.compareTo("MSL") == 0) return ALT_REF_MSL;
+        return -1;
+    }
+
+    public static String getReference(short r){
+        if (r == ALT_REF_GND) return "GND";
+        if (r == ALT_REF_STD) return "STD";
+        if (r == ALT_REF_MSL) return "MSL";
+        return "";
     }
 
     private static short getUnit(String str){
         if (str.compareTo("F") == 0) return ALT_UNIT_F;
-        return ALT_UNIT_FL;
+        if (str.compareTo("FL") == 0) return ALT_UNIT_FL;
+        return -1;
+    }
+
+    public static String getUnit(short u){
+        if (u == ALT_UNIT_F) return "f";
+        if (u == ALT_UNIT_FL) return "fl";
+        return "";
     }
 
     public static class Data{

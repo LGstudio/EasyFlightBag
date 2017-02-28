@@ -18,7 +18,7 @@ import java.net.URL;
 
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
-import sk.lgstudio.easyflightbag.managers.AirspaceManager;
+import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader;
 
 
@@ -50,7 +50,7 @@ public class AirspaceDownloader extends IntentService {
 
         builder = new NotificationCompat.Builder(getApplicationContext())
                 .setContentTitle(getString(R.string.air_progress_download))
-                .setContentText(String.valueOf(fileCount)+ "/" + String.valueOf(AirspaceManager.fileCount))
+                .setContentText(String.valueOf(fileCount)+ "/" + String.valueOf(MapOverlayManager.fileCount))
                 .setSmallIcon(R.drawable.ic_download)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -58,10 +58,10 @@ public class AirspaceDownloader extends IntentService {
 
         notificationManager.notify(MainActivity.NOTIFICATION_AIRSAPCE ,builder.build());
 
-        for(int i = 0; i < AirspaceManager.countries.length; i++){
-            for (int j = 0; j < AirspaceManager.filetypes.length; j++){
+        for(int i = 0; i < MapOverlayManager.countries.length; i++){
+            for (int j = 0; j < MapOverlayManager.filetypes.length; j++){
                 fileCount += 1;
-                String name = AirspaceManager.countries[i]+AirspaceManager.filetypes[j];
+                String name = MapOverlayManager.countries[i]+ MapOverlayManager.filetypes[j];
                 if (downloadFile(name))
                     sendReport(name, AIPDownloader.STATUS_STARTED);
                 else{
@@ -78,7 +78,7 @@ public class AirspaceDownloader extends IntentService {
         switch (status) {
             case AIPDownloader.STATUS_STARTED:
                 if (builder != null){
-                    builder.setContentText(String.valueOf(fileCount)+ "/" + String.valueOf(AirspaceManager.fileCount));
+                    builder.setContentText(String.valueOf(fileCount)+ "/" + String.valueOf(MapOverlayManager.fileCount));
                     notificationManager.notify(MainActivity.NOTIFICATION_AIRSAPCE ,builder.build());
                 }
                 break;

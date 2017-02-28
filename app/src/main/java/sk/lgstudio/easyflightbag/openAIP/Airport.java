@@ -1,5 +1,7 @@
 package sk.lgstudio.easyflightbag.openAIP;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.jsoup.Jsoup;
@@ -77,7 +79,10 @@ public class Airport {
                         radio.category = getRadioCategory(r.attr("CATEGORY"));
                         radio.description = r.getElementsByTag("DESCRIPTION").text();
                         radio.specification = r.getElementsByTag("TYPESPEC").text();
-                        radio.frequency = Float.parseFloat(r.getElementsByTag("FREQUENCY").text());
+
+                        String freq = r.getElementsByTag("FREQUENCY").text();
+                        if (freq.length() > 0) radio.frequency = Float.parseFloat(freq);
+                        else radio.frequency = 0.0f;
                         radio.type = r.getElementsByTag("TYPE").text();
                         d.radios.add(radio);
                     }
@@ -109,6 +114,7 @@ public class Airport {
                         d.runways.add(rwy);
                     }
 
+
                     data.add(d);
                 }
 
@@ -137,6 +143,21 @@ public class Airport {
         return -1;
     }
 
+    public static String getAptType(short t){
+        if (t == APT_TYPE_APT) return "Airfield";
+        if (t == APT_TYPE_CIVIL) return "Civil";
+        if (t == APT_TYPE_CLOSED) return "Closed";
+        if (t == APT_TYPE_GLIDING) return "Glider Site";
+        if (t == APT_TYPE_HELI_CIVIL) return "Heliport Civil";
+        if (t == APT_TYPE_HELI_MIL) return "Heliport Military";
+        if (t == APT_TYPE_INT) return "International";
+        if (t == APT_TYPE_MIL) return "Military";
+        if (t == APT_TYPE_MIL_CIVIL) return "Airfield (Military/Civil)";
+        if (t == APT_TYPE_LIGHT) return "Ultra Light Flying Site";
+        if (t == APT_TYPE_WATER) return "Water";
+        return "";
+    }
+
     private static short getRadioCategory(String str) {
         if (str.compareTo("COMMUNICATION") == 0) return RADIO_CAT_COMM;
         if (str.compareTo("INFORMATION") == 0) return RADIO_CAT_INF;
@@ -145,11 +166,26 @@ public class Airport {
         return -1;
     }
 
+    public static String getRadioCategory(short r){
+        if (r == RADIO_CAT_COMM) return "Communication";
+        if (r == RADIO_CAT_INF) return "Information";
+        if (r == RADIO_CAT_NAV) return "Navigation";
+        if (r == RADIO_CAT_OTH) return "Other";
+        return "";
+    }
+
     private static short getRwyOperations(String str) {
         if (str.compareTo("ACTIVE") == 0) return RWY_ACTIVE;
         if (str.compareTo("TEMPORARILY_CLOSED") == 0) return RWY_CLOSED_TEMP;
         if (str.compareTo("CLOSED") == 0) return RWY_CLOSED;
         return -1;
+    }
+
+    public static String getRwyOperations(short r){
+        if (r == RWY_ACTIVE) return "Active";
+        if (r == RWY_CLOSED) return "Closed";
+        if (r == RWY_CLOSED_TEMP) return "Temporarily Closed";
+        return "";
     }
 
     private static short getRwySurface(String str) {
@@ -164,6 +200,20 @@ public class Airport {
         if (str.compareTo("UNKN") == 0) return RWY_SFC_UNKN;
         if (str.compareTo("WATE") == 0) return RWY_SFC_WATE;
         return -1;
+    }
+
+    public String getRwySurface(short s){
+        if (s == RWY_SFC_ASPH) return "Asphalt";
+        if (s == RWY_SFC_CONC) return "Concrete";
+        if (s == RWY_SFC_GRAS) return "Grass";
+        if (s == RWY_SFC_GRVL) return "Gravel";
+        if (s == RWY_SFC_ICE) return "Ice";
+        if (s == RWY_SFC_SAND) return "Sand";
+        if (s == RWY_SFC_SNOW) return "Snow";
+        if (s == RWY_SFC_SOIL) return "Soil";
+        if (s == RWY_SFC_UNKN) return "Unknown";
+        if (s == RWY_SFC_WATE) return "Water";
+        return "";
     }
 
     private static short getRwyStrength(String str) {

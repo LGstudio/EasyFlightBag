@@ -24,13 +24,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 
 import lecho.lib.hellocharts.view.LineChartView;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
-import sk.lgstudio.easyflightbag.managers.AirspaceManager;
+import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
+import sk.lgstudio.easyflightbag.openAIP.Airport;
 import sk.lgstudio.easyflightbag.openAIP.Airspace;
 
 /**
@@ -57,7 +59,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private LatLng mapTargetArea = null;
     private BitmapDescriptor mapLocationBmp = null;
 
-    public AirspaceManager airspaceManager = null;
+    public MapOverlayManager mapOverlayManager = null;
     public MainActivity activity;
 
     /**
@@ -277,7 +279,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         mapReady = true;
 
-        if (airspaceManager != null) loadOverlays();
+        if (mapOverlayManager != null) loadOverlays();
 
         if (activity.nightMode) googleMap.setMapStyle(new MapStyleOptions(getString(R.raw.map_style_dark)));
         else googleMap.setMapStyle(new MapStyleOptions(getString(R.raw.map_style_light)));
@@ -304,19 +306,29 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     }
 
     /**
-     * Load map overlays from airspaceManager
+     * Load map overlays from mapOverlayManager
      */
     private void loadOverlays(){
-        if (airspaceManager.airspaces != null){
-            for (Airspace.Data d: airspaceManager.airspaces){
+        if (mapOverlayManager.airspaces != null) {
+            for (Airspace.Data d : mapOverlayManager.airspaces) {
                 PolygonOptions options = new PolygonOptions()
                         .addAll(d.polygon)
                         .strokeWidth(4)
-                        .strokeColor(airspaceManager.airspaceStrokeColor(d.category))
-                        .fillColor(airspaceManager.airspaceFillColor(d.category));
+                        .strokeColor(mapOverlayManager.airspaceStrokeColor(d.category))
+                        .fillColor(mapOverlayManager.airspaceFillColor(d.category));
 
                 map.addPolygon(options);
             }
+        }
+        if (mapOverlayManager.airports != null){
+            for (Airport.Data d: mapOverlayManager.airports){
+                MarkerOptions options = new MarkerOptions()
+                        .position(d.location)
+                        .icon(mapOverlayManager.getAirportIcon(d));
+
+                //map.addMarker(options);
+            }
+
         }
     }
 
@@ -330,9 +342,11 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         protected Void doInBackground(LatLng... params) {
 
             LatLng coord = params[0];
-            Log.e("Clicked",String.valueOf(coord.latitude) + " / " + String.valueOf(coord.longitude));
-            for(Airspace.Data d: airspaceManager.getAirspacesAt(coord)){
+            for(Airspace.Data d: mapOverlayManager.getAirspacesAt(coord)){
                 Log.e("Airspace " + String.valueOf(d.category), d.country + "/" + d.name);
+            }
+            for(Airport.Data d: mapOverlayManager.getAirportsCloseBy(coord)){
+                Log.e("Airport " + String.valueOf(Airport.getAptType(d.type)), d.country + "/" + d.name);
             }
 
             return null;

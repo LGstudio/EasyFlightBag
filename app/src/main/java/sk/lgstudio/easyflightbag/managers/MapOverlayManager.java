@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Icon;
+import android.location.Location;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polygon;
 
@@ -21,6 +25,7 @@ import java.util.List;
 
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.openAIP.Airport;
 import sk.lgstudio.easyflightbag.openAIP.Airspace;
 import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader;
 import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
@@ -29,7 +34,7 @@ import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
  * Created by LGstudio on 2017-02-20.
  */
 
-public class AirspaceManager {
+public class MapOverlayManager {
 
     // Static values
     public static final String countries[] = {"at", "cz", "hu", "pl", "sk"};
@@ -43,12 +48,13 @@ public class AirspaceManager {
 
     // List of content
     public ArrayList<Airspace.Data> airspaces = null;
+    public ArrayList<Airport.Data> airports = null;
 
     /**
      * Constructor
      * @param a - MainActivity
      */
-    public AirspaceManager(MainActivity a){
+    public MapOverlayManager(MainActivity a){
         activity = a;
         prefs = a.prefs;
         if (exists())
@@ -60,13 +66,21 @@ public class AirspaceManager {
      */
     private void loadData(){
         airspaces = new ArrayList<>();
+        airports = new ArrayList<>();
         for (int i = 0; i < countries.length; i++){
+            // airspaces
             String fileName = activity.airFolder.getPath()+"/"+countries[i]+filetypes[1];
             File f = new File(fileName);
             if (f.exists())
                 airspaces.addAll(new Airspace.Parser().parse(f));
-        }
 
+            // airports
+            fileName = activity.airFolder.getPath()+"/"+countries[i]+filetypes[0];
+            f = new File(fileName);
+            if (f.exists())
+                airports.addAll(new Airport.Parser().parse(f));
+
+        }
     }
 
     /**
@@ -121,6 +135,20 @@ public class AirspaceManager {
             default: // A, B, C, D, E, F, TMZ, FIR, RESTRICTED, UIR, RMZ
                 return Color.argb(0,0,0,0);
         }
+    }
+
+    public ArrayList<Airport.Data> getAirportsCloseBy(LatLng point){
+        ArrayList<Airport.Data> data = new ArrayList<>();
+
+        for (Airport.Data d: airports){
+            float[] results = new float[1];
+            Location.distanceBetween(d.location.latitude, d.location.longitude, point.latitude, point.longitude, results);
+            if (results[0] < 10000){ // 10Km around
+                data.add(d);
+            }
+        }
+
+        return data;
     }
 
     /**
@@ -207,6 +235,13 @@ public class AirspaceManager {
             return (blue >= red);
         }
 
+    }
+
+    public BitmapDescriptor getAirportIcon(Airport.Data d){
+
+
+
+        return BitmapDescriptorFactory.fromResource(R.drawable.ic_add);
     }
 
     /**

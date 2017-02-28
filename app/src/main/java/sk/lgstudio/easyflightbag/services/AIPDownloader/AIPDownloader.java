@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
-import sk.lgstudio.easyflightbag.managers.AirspaceManager;
 
 /**
  * Created by LGstudio on 2016-10-18.

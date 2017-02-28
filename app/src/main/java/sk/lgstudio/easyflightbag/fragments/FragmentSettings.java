@@ -73,7 +73,7 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         for (int i = 0; i < aip_txt.size(); i++){
             aip_txt.get(i).setText(activity.aipManager.getStatus(i));
         }
-        airspace_txt.setText(activity.airspaceManager.getStatus());
+        airspace_txt.setText(activity.mapOverlayManager.getStatus());
         super.onResume();
     }
 
@@ -103,13 +103,13 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
             }
         }
         if (!found && vId == R.id.set_refresh_airspace){
-            activity.airspaceManager.getUpdate();
+            activity.mapOverlayManager.getUpdate();
         }
 
     }
 
     public void reloadAirspaceData(){
-        airspace_txt.setText(activity.airspaceManager.getStatus());
+        airspace_txt.setText(activity.mapOverlayManager.getStatus());
     }
 
     public void reloadAipData(int c){

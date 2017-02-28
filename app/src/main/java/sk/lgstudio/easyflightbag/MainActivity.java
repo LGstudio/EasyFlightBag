@@ -1,7 +1,6 @@
 package sk.lgstudio.easyflightbag;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -27,7 +25,7 @@ import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.dialogs.SplashDialog;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
-import sk.lgstudio.easyflightbag.managers.AirspaceManager;
+import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.menu.TabFragmentAdapter;
 import sk.lgstudio.easyflightbag.menu.TabViewPager;
@@ -79,7 +77,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public SharedPreferences prefs;
     public boolean nightMode = false;
     public AIPManager aipManager;
-    public AirspaceManager airspaceManager;
+    public MapOverlayManager mapOverlayManager;
     public File airFolder;
 
     // random private variables needed for some reason
@@ -239,7 +237,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void initView(){
         final TabFragmentAdapter fA = new TabFragmentAdapter(getSupportFragmentManager());
 
-        fHome.airspaceManager = airspaceManager;
+        fHome.mapOverlayManager = mapOverlayManager;
         fHome.activity = this;
         fA.addFragment(fHome);
         fCalc.prefs = prefs;
@@ -369,7 +367,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             // create managers
             aipManager = new AIPManager(activity);
-            airspaceManager = new AirspaceManager(activity);
+            mapOverlayManager = new MapOverlayManager(activity);
 
             // start gps service
             startGPSService();
