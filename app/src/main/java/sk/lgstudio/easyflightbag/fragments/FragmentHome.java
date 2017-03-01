@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,13 +25,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 
+import java.util.ArrayList;
+
 import lecho.lib.hellocharts.view.LineChartView;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.dialogs.OverlayDetailDialog;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 import sk.lgstudio.easyflightbag.openAIP.Airport;
 import sk.lgstudio.easyflightbag.openAIP.Airspace;
@@ -38,7 +43,7 @@ import sk.lgstudio.easyflightbag.openAIP.Airspace;
 /**
  *
  */
-public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMapClickListener {
+public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
     private RelativeLayout panelBottom;
     private RelativeLayout panelMap;
@@ -47,6 +52,11 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private Button btnFlightPlan;
     private LineChartView elevationChart;
     private LinearLayout panelInfo;
+
+    private TextView txtAccuracy;
+    private TextView txtSpeed;
+    private TextView txtAlt;
+    private TextView txtBearing;
 
     protected MapView mapLayout = null;
     protected GoogleMap map = null;
@@ -58,9 +68,14 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private LatLng lastPosition = null;
     private LatLng mapTargetArea = null;
     private BitmapDescriptor mapLocationBmp = null;
+    private MarkerOptions locaionMarkerOptions;
+    private Marker locationMarker = null;
 
     public MapOverlayManager mapOverlayManager = null;
     public MainActivity activity;
+
+    private boolean isGPS = false;
+    private boolean isNet = false;
 
     /**
      * Reload view settings after fragment reopened
@@ -111,12 +126,20 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         panelInfo = (LinearLayout) view.findViewById(R.id.home_gps_info_panel);
         panelMap = (RelativeLayout) view.findViewById(R.id.home_map_layout);
 
+        txtAccuracy = (TextView) view.findViewById(R.id.home_data_accuracy);
+        txtSpeed = (TextView) view.findViewById(R.id.home_data_speed);
+        txtAlt = (TextView) view.findViewById(R.id.home_data_altitude);
+        txtBearing = (TextView) view.findViewById(R.id.home_data_bearing);
+
         elevationChart = (LineChartView) view.findViewById(R.id.home_elevation_graph);
 
         mapLayout = (MapView) view.findViewById(R.id.home_map_view);
         mapLayout.onCreate(savedInstanceState);
 
         mapLayout.getMapAsync(this);
+
+        mapLocationBmp = BitmapDescriptorFactory.fromResource(R.drawable.ic_flight);
+        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(mapLocationBmp);
 
         return view;
     }
@@ -220,21 +243,21 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         lastPosition = new LatLng(loc.getLatitude(), loc.getLongitude());
 
+        locaionMarkerOptions.position(lastPosition).rotation(loc.getBearing());
         if (mapReady) {
-            if (mapLocationBmp == null)
-                mapLocationBmp = BitmapDescriptorFactory.fromResource(R.drawable.ic_flight);
-
-            //map.addMarker(new MarkerOptions().position(lastPosition).draggable(false).icon(mapLocationBmp).rotation(loc.getBearing()));
-
+            if (locationMarker != null) locationMarker.remove();
+            // locationMarker = map.addMarker(locaionMarkerOptions); // TODO:FIX MY LOCATION
             if (mapFollow) changeMapPosition(lastPosition);
             else changeMapPosition(mapTargetArea);
-
         }
-
 
         RedrawElevationGraphTask task = new RedrawElevationGraphTask();
         task.execute((Void) null);
 
+        txtAccuracy.setText(String.valueOf(loc.getAccuracy()));
+        txtSpeed.setText(String.valueOf(loc.getSpeed()));
+        txtAlt.setText(String.valueOf(loc.getAltitude()));
+        txtBearing.setText(String.valueOf(loc.getBearing()));
 
         //String str = String.valueOf(loc.getLongitude()) + "/" + String.valueOf(loc.getLatitude()) + " @ " + String.valueOf(loc.getAltitude());
         //str = str + " | A:" + String.valueOf(loc.getAccuracy() + " | S:" + String.valueOf(loc.getSpeed()));
@@ -257,13 +280,13 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     public void onMapReady(GoogleMap googleMap) {
 
         map = googleMap;
-        map.setMyLocationEnabled(true); // TODO: change to airplane icon
         map.setOnCameraMoveListener(this);
         map.setOnMyLocationButtonClickListener(this);
         map.setOnMapClickListener(this);
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         map.setBuildingsEnabled(false);
         map.setTrafficEnabled(false);
+        map.setOnMarkerClickListener(this);
 
         mapFollow = true;
 
@@ -281,8 +304,13 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         if (mapOverlayManager != null) loadOverlays();
 
-        if (activity.nightMode) googleMap.setMapStyle(new MapStyleOptions(getString(R.raw.map_style_dark)));
-        else googleMap.setMapStyle(new MapStyleOptions(getString(R.raw.map_style_light)));
+        boolean success;
+        if (activity.nightMode)
+            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
+        else
+            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
+
+        if (!success) Log.w("Map style", "Failed to load from RAW file");
 
     }
 
@@ -305,6 +333,13 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         (new GetPOITask()).execute((LatLng) latLng);
     }
 
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        (new GetPOITask()).execute(marker.getPosition());
+        return false;
+    }
+
     /**
      * Load map overlays from mapOverlayManager
      */
@@ -323,12 +358,11 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         if (mapOverlayManager.airports != null){
             for (Airport.Data d: mapOverlayManager.airports){
                 MarkerOptions options = new MarkerOptions()
-                        .position(d.location)
-                        .icon(mapOverlayManager.getAirportIcon(d));
+                        .position(d.location);
+                        //.icon(mapOverlayManager.getAirportIcon(d)); // TODO: FIx - same problem as with own location
 
-                //map.addMarker(options);
+                map.addMarker(options);
             }
-
         }
     }
 
@@ -338,18 +372,24 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
      */
     public class GetPOITask extends AsyncTask<LatLng, Void, Void>{
 
+        ArrayList<Airport.Data> airports;
+        ArrayList<Airspace.Data> airspaces;
+
         @Override
         protected Void doInBackground(LatLng... params) {
 
             LatLng coord = params[0];
-            for(Airspace.Data d: mapOverlayManager.getAirspacesAt(coord)){
-                Log.e("Airspace " + String.valueOf(d.category), d.country + "/" + d.name);
-            }
-            for(Airport.Data d: mapOverlayManager.getAirportsCloseBy(coord)){
-                Log.e("Airport " + String.valueOf(Airport.getAptType(d.type)), d.country + "/" + d.name);
-            }
-
+            airspaces = mapOverlayManager.getAirspacesAt(coord);
+            airports = mapOverlayManager.getAirportsCloseBy(coord);
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+            OverlayDetailDialog d = new OverlayDetailDialog(getContext());
+            d.setContentView(R.layout.dialog_overlay_detail);
+            d.loadContent(lastPosition, airspaces, airports);
+            d.show();
         }
     }
 

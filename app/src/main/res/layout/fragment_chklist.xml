@@ -38,7 +38,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:padding="@dimen/row_padding"
-
+            android:clipToPadding="false"
             >
 
             <ListView

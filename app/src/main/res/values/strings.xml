@@ -199,6 +199,7 @@
     <string name="calc_unit_sec" translatable="false">s</string>
     <string name="calc_unit_lph" translatable="false">l/hour</string>
     <string name="calc_unit_gph" translatable="false">gal./hour</string>
+    <string name="calc_unit_degree" translatable="false">°</string>
 
     <string name="aip_day_ago">day(s) ago</string>
     <string name="aip_downloading">Downloading…</string>
@@ -237,5 +238,8 @@
     <string name="home_gps_speed">Speed</string>
     <string name="home_gps_alt">Altitude</string>
     <string name="home_gps_bear">Bearing</string>
+
+    <string name="airports">Airports</string>
+    <string name="airspaces">Airspaces</string>
 
 </resources>

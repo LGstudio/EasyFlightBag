@@ -88,7 +88,7 @@ public class MapOverlayManager {
      * @param category
      * @return
      */
-    public int airspaceStrokeColor(short category){
+    public static int airspaceStrokeColor(short category){
         switch (category){
             case Airspace.CATEGORY_F:
                 return Color.argb(100, 0, 0, 200); // !
@@ -116,7 +116,7 @@ public class MapOverlayManager {
      * @param category
      * @return
      */
-    public int airspaceFillColor(short category){
+    public static int airspaceFillColor(short category){
 
         switch (category){
             case Airspace.CATEGORY_CTR:
@@ -139,13 +139,22 @@ public class MapOverlayManager {
 
     public ArrayList<Airport.Data> getAirportsCloseBy(LatLng point){
         ArrayList<Airport.Data> data = new ArrayList<>();
+        Airport.Data closest = null;
+        float close = Float.MAX_VALUE;
 
         for (Airport.Data d: airports){
             float[] results = new float[1];
             Location.distanceBetween(d.location.latitude, d.location.longitude, point.latitude, point.longitude, results);
-            if (results[0] < 10000){ // 10Km around
+            if (results[0] < close) {
+                closest = d;
+                close = results[0];
+            }
+            if (results[0] < 10000){ // 25Km around
                 data.add(d);
             }
+        }
+        if (!data.contains(closest)){
+            data.add(closest);
         }
 
         return data;
@@ -238,7 +247,6 @@ public class MapOverlayManager {
     }
 
     public BitmapDescriptor getAirportIcon(Airport.Data d){
-
 
 
         return BitmapDescriptorFactory.fromResource(R.drawable.ic_add);

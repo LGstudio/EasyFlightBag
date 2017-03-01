@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="?attr/backgroundDarkColor"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/row_padding">
+    android:paddingBottom="@dimen/row_padding"
+    android:clipToPadding="false">
 
     <ImageButton
         android:id="@+id/wb_close"
@@ -16,7 +17,8 @@
         android:layout_marginRight="@dimen/row_padding"
         android:src="@drawable/ic_done"
         android:layout_marginTop="@dimen/row_padding"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:elevation="@dimen/elevation_8"/>
 
     <ScrollView
         android:layout_width="match_parent"

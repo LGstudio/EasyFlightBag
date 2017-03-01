@@ -127,23 +127,23 @@ public class Airspace {
     }
 
     public static String getCategory(short c){
-        if (c == CATEGORY_A) return "A";
-        if (c == CATEGORY_B) return "B";
-        if (c == CATEGORY_C) return "C";
+        if (c == CATEGORY_A) return "Type A";
+        if (c == CATEGORY_B) return "Type B";
+        if (c == CATEGORY_C) return "Type C";
         if (c == CATEGORY_CTR) return "CTR";
-        if (c == CATEGORY_D) return "D";
+        if (c == CATEGORY_D) return "Type D";
         if (c == CATEGORY_DANGER) return "Danger";
-        if (c == CATEGORY_E) return "E";
-        if (c == CATEGORY_F) return "F";
+        if (c == CATEGORY_E) return "Type E";
+        if (c == CATEGORY_F) return "Type F";
         if (c == CATEGORY_FIR) return "FIR";
-        if (c == CATEGORY_G) return "G";
+        if (c == CATEGORY_G) return "Type G";
         if (c == CATEGORY_GLIDING) return "Gliding";
-        if (c == CATEGORY_RESTRICTED) return "Restricted";
+        if (c == CATEGORY_RESTRICTED) return "Restrict.";
         if (c == CATEGORY_RMZ) return "RMZ";
         if (c == CATEGORY_TMA) return "TMA";
         if (c == CATEGORY_TMZ) return "TMZ";
         if (c == CATEGORY_WAVE) return "Wave";
-        if (c == CATEGORY_PROHIBITED) return "Prohibited";
+        if (c == CATEGORY_PROHIBITED) return "Prohib.";
         if (c == CATEGORY_UIR) return "UIR";
         if (c == CATEGORY_OTH) return "Other";
         return "";

@@ -104,7 +104,8 @@
 
                 <TextView
                     style="@style/Home_gps_data_text_big"
-                    android:text="12"/>
+                    android:text="12"
+                    android:id="@+id/home_data_accuracy"/>
 
                 <TextView
                     style="@style/Home_gps_data_text_small"
@@ -120,7 +121,8 @@
 
                 <TextView
                     style="@style/Home_gps_data_text_big"
-                    android:text="12"/>
+                    android:text="12"
+                    android:id="@+id/home_data_speed"/>
 
                 <TextView
                     style="@style/Home_gps_data_text_small"
@@ -136,7 +138,8 @@
 
                 <TextView
                     style="@style/Home_gps_data_text_big"
-                    android:text="12"/>
+                    android:text="12"
+                    android:id="@+id/home_data_altitude"/>
 
                 <TextView
                     style="@style/Home_gps_data_text_small"
@@ -151,7 +154,8 @@
 
                 <TextView
                     style="@style/Home_gps_data_text_big"
-                    android:text="12"/>
+                    android:text="12"
+                    android:id="@+id/home_data_bearing"/>
 
 
             </LinearLayout>
