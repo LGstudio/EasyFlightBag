@@ -104,7 +104,7 @@ public class OverlayDetailDialog extends Dialog implements AdapterView.OnItemCli
         else if (end > -1) cut = end;
         else cut = comment;
 
-        Log.e(dt.name, end + " / " + comment + " / " + cut);
+        //Log.e(dt.name, end + " / " + comment + " / " + cut);
 
         if (cut > -1){
             name.setText(dt.name.substring(0, cut));

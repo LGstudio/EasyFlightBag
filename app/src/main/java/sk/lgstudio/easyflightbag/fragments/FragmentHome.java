@@ -1,9 +1,19 @@
 package sk.lgstudio.easyflightbag.fragments;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +40,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import lecho.lib.hellocharts.view.LineChartView;
@@ -43,7 +54,7 @@ import sk.lgstudio.easyflightbag.openAIP.Airspace;
 /**
  *
  */
-public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
+public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
     private RelativeLayout panelBottom;
     private RelativeLayout panelMap;
@@ -58,24 +69,28 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private TextView txtAlt;
     private TextView txtBearing;
 
+    private TextView txtNoGps;
+    private TextView txtNoNet;
+
+    private ImageButton btnCenterMap;
+    private ImageButton btnRotateMap;
+
     protected MapView mapLayout = null;
     protected GoogleMap map = null;
 
     private boolean isElevationGraphVisible = true;
     private boolean mapReady = false;
-    private boolean mapFollow = false;
+    private boolean mapNorthUp = true;
+    private boolean mapFollow = true;
     private float mapZoomLevel = 14f;
-    private LatLng lastPosition = null;
+    private float bearing = 0f;
+    public LatLng lastPosition = null;
     private LatLng mapTargetArea = null;
-    private BitmapDescriptor mapLocationBmp = null;
     private MarkerOptions locaionMarkerOptions;
     private Marker locationMarker = null;
 
     public MapOverlayManager mapOverlayManager = null;
     public MainActivity activity;
-
-    private boolean isGPS = false;
-    private boolean isNet = false;
 
     /**
      * Reload view settings after fragment reopened
@@ -86,8 +101,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            //isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
-            //changePanelState(isElevationGraphVisible);
+            isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
+            changePanelState(isElevationGraphVisible);
             if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
         }
     }
@@ -131,6 +146,14 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         txtAlt = (TextView) view.findViewById(R.id.home_data_altitude);
         txtBearing = (TextView) view.findViewById(R.id.home_data_bearing);
 
+        txtNoGps = (TextView) view.findViewById(R.id.home_nogps);
+        txtNoNet = (TextView) view.findViewById(R.id.home_nonet);
+
+        btnCenterMap = (ImageButton) view.findViewById(R.id.home_map_center);
+        btnRotateMap = (ImageButton) view.findViewById(R.id.home_map_rotate);
+        btnCenterMap.setOnClickListener(this);
+        btnRotateMap.setOnClickListener(this);
+
         elevationChart = (LineChartView) view.findViewById(R.id.home_elevation_graph);
 
         mapLayout = (MapView) view.findViewById(R.id.home_map_view);
@@ -138,10 +161,25 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         mapLayout.getMapAsync(this);
 
-        mapLocationBmp = BitmapDescriptorFactory.fromResource(R.drawable.ic_flight);
-        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(mapLocationBmp);
+        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(getBitmapDescriptor(R.drawable.ic_plane_map)).anchor(0.5f, 0.5f);
 
         return view;
+    }
+
+    private BitmapDescriptor getBitmapDescriptor(int id) {
+
+        VectorDrawable vectorDrawable = (VectorDrawable) activity.getDrawable(id);
+
+        int h = vectorDrawable.getIntrinsicHeight();
+        int w = vectorDrawable.getIntrinsicWidth();
+
+        vectorDrawable.setBounds(0, 0, 2*w, 2*h);
+
+        Bitmap bm = Bitmap.createBitmap(2*w, 2*h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+        vectorDrawable.draw(canvas);
+
+        return BitmapDescriptorFactory.fromBitmap(bm);
     }
 
     /**
@@ -200,7 +238,14 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
             case R.id.home_fl_plan_btn:
                 openFlightPlans();
                 break;
-
+            case R.id.home_map_center:
+                mapFollow = true;
+                changeMapPosition();
+                break;
+            case R.id.home_map_rotate:
+                mapNorthUp = !mapNorthUp;
+                changeMapPosition();
+                break;
         }
     }
 
@@ -239,25 +284,43 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
      * Called from activity to handle new location
      * @param loc
      */
-    public void addNewLocation(Location loc) {
+    public void addNewLocation(boolean isEnabled, Location loc) {
 
-        lastPosition = new LatLng(loc.getLatitude(), loc.getLongitude());
+        if (isEnabled){
+            lastPosition = new LatLng(loc.getLatitude(), loc.getLongitude());
 
-        locaionMarkerOptions.position(lastPosition).rotation(loc.getBearing());
-        if (mapReady) {
-            if (locationMarker != null) locationMarker.remove();
-            // locationMarker = map.addMarker(locaionMarkerOptions); // TODO:FIX MY LOCATION
-            if (mapFollow) changeMapPosition(lastPosition);
-            else changeMapPosition(mapTargetArea);
+            locaionMarkerOptions.position(lastPosition).rotation(loc.getBearing());
+            if (mapReady) {
+                if (locationMarker != null) locationMarker.remove();
+                locationMarker = map.addMarker(locaionMarkerOptions); // TODO:FIX MY LOCATION
+                if (mapFollow) changeMapPosition();
+            }
+
+            RedrawElevationGraphTask task = new RedrawElevationGraphTask();
+            task.execute((Void) null);
+
+            txtAccuracy.setText(new DecimalFormat("#.#").format(loc.getAccuracy()));
+            txtSpeed.setText(new DecimalFormat("#.#").format(loc.getSpeed()));
+            txtAlt.setText(new DecimalFormat("#").format(loc.getAltitude()));
+            txtBearing.setText(new DecimalFormat("#").format(loc.getBearing()));
+            txtNoGps.setVisibility(View.GONE);
         }
 
-        RedrawElevationGraphTask task = new RedrawElevationGraphTask();
-        task.execute((Void) null);
+        else if (lastPosition != null) {
+            lastPosition = null;
+            if (mapReady) {
+                if (locationMarker != null) locationMarker.remove();
+                mapFollow = false;
+            }
+            RedrawElevationGraphTask task = new RedrawElevationGraphTask();
+            task.execute((Void) null);
 
-        txtAccuracy.setText(String.valueOf(loc.getAccuracy()));
-        txtSpeed.setText(String.valueOf(loc.getSpeed()));
-        txtAlt.setText(String.valueOf(loc.getAltitude()));
-        txtBearing.setText(String.valueOf(loc.getBearing()));
+            txtNoGps.setVisibility(View.VISIBLE);
+            txtAccuracy.setText("0");
+            txtSpeed.setText("0");
+            txtAlt.setText("0");
+            txtBearing.setText("0");
+        }
 
         //String str = String.valueOf(loc.getLongitude()) + "/" + String.valueOf(loc.getLatitude()) + " @ " + String.valueOf(loc.getAltitude());
         //str = str + " | A:" + String.valueOf(loc.getAccuracy() + " | S:" + String.valueOf(loc.getSpeed()));
@@ -267,12 +330,24 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     }
 
     /**
-     * Jump to position on the map
-     * @param pos
+     * Jump to position on the map based on
      */
-    private void changeMapPosition(LatLng pos){
-        CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(pos).zoom(mapZoomLevel).build());
+    private void changeMapPosition(){
+        float b;
+        if (mapNorthUp)
+            b = 0f;
+        else
+            b = bearing;
+
+        LatLng pos;
+        if (mapFollow)
+            pos = lastPosition;
+        else
+            pos = mapTargetArea;
+
+        CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(pos).zoom(mapZoomLevel).bearing(b).build());
         map.moveCamera(myLoc);
+
     }
 
     @SuppressWarnings("ResourceType")
@@ -281,16 +356,25 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         map = googleMap;
         map.setOnCameraMoveListener(this);
-        map.setOnMyLocationButtonClickListener(this);
+        //map.setMyLocationEnabled(true);
+        //map.setOnMyLocationButtonClickListener(this);
         map.setOnMapClickListener(this);
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         map.setBuildingsEnabled(false);
         map.setTrafficEnabled(false);
         map.setOnMarkerClickListener(this);
 
+        boolean success;
+        if (activity.nightMode)
+            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
+        else
+            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
+
+        if (!success) Log.w("Map style", "Failed to load from RAW file");
+
         mapFollow = true;
 
-        if(lastPosition != null) changeMapPosition(lastPosition);
+        if(lastPosition != null) changeMapPosition();
 
         UiSettings settings = map.getUiSettings();
         settings.setCompassEnabled(true);
@@ -304,13 +388,6 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         if (mapOverlayManager != null) loadOverlays();
 
-        boolean success;
-        if (activity.nightMode)
-            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
-        else
-            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
-
-        if (!success) Log.w("Map style", "Failed to load from RAW file");
 
     }
 
@@ -319,13 +396,6 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         mapZoomLevel = map.getCameraPosition().zoom;
         mapTargetArea = map.getCameraPosition().target;
         mapFollow = false;
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        mapFollow = true;
-        changeMapPosition(lastPosition);
-        return true;
     }
 
     @Override

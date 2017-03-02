@@ -95,6 +95,7 @@
     <string name="gps_time" translatable="false">GPStim</string>
     <string name="gps_bearing" translatable="false">GPSbea</string>
     <string name="gps_location" translatable="false">gps_location</string>
+    <string name="gps_enabled" translatable="false">gps_enabled</string>
 
     <string name="calc_conv">Conversions</string>
     <string name="calc_conv_dist">Distance</string>

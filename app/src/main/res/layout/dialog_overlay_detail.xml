@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/backgroundDarkColor"
-    android:padding="@dimen/row_padding"
+    android:paddingBottom="@dimen/row_padding"
     android:clipToPadding="false">
 
     <ImageButton
@@ -15,14 +15,18 @@
         android:padding="@dimen/row_padding"
         android:src="@drawable/ic_done"
         android:layout_alignParentBottom="true"
-        android:elevation="@dimen/elevation_8"/>
+        android:elevation="@dimen/elevation_4"
+        android:layout_marginStart="@dimen/row_padding"
+        android:layout_marginEnd="@dimen/row_padding"
+        />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_above="@id/detail_close"
-        android:layout_marginBottom="@dimen/row_padding"
+        android:layout_margin="@dimen/row_padding"
+        android:layout_alignParentTop="true"
         android:clipToPadding="false">
 
         <LinearLayout

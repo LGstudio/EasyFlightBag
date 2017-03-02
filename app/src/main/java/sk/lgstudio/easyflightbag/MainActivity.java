@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -122,6 +124,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onDestroy(){
         super.onDestroy();
+
+        prefs.edit().putFloat(getString(R.string.gps_latitude) ,(float) fHome.lastPosition.latitude).apply();
+        prefs.edit().putFloat(getString(R.string.gps_longitude) ,(float) fHome.lastPosition.longitude).apply();
 
         if (fChk.folderActual != null)
             prefs.edit().putString(getString(R.string.pref_chk_folder), fChk.folderActual.getPath()).apply();
@@ -303,18 +308,23 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Location newLoc = new Location(getString(R.string.gps_location));
+            boolean isEnabled = intent.getBooleanExtra(context.getString(R.string.gps_enabled), false);
 
-            newLoc.setLatitude(Double.parseDouble(intent.getStringExtra(context.getString(R.string.gps_latitude))));
-            newLoc.setLongitude(Double.parseDouble(intent.getStringExtra(context.getString(R.string.gps_longitude))));
-            newLoc.setAccuracy(Float.parseFloat(intent.getStringExtra(context.getString(R.string.gps_accuracy))));
-            newLoc.setBearing(Float.parseFloat(intent.getStringExtra(context.getString(R.string.gps_bearing))));
-            newLoc.setSpeed(Float.parseFloat(intent.getStringExtra(context.getString(R.string.gps_speed))));
-            newLoc.setTime(Long.parseLong(intent.getStringExtra(context.getString(R.string.gps_time))));
-            newLoc.setAltitude(Double.parseDouble(intent.getStringExtra(context.getString(R.string.gps_altitude))));
+            if (isEnabled) {
+                Location newLoc = new Location(getString(R.string.gps_location));
+                newLoc.setLatitude(intent.getDoubleExtra(context.getString(R.string.gps_latitude), 0.0));
+                newLoc.setLongitude(intent.getDoubleExtra(context.getString(R.string.gps_longitude), 0.0));
+                newLoc.setAccuracy(intent.getFloatExtra(context.getString(R.string.gps_accuracy), 0f));
+                newLoc.setBearing(intent.getFloatExtra(context.getString(R.string.gps_bearing), 0f));
+                newLoc.setSpeed(intent.getFloatExtra(context.getString(R.string.gps_speed), 0f));
+                newLoc.setTime(intent.getLongExtra(context.getString(R.string.gps_time), 0));
+                newLoc.setAltitude(intent.getDoubleExtra(context.getString(R.string.gps_altitude), 0.0));
 
-            fHome.addNewLocation(newLoc);
-
+                fHome.addNewLocation(isEnabled, newLoc);
+            }
+            else {
+                fHome.addNewLocation(isEnabled, null);
+            }
         }
     };
 
@@ -371,6 +381,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             // start gps service
             startGPSService();
+
+            // load default position
+            fHome.lastPosition = new LatLng(prefs.getFloat(getString(R.string.gps_latitude), 0),prefs.getFloat(getString(R.string.gps_longitude), 0));
 
             return null;
         }

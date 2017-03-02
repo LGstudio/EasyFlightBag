@@ -66,6 +66,28 @@
                 android:visibility="gone"/>
 
         </LinearLayout>
+        
+        <ImageButton
+            android:id="@+id/home_map_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/row_padding"
+            android:layout_marginTop="@dimen/row_padding"
+            android:layout_marginEnd="@dimen/row_padding"
+            android:background="?attr/backgroundDarkColor"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_my_location"/>
+
+        <ImageButton
+            android:id="@+id/home_map_rotate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/row_padding"
+            android:background="?attr/backgroundDarkColor"
+            android:src="@drawable/ic_navigation"
+            android:layout_below="@+id/home_map_center"
+            android:layout_alignStart="@+id/home_map_center"
+            android:layout_marginTop="@dimen/row_divider"/>
 
     </RelativeLayout>
 

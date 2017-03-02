@@ -57,11 +57,12 @@ public class GPSTrackerService extends Service implements
     protected void stopLocationUpdates() {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mLastLocation = null;
+            sendLocation();
         }
     }
 
     public boolean isPeriodicallyUpdated() {
-
         return mRequestingLocationUpdates;
     }
 
@@ -140,23 +141,22 @@ public class GPSTrackerService extends Service implements
 
     public void sendLocation() {
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
+        Context context = getApplicationContext();
+        Intent intent = new Intent(context.getString(R.string.gps_intent_filter));
         if (mLastLocation != null) {
-            Context context = getApplicationContext();
 
-            Intent intent = new Intent(context.getString(R.string.gps_intent_filter));
-            intent.putExtra(context.getString(R.string.gps_latitude), Double.toString(mLastLocation.getLatitude()));
-            intent.putExtra(context.getString(R.string.gps_longitude), Double.toString(mLastLocation.getLongitude()));
-            intent.putExtra(context.getString(R.string.gps_accuracy), Float.toString(mLastLocation.getAccuracy()));
-            intent.putExtra(context.getString(R.string.gps_bearing), Float.toString(mLastLocation.getBearing()));
-            intent.putExtra(context.getString(R.string.gps_speed), Float.toString(mLastLocation.getSpeed()));
-            intent.putExtra(context.getString(R.string.gps_time), Long.toString(mLastLocation.getTime()));
-            intent.putExtra(context.getString(R.string.gps_altitude), Double.toString(mLastLocation.getAltitude()));
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            intent.putExtra(context.getString(R.string.gps_latitude), mLastLocation.getLatitude());
+            intent.putExtra(context.getString(R.string.gps_longitude), mLastLocation.getLongitude());
+            intent.putExtra(context.getString(R.string.gps_accuracy), mLastLocation.getAccuracy());
+            intent.putExtra(context.getString(R.string.gps_bearing), mLastLocation.getBearing());
+            intent.putExtra(context.getString(R.string.gps_speed), mLastLocation.getSpeed());
+            intent.putExtra(context.getString(R.string.gps_time), mLastLocation.getTime());
+            intent.putExtra(context.getString(R.string.gps_altitude), mLastLocation.getAltitude());
+            intent.putExtra(getString(R.string.gps_enabled), true);
         }
+        else {
+            intent.putExtra(getString(R.string.gps_enabled), false);
+        }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
