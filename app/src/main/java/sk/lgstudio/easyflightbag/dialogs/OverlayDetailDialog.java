@@ -3,6 +3,7 @@ package sk.lgstudio.easyflightbag.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.util.Log;
@@ -87,6 +88,7 @@ public class OverlayDetailDialog extends Dialog implements AdapterView.OnItemCli
             dist.setText(dstStr);
             bear.setText(bearStr);
 
+            icon.setBackground(new BitmapDrawable(getContext().getResources(), dt.icon));
         }
     }
 

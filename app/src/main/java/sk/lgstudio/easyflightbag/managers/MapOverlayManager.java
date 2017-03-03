@@ -79,8 +79,8 @@ public class MapOverlayManager {
             f = new File(fileName);
             if (f.exists()) {
                 airports.addAll(new Airport.Parser().parse(f));
-                //for (Airport.Data d: airports)
-                //    d.icon = getAirportIcon(d);
+                for (Airport.Data d: airports)
+                    d.icon = getAirportIcon(d);
             }
 
         }
@@ -178,7 +178,7 @@ public class MapOverlayManager {
         return data;
     }
 
-    public BitmapDescriptor getAirportIcon(Airport.Data ap){
+    public Bitmap getAirportIcon(Airport.Data ap){
 
         VectorDrawable vectorType = (VectorDrawable) activity.getDrawable(R.drawable.airport_circle_general);
         VectorDrawable vectorRwy = null;
@@ -212,28 +212,28 @@ public class MapOverlayManager {
 
         if (!isHeli){
             for (Airport.Runway rwy: ap.runways){
-                short sfc = rwy.sfc;
-                switch (sfc){
-                    case Airport.RWY_SFC_ASPH:
-                    case Airport.RWY_SFC_CONC:
-                        vectorRwy = (VectorDrawable) activity.getDrawable(R.drawable.airport_rwy_asph);
-                        break;
-                    default:
-                        vectorRwy = (VectorDrawable) activity.getDrawable(R.drawable.airport_rwy_other);
+                if (rwy.operations != Airport.RWY_CLOSED){
+                    short sfc = rwy.sfc;
+                    switch (sfc){
+                        case Airport.RWY_SFC_ASPH:
+                        case Airport.RWY_SFC_CONC:
+                            vectorRwy = (VectorDrawable) activity.getDrawable(R.drawable.airport_rwy_asph);
+                            break;
+                        default:
+                            vectorRwy = (VectorDrawable) activity.getDrawable(R.drawable.airport_rwy_other);
+                    }
+                    vectorRwy.setBounds(0, 0, w, h);
+                    float tc = 0f;
+                    for (Airport.Direction dir: rwy.directions){
+                        tc = dir.tc;
+                    }
+                    canvas.rotate(tc, w/2, h/2);
+                    vectorRwy.draw(canvas);
+                    canvas.rotate(-tc, w/2, h/2);
                 }
-                vectorRwy.setBounds(0, 0, w, h);
-                float tc = 0f;
-                if (rwy.directions.size() > 0){
-                     tc = rwy.directions.get(0).tc;
-                }
-                canvas.rotate(-tc);
-                vectorRwy.draw(canvas);
-                canvas.rotate(tc);
             }
         }
-
-        return BitmapDescriptorFactory.fromBitmap(bm);
-
+        return bm;
     }
 
     /**

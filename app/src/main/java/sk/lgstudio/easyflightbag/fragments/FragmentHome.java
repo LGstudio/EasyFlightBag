@@ -413,7 +413,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
             for (Airport.Data d: mapOverlayManager.airports){
                 MarkerOptions options = new MarkerOptions()
                         .position(d.location)
-                        .icon(mapOverlayManager.getAirportIcon(d));
+                        .icon(BitmapDescriptorFactory.fromBitmap(d.icon));
 
                 map.addMarker(options).setAnchor(0.5f, 0.5f);
             }

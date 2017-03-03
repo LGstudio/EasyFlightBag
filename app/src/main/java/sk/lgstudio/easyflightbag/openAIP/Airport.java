@@ -1,5 +1,6 @@
 package sk.lgstudio.easyflightbag.openAIP;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -94,21 +95,31 @@ public class Airport {
                         Runway rwy = new Runway();
                         rwy.operations = getRwyOperations(r.attr("OPERATIONS"));
                         rwy.name = r.getElementsByTag("NAME").text();
-                        rwy.sfc = getRwySurface(r.attr("SFC"));
+                        rwy.sfc = getRwySurface(r.getElementsByTag("SFC").text());
                         rwy.length = Float.parseFloat(r.getElementsByTag("LENGTH").text());
                         rwy.width = Float.parseFloat(r.getElementsByTag("WIDTH").text());
                         rwy.strength_value = r.getElementsByTag("STRENGTH").text();
                         rwy.strength_unit = getRwyStrength(r.getElementsByTag("STRENGTH").attr("UNIT"));
 
-                        Elements directions = r.getElementsByTag("DIRECTIONS");
+                        Elements directions = r.getElementsByTag("DIRECTION");
                         rwy.directions = new ArrayList<>();
                         for (Element direction: directions){
                             Direction dir = new Direction();
                             dir.tc = Short.parseShort(direction.attr("TC"));
-                            dir.land_ils = Float.parseFloat(direction.getElementsByTag("LANDINGS").first().getElementsByTag("ILS").text());
-                            dir.land_papi = getPapi(direction.getElementsByTag("LANDINGS").first().getElementsByTag("PAPI").text());
-                            dir.runs_tora = Short.parseShort(direction.getElementsByTag("RUNS").first().getElementsByTag("TORA").text());
-                            dir.runs_lda = Short.parseShort(direction.getElementsByTag("RUNS").first().getElementsByTag("LDA").text());
+                            Elements land = direction.getElementsByTag("LANDINGS");
+                            if (land.size() > 0){
+                                dir.land_ils = land.first().getElementsByTag("ILS").text();
+                                dir.land_papi = getPapi(land.first().getElementsByTag("PAPI").text());
+                            }
+                            Elements runs = direction.getElementsByTag("RUNS");
+                            if (runs.size() > 0){
+                                String s = runs.first().getElementsByTag("TORA").text();
+                                if (s.length() > 0)
+                                    dir.runs_tora = Integer.parseInt(s);
+                                s = runs.first().getElementsByTag("LDA").text();
+                                if (s.length() > 0)
+                                    dir.runs_lda = Integer.parseInt(s);
+                            }
                             rwy.directions.add(dir);
                         }
 
@@ -203,7 +214,7 @@ public class Airport {
         return -1;
     }
 
-    public String getRwySurface(short s){
+    public static String getRwySurface(short s){
         if (s == RWY_SFC_ASPH) return "Asphalt";
         if (s == RWY_SFC_CONC) return "Concrete";
         if (s == RWY_SFC_GRAS) return "Grass";
@@ -237,7 +248,7 @@ public class Airport {
         public float elevation;
         public ArrayList<Radio> radios = null;
         public ArrayList<Runway> runways = null;
-        public BitmapDescriptor icon = null;
+        public Bitmap icon = null;
 
     }
 
@@ -262,9 +273,9 @@ public class Airport {
 
     public static class Direction{
         public short tc;
-        public short runs_tora = 0;
-        public short runs_lda = 0;
-        public float land_ils = 0;
+        public int runs_tora = 0;
+        public int runs_lda = 0;
+        public String land_ils = "";
         public boolean land_papi = false;
 
     }
