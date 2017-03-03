@@ -161,25 +161,9 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         mapLayout.getMapAsync(this);
 
-        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(getBitmapDescriptor(R.drawable.ic_plane_map)).anchor(0.5f, 0.5f);
+        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(mapOverlayManager.getBitmapDescriptor(R.drawable.ic_plane_map)).anchor(0.5f, 0.5f);
 
         return view;
-    }
-
-    private BitmapDescriptor getBitmapDescriptor(int id) {
-
-        VectorDrawable vectorDrawable = (VectorDrawable) activity.getDrawable(id);
-
-        int h = vectorDrawable.getIntrinsicHeight();
-        int w = vectorDrawable.getIntrinsicWidth();
-
-        vectorDrawable.setBounds(0, 0, 2*w, 2*h);
-
-        Bitmap bm = Bitmap.createBitmap(2*w, 2*h, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bm);
-        vectorDrawable.draw(canvas);
-
-        return BitmapDescriptorFactory.fromBitmap(bm);
     }
 
     /**
@@ -428,10 +412,10 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         if (mapOverlayManager.airports != null){
             for (Airport.Data d: mapOverlayManager.airports){
                 MarkerOptions options = new MarkerOptions()
-                        .position(d.location);
-                        //.icon(mapOverlayManager.getAirportIcon(d)); // TODO: FIx - same problem as with own location
+                        .position(d.location)
+                        .icon(mapOverlayManager.getAirportIcon(d));
 
-                map.addMarker(options);
+                map.addMarker(options).setAnchor(0.5f, 0.5f);
             }
         }
     }

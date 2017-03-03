@@ -2,6 +2,7 @@ package sk.lgstudio.easyflightbag.openAIP;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.jsoup.Jsoup;
@@ -152,7 +153,7 @@ public class Airport {
         if (t == APT_TYPE_HELI_MIL) return "Heliport Military";
         if (t == APT_TYPE_INT) return "International";
         if (t == APT_TYPE_MIL) return "Military";
-        if (t == APT_TYPE_MIL_CIVIL) return "Airfield (Military/Civil)";
+        if (t == APT_TYPE_MIL_CIVIL) return "Military/Civil";
         if (t == APT_TYPE_LIGHT) return "Ultra Light Flying Site";
         if (t == APT_TYPE_WATER) return "Water";
         return "";
@@ -236,6 +237,7 @@ public class Airport {
         public float elevation;
         public ArrayList<Radio> radios = null;
         public ArrayList<Runway> runways = null;
+        public BitmapDescriptor icon = null;
 
     }
 

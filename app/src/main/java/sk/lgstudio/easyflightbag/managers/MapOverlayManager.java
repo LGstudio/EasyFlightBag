@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.Icon;
+import android.graphics.drawable.VectorDrawable;
 import android.location.Location;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -15,13 +17,11 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polygon;
 
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
@@ -77,8 +77,11 @@ public class MapOverlayManager {
             // airports
             fileName = activity.airFolder.getPath()+"/"+countries[i]+filetypes[0];
             f = new File(fileName);
-            if (f.exists())
+            if (f.exists()) {
                 airports.addAll(new Airport.Parser().parse(f));
+                //for (Airport.Data d: airports)
+                //    d.icon = getAirportIcon(d);
+            }
 
         }
     }
@@ -175,6 +178,64 @@ public class MapOverlayManager {
         return data;
     }
 
+    public BitmapDescriptor getAirportIcon(Airport.Data ap){
+
+        VectorDrawable vectorType = (VectorDrawable) activity.getDrawable(R.drawable.airport_circle_general);
+        VectorDrawable vectorRwy = null;
+
+        int h = vectorType.getIntrinsicHeight();
+        int w = vectorType.getIntrinsicWidth();
+
+        Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+
+        boolean isHeli = false;
+
+        switch(ap.type) {
+            case Airport.APT_TYPE_INT:
+                vectorType = (VectorDrawable) activity.getDrawable(R.drawable.airport_circle_international);
+                break;
+            case Airport.APT_TYPE_HELI_CIVIL:
+            case Airport.APT_TYPE_HELI_MIL:
+                vectorType = (VectorDrawable) activity.getDrawable(R.drawable.airport_heli);
+                isHeli = true;
+                break;
+            case Airport.APT_TYPE_GLIDING:
+            case Airport.APT_TYPE_LIGHT:
+            case Airport.APT_TYPE_WATER:
+                vectorType = (VectorDrawable) activity.getDrawable(R.drawable.empty_vector);
+                break;
+        }
+
+        vectorType.setBounds(0, 0, w, h);
+        vectorType.draw(canvas);
+
+        if (!isHeli){
+            for (Airport.Runway rwy: ap.runways){
+                short sfc = rwy.sfc;
+                switch (sfc){
+                    case Airport.RWY_SFC_ASPH:
+                    case Airport.RWY_SFC_CONC:
+                        vectorRwy = (VectorDrawable) activity.getDrawable(R.drawable.airport_rwy_asph);
+                        break;
+                    default:
+                        vectorRwy = (VectorDrawable) activity.getDrawable(R.drawable.airport_rwy_other);
+                }
+                vectorRwy.setBounds(0, 0, w, h);
+                float tc = 0f;
+                if (rwy.directions.size() > 0){
+                     tc = rwy.directions.get(0).tc;
+                }
+                canvas.rotate(-tc);
+                vectorRwy.draw(canvas);
+                canvas.rotate(tc);
+            }
+        }
+
+        return BitmapDescriptorFactory.fromBitmap(bm);
+
+    }
+
     /**
      * Returns if polygon contains a given point
      * @param point
@@ -246,10 +307,20 @@ public class MapOverlayManager {
 
     }
 
-    public BitmapDescriptor getAirportIcon(Airport.Data d){
+    public BitmapDescriptor getBitmapDescriptor(int id) {
 
+        VectorDrawable vectorDrawable = (VectorDrawable) activity.getDrawable(id);
 
-        return BitmapDescriptorFactory.fromResource(R.drawable.ic_add);
+        int h = vectorDrawable.getIntrinsicHeight();
+        int w = vectorDrawable.getIntrinsicWidth();
+
+        vectorDrawable.setBounds(0, 0, 2*w, 2*h);
+
+        Bitmap bm = Bitmap.createBitmap(2*w, 2*h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+        vectorDrawable.draw(canvas);
+
+        return BitmapDescriptorFactory.fromBitmap(bm);
     }
 
     /**
