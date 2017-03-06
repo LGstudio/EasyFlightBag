@@ -173,6 +173,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     public void onResume() {
         super.onResume();
         if (mapLayout != null) mapLayout.onResume();
+        Log.e("HOME SCREEN", "RESUME");
     }
 
     /**
@@ -180,6 +181,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
      */
     @Override
     public void onPause() {
+        Log.e("HOME SCREEN", "PAUSE");
         if (mapLayout != null) mapLayout.onPause();
         mapReady = false;
         super.onPause();
@@ -276,12 +278,11 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
             locaionMarkerOptions.position(lastPosition).rotation(loc.getBearing());
             if (mapReady) {
                 if (locationMarker != null) locationMarker.remove();
-                locationMarker = map.addMarker(locaionMarkerOptions); // TODO:FIX MY LOCATION
+                locationMarker = map.addMarker(locaionMarkerOptions);
                 if (mapFollow) changeMapPosition();
             }
 
-            RedrawElevationGraphTask task = new RedrawElevationGraphTask();
-            task.execute((Void) null);
+            (new RedrawElevationGraphTask()).execute((Void) null);
 
             txtAccuracy.setText(new DecimalFormat("#.#").format(loc.getAccuracy()));
             txtSpeed.setText(new DecimalFormat("#.#").format(loc.getSpeed()));
@@ -296,20 +297,15 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
                 if (locationMarker != null) locationMarker.remove();
                 mapFollow = false;
             }
-            RedrawElevationGraphTask task = new RedrawElevationGraphTask();
-            task.execute((Void) null);
+
+            (new RedrawElevationGraphTask()).execute((Void) null);
 
             txtNoGps.setVisibility(View.VISIBLE);
-            txtAccuracy.setText("0");
-            txtSpeed.setText("0");
-            txtAlt.setText("0");
-            txtBearing.setText("0");
+            txtAccuracy.setText("-");
+            txtSpeed.setText("-");
+            txtAlt.setText("-");
+            txtBearing.setText("-");
         }
-
-        //String str = String.valueOf(loc.getLongitude()) + "/" + String.valueOf(loc.getLatitude()) + " @ " + String.valueOf(loc.getAltitude());
-        //str = str + " | A:" + String.valueOf(loc.getAccuracy() + " | S:" + String.valueOf(loc.getSpeed()));
-        //str = str + " | B:" + String.valueOf(loc.getBearing());
-        //Log.d("Location", str);
 
     }
 

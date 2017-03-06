@@ -52,8 +52,8 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
     private Context context;
     private LayoutInflater inflater;
 
-    public CalculatorWB(SharedPreferences p, Context c, LayoutInflater i, File f, float[] r, float[] v, int[] l) {
-        super(r, v, l);
+    public CalculatorWB(SharedPreferences p, Context c, LayoutInflater i, File f) {
+        super(null, null, null);
         prefs = p;
         context = c;
         inflater = i;

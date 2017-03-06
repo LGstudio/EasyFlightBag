@@ -109,7 +109,7 @@
     <string name="calc_conv_moment">Moment (W&amp;B)</string>
     <string name="calc_func">Functions</string>
     <string name="calc_func_coord">Kz/Km/Kk</string>
-    <string name="calc_func_time">Time/Speed/Distance</string>
+    <string name="calc_func_time">Distance</string>
     <string name="calc_func_tas">TAS</string>
     <string name="calc_func_fuel">Fuel</string>
     <string name="calc_func_wind">Wind</string>
@@ -148,6 +148,9 @@
     <string name="calc_landing">Landing</string>
     <string name="calc_out_of_fuel">Out of fuel</string>
     <string name="calc_switch">Twitch to</string>
+    <string name="calc_runway_num">Runway number</string>
+    <string name="calc_wind_dir">Wind from</string>
+    <string name="calc_wind_speed">Wind speed (kn)</string>
 
     <string name="calc_note_tank">Note: The W&amp;B calculator will calculate by draining the lower positioned fuel tanks in the list first.</string>
     <string name="calc_warning_tank">Add at least 1 fuel tank to save</string>

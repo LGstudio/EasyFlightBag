@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class TabFragmentAdapter extends FragmentStatePagerAdapter {
 
-    ArrayList<Fragment> fragments;
+    private ArrayList<Fragment> fragments;
 
     /**
      *

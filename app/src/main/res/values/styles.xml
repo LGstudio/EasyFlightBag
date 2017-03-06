@@ -78,6 +78,9 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:paddingTop">@dimen/tab_padding</item>
         <item name="android:paddingBottom">@dimen/tab_padding</item>
+        <item name="android:layout_margin">@dimen/row_padding</item>
+        <item name="android:elevation">@dimen/elevation_8</item>
+        <item name="android:background">?attr/backgroundColor</item>
         <item name="android:weightSum">1</item>
     </style>
 
@@ -85,9 +88,7 @@
         <item name="android:padding">@dimen/calc_field_padding</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">?attr/backgroundColor</item>
         <item name="android:gravity">end|center_vertical</item>
-        <item name="android:elevation">@dimen/elevation_4</item>
         <item name="android:textSize">@dimen/calc_text_size</item>
         <item name="android:layout_margin">@dimen/calc_field_margin</item>
         <item name="android:textCursorDrawable">@null</item>

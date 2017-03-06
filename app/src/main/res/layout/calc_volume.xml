@@ -3,81 +3,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        style="@style/CalculatorLinearLayout">
+        <LinearLayout
+            style="@style/CalculatorLinearLayout">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.2"
-        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:orientation="vertical">
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/calc_unit_text_l"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_m_cube"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_g_us"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_g_imp"
+                style="@style/Calculator_edit_text_field"
+                />
+
+            <EditText
+                android:id="@+id/calc_unit_text_oz"
+                style="@style/Calculator_edit_text_field"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_l"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_m_cube"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_g_us"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_g_imp"
+                />
+
+            <TextView
+                style="@style/Calculator_text_unit"
+                android:text="@string/calc_unit_oz"
+                />
+
+        </LinearLayout>
+
+
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/calc_unit_text_l"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_m_cube"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_g_us"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_g_imp"
-            style="@style/Calculator_edit_text_field"
-            />
-
-        <EditText
-            android:id="@+id/calc_unit_text_oz"
-            style="@style/Calculator_edit_text_field"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_l"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_m_cube"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_g_us"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_g_imp"
-            />
-
-        <TextView
-            style="@style/Calculator_text_unit"
-            android:text="@string/calc_unit_oz"
-            />
-
-    </LinearLayout>
-
-
-</LinearLayout></ScrollView>
+</ScrollView>

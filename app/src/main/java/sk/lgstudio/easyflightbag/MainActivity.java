@@ -256,7 +256,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         viewPager = (TabViewPager) findViewById(R.id.view_fragment_pager);
         viewPager.setAdapter(fA);
-        viewPager.setPagingEnabled(false);
+        viewPager.setPagingEnabled(false); // TODO !!! preloading neighbouring views
 
         for (int id : tabIds)
             activity.menuTabs.add((ImageButton) findViewById(id));
@@ -308,22 +308,24 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            boolean isEnabled = intent.getBooleanExtra(context.getString(R.string.gps_enabled), false);
+            if (selectedTab == MENU_NAV){
+                boolean isEnabled = intent.getBooleanExtra(context.getString(R.string.gps_enabled), false);
 
-            if (isEnabled) {
-                Location newLoc = new Location(getString(R.string.gps_location));
-                newLoc.setLatitude(intent.getDoubleExtra(context.getString(R.string.gps_latitude), 0.0));
-                newLoc.setLongitude(intent.getDoubleExtra(context.getString(R.string.gps_longitude), 0.0));
-                newLoc.setAccuracy(intent.getFloatExtra(context.getString(R.string.gps_accuracy), 0f));
-                newLoc.setBearing(intent.getFloatExtra(context.getString(R.string.gps_bearing), 0f));
-                newLoc.setSpeed(intent.getFloatExtra(context.getString(R.string.gps_speed), 0f));
-                newLoc.setTime(intent.getLongExtra(context.getString(R.string.gps_time), 0));
-                newLoc.setAltitude(intent.getDoubleExtra(context.getString(R.string.gps_altitude), 0.0));
+                if (isEnabled) {
+                    Location newLoc = new Location(getString(R.string.gps_location));
+                    newLoc.setLatitude(intent.getDoubleExtra(context.getString(R.string.gps_latitude), 0.0));
+                    newLoc.setLongitude(intent.getDoubleExtra(context.getString(R.string.gps_longitude), 0.0));
+                    newLoc.setAccuracy(intent.getFloatExtra(context.getString(R.string.gps_accuracy), 0f));
+                    newLoc.setBearing(intent.getFloatExtra(context.getString(R.string.gps_bearing), 0f));
+                    newLoc.setSpeed(intent.getFloatExtra(context.getString(R.string.gps_speed), 0f));
+                    newLoc.setTime(intent.getLongExtra(context.getString(R.string.gps_time), 0));
+                    newLoc.setAltitude(intent.getDoubleExtra(context.getString(R.string.gps_altitude), 0.0));
 
-                fHome.addNewLocation(isEnabled, newLoc);
-            }
-            else {
-                fHome.addNewLocation(isEnabled, null);
+                    fHome.addNewLocation(isEnabled, newLoc);
+                }
+                else {
+                    fHome.addNewLocation(isEnabled, null);
+                }
             }
         }
     };

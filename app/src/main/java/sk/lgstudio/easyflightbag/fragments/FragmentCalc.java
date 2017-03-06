@@ -24,6 +24,7 @@ import sk.lgstudio.easyflightbag.calculations.CalculatorTemperature;
 import sk.lgstudio.easyflightbag.calculations.Calculator;
 import sk.lgstudio.easyflightbag.calculations.CalculatorTime;
 import sk.lgstudio.easyflightbag.calculations.CalculatorWB;
+import sk.lgstudio.easyflightbag.calculations.CalculatorWind;
 
 /**
  *
@@ -33,7 +34,6 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     private final int[] idLayout = {
             R.layout.calc_wb,
             R.layout.calc_time,
-            R.layout.calc_f_fuel,
             R.layout.calc_wind,
             R.layout.calc_fuel,
             R.layout.calc_distance,
@@ -47,7 +47,6 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     private final int[] idMenu = {
             R.id.calc_WB,
             R.id.calc_func_time,
-            R.id.calc_func_fuel,
             R.id.calc_func_wind,
             R.id.calc_conv_fuel,
             R.id.calc_conv_dist,
@@ -117,10 +116,9 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     private void initCalculators(){
         calcFunctions = new ArrayList<>();
 
-        calcFunctions.add(new CalculatorWB(prefs, getActivity(), layoutInflater, folder, null, null, null));
+        calcFunctions.add(new CalculatorWB(prefs, getActivity(), layoutInflater, folder));
         calcFunctions.add(new CalculatorTime(null, CalculatorData.timeValues, CalculatorData.timeLayout));
-        calcFunctions.add(new Calculator(null, null, null));
-        calcFunctions.add(new Calculator(null, null, null));
+        calcFunctions.add(new CalculatorWind(getContext()));
         calcFunctions.add(new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout));
         calcFunctions.add(new Calculator(CalculatorData.dstRatios, CalculatorData.dstValues, CalculatorData.dstLayout));
         calcFunctions.add(new Calculator(CalculatorData.speRatios, CalculatorData.speValues, CalculatorData.speLayout));

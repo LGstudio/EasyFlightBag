@@ -89,6 +89,8 @@ public class OverlayDetailDialog extends Dialog implements AdapterView.OnItemCli
             bear.setText(bearStr);
 
             icon.setBackground(new BitmapDrawable(getContext().getResources(), dt.icon));
+            icon.setScaleX(0.5f);
+            icon.setScaleY(0.5f);
         }
     }
 
@@ -105,8 +107,6 @@ public class OverlayDetailDialog extends Dialog implements AdapterView.OnItemCli
         if (comment > -1 && end > -1) cut = min(end, comment);
         else if (end > -1) cut = end;
         else cut = comment;
-
-        //Log.e(dt.name, end + " / " + comment + " / " + cut);
 
         if (cut > -1){
             name.setText(dt.name.substring(0, cut));
