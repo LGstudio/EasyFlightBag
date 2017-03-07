@@ -85,15 +85,13 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
             LinearLayout rV = (LinearLayout) inflater.inflate(R.layout.dialog_detail_airport_section_tiem, null);
 
             TextView rTitle = (TextView) rV.findViewById(R.id.detail_ap_section_title);
-            rTitle.setText(getContext().getString(R.string.airport_radio)+ ": " + Airport.getRadioCategory(r.category));
+            String text = getContext().getString(R.string.airport_radio)+ ": " + Airport.getRadioCategory(r.category) + " - " + r.frequency + " - " + r.type;
+            if (r.specification.length() > 0) text += " (" + r.specification + ")";
+            rTitle.setText(text);
 
             TextView rText = (TextView) rV.findViewById(R.id.detail_ap_section_text);
-            String text = getContext().getString(R.string.airport_radio_fq)+ ": " + r.frequency + "\n";
-            text += getContext().getString(R.string.airport_radio_type)+ ": " + r.type;
-            if (r.specification.length() > 0) text += " (" + r.specification + ")\n";
-            else text += "\n";
-            if (r.description.length() > 0) text += getContext().getString(R.string.airport_radio_desc)+ ": " + r.description;
-            rText.setText(text);
+            if (r.description.length() > 0) rText.setText(getContext().getString(R.string.airport_radio_desc)+ ": " + r.description);
+            else rText.setVisibility(View.GONE);
 
             list.addView(rV);
         }
@@ -105,18 +103,22 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
             rTitle.setText(getContext().getString(R.string.airport_rwy) + ": " + r.name + " (" + Airport.getRwyOperations(r.operations) + ")");
 
             TextView rText = (TextView) rV.findViewById(R.id.detail_ap_section_text);
-            String text = getContext().getString(R.string.airport_rwy_size) + ": " + r.width + getContext().getString(R.string.calc_unit_m) + " x " + r.length + getContext().getString(R.string.calc_unit_m) + "\n";
-            text += getContext().getString(R.string.airport_rwy_sfc) + ": " + Airport.getRwySurface(r.sfc);
+            String text = Airport.getRwySurface(r.sfc);
             if (r.strength_value.length() > 0) {
-                text += " - " + r.strength_value;
+
                 if (r.strength_unit == Airport.RWY_STRENGTH_MPW)
-                    text += getContext().getString(R.string.calc_unit_t);
+                    text += "(MPW:" + r.strength_value + getContext().getString(R.string.calc_unit_t) + ")";
+                else
+                    text += "(" + r.strength_value + ")";
+
             }
+            text += ": " + r.length + getContext().getString(R.string.calc_unit_m) + " x " + r.width + getContext().getString(R.string.calc_unit_m);
+
             for (Airport.Direction d: r.directions){
                 text += "\n" +getContext().getString(R.string.airport_rwy_tc) + ": " + d.tc;
-                if (d.runs_tora > 0) text += " | " + getContext().getString(R.string.airport_rwy_tora)+ ": " + d.runs_tora;
-                if (d.runs_lda > 0) text += " | " + getContext().getString(R.string.airport_rwy_lda) + ": " + d.runs_lda;
-                if (d.land_ils.length() > 0) text += " | " + getContext().getString(R.string.airport_rwy_ils) + ": " + d.land_ils + " | " + getContext().getString(R.string.airport_rwy_papi) + d.land_papi;
+                if (d.runs_tora > 0) text += " - " + getContext().getString(R.string.airport_rwy_tora)+ ": " + d.runs_tora + getContext().getString(R.string.calc_unit_m);
+                if (d.runs_lda > 0) text += " - " + getContext().getString(R.string.airport_rwy_lda) + ": " + d.runs_lda + getContext().getString(R.string.calc_unit_m);
+                if (d.land_ils.length() > 0) text += " - " + getContext().getString(R.string.airport_rwy_ils) + ": " + d.land_ils + " | " + getContext().getString(R.string.airport_rwy_papi) + d.land_papi;
             }
 
             rText.setText(text);

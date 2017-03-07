@@ -247,13 +247,9 @@
     <string name="airspaces">Airspaces</string>
 
     <string name="airport_radio">Radio</string>
-    <string name="airport_radio_fq">Frequency</string>
-    <string name="airport_radio_type">Type</string>
     <string name="airport_radio_desc">Description</string>
     <string name="airport_rwy">Runway</string>
-    <string name="airport_rwy_size">Size</string>
-    <string name="airport_rwy_sfc">Surcrace</string>
-    <string name="airport_rwy_tc">True Coarse</string>
+    <string name="airport_rwy_tc">TC</string>
     <string name="airport_rwy_tora">TORA</string>
     <string name="airport_rwy_lda">LDA</string>
     <string name="airport_rwy_ils">ILS</string>
