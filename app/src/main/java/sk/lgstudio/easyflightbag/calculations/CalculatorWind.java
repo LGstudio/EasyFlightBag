@@ -6,10 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.AsyncTask;
-import android.speech.tts.Voice;
+import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.text.DecimalFormat;
 
 import sk.lgstudio.easyflightbag.R;
 
@@ -25,7 +27,7 @@ public class CalculatorWind extends Calculator implements SeekBar.OnSeekBarChang
     private TextView txtLeftWind;
     private TextView txtRightWind;
 
-    private int runwayNum = 0;
+    private int runwayNum = 1;
     private int windDirection = 90;
     private int windSpeed = 0;
 
@@ -103,6 +105,10 @@ public class CalculatorWind extends Calculator implements SeekBar.OnSeekBarChang
     private class RedrawImage extends AsyncTask<Void, Void, Void>{
 
         private Bitmap bmp;
+        private String head = "0";
+        private String tail = "0";
+        private String left = "0";
+        private String right = "0";
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -116,6 +122,25 @@ public class CalculatorWind extends Calculator implements SeekBar.OnSeekBarChang
             vectorWind.draw(canvas);
             canvas.rotate((float) -windDirection, imgW/2, imgH/2);
 
+
+            int relativeDirection = (windDirection-(runwayNum*10));
+
+            if (relativeDirection < 0)
+                relativeDirection = 360 + relativeDirection;
+
+            double cos = Math.cos(Math.toRadians(relativeDirection)); // head/tail
+            double sin = Math.sin(Math.toRadians(relativeDirection)); // left/right
+
+            if (cos > 0)
+                head = new DecimalFormat("#.#").format(cos*windSpeed);
+            else
+                tail = new DecimalFormat("#.#").format(Math.abs(cos*windSpeed));
+
+            if (sin > 0)
+                right = new DecimalFormat("#.#").format(sin*windSpeed);
+            else
+                left = new DecimalFormat("#.#").format(Math.abs(sin*windSpeed));
+
             return null;
         }
 
@@ -126,7 +151,11 @@ public class CalculatorWind extends Calculator implements SeekBar.OnSeekBarChang
             else rwy = String.valueOf(runwayNum);
             image.setText(rwy);
             image.setBackground(new BitmapDrawable(context.getResources(), bmp));
-        }
 
+            txtHeadWind.setText(head);
+            txtTailWind.setText(tail);
+            txtLeftWind.setText(left);
+            txtRightWind.setText(right);
+        }
     }
 }
