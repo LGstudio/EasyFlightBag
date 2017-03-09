@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -219,7 +218,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
                 scrollView.setVisibility(View.VISIBLE);
 
                 for(final AirplaneManager.Tanks t: airplane.tanks) {
-                    TableRow row = (TableRow) inflater.inflate(R.layout.row_airplane_wb_fuel, null);
+                    TableRow row = (TableRow) inflater.inflate(R.layout.calc_wb_fuel_row, null);
                     TextView txtName = (TextView) row.findViewById(R.id.ap_wb_fuel_name);
                     TextView txtCap = (TextView) row.findViewById(R.id.ap_wb_fuel_capacity);
                     TextView txtUnus = (TextView) row.findViewById(R.id.ap_wb_fuel_unus);
@@ -248,7 +247,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
                 }
 
                 for(final AirplaneManager.Weights w: airplane.additional_weight) {
-                    TableRow row = (TableRow) inflater.inflate(R.layout.row_airplane_wb_weights, null);
+                    TableRow row = (TableRow) inflater.inflate(R.layout.calc_wb_weights_row, null);
                     TextView txtName = (TextView) row.findViewById(R.id.ap_wb_weight_name);
                     TextView txtMax = (TextView) row.findViewById(R.id.ap_wb_weight_max);
                     EditText actual = (EditText) row.findViewById(R.id.ap_wb_weight);

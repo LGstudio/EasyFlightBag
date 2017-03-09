@@ -408,6 +408,7 @@ public class MapOverlayManager {
                     stopService();
                     saveSharedPref();
                     Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.air_done_download), Toast.LENGTH_SHORT).show();
+                    loadData();
                     break;
             }
         }

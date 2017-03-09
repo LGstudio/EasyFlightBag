@@ -13,7 +13,7 @@
         android:src="@drawable/ic_expand_right_inv"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-
+        android:layout_marginEnd="@dimen/row_padding"
         />
 
     <LinearLayout
@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_toEndOf="@id/aip_row_icon"
+        android:gravity="center_vertical"
         >
 
         <TextView

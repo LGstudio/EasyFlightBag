@@ -27,6 +27,7 @@
     <string name="folder_airplanes" translatable="false">/Airplanes</string>
     <string name="folder_chklist" translatable="false">/Checklists</string>
     <string name="folder_chklist_demo" translatable="false">/Tutorial</string>
+    <string name="folder_docs" translatable="false">/Documents</string>
     <string name="folder_aip" translatable="false">/AIP</string>
     <string name="folder_at" translatable="false">/at</string>
     <string name="folder_cz" translatable="false">/cz</string>

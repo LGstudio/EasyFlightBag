@@ -34,7 +34,8 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
     private ArrayList<Airport.Data> airports;
     protected LatLng location;
     private String km;
-    protected String d;
+    private String d;
+    private String m;
     private boolean canBack = false;
     ArrayList<View> views = null;
 
@@ -46,6 +47,7 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
         super(context);
         km = context.getString(R.string.calc_unit_km);
         d = context.getString(R.string.calc_unit_degree);
+        m = context.getString(R.string.calc_unit_m);
     }
 
     /**
@@ -58,31 +60,35 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
     }
 
     /**
-     * Initializes layout in airport detail mode
+     * Inflates airport detail mode
      * @param data
      */
     private void showAirportLayout(Airport.Data data){
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.dialog_detail_airport, layoutLists, false);
+        View view = inflater.inflate(R.layout.dialog_detail_list_item, null);
 
-        TextView icao = (TextView) view.findViewById(R.id.detail_ap_icao);
-        TextView type = (TextView) view.findViewById(R.id.detail_ap_description);
-        TextView loc = (TextView) view.findViewById(R.id.detail_ap_location);
-        ImageView icon = (ImageView) view.findViewById(R.id.detail_ap_icon);
+        TextView icao = (TextView) view.findViewById(R.id.detail_title);
+        TextView type = (TextView) view.findViewById(R.id.detail_description);
+        TextView loc = (TextView) view.findViewById(R.id.detail_bottom_center);
+        TextView icon = (TextView) view.findViewById(R.id.detail_icon);
+        TextView top = (TextView) view.findViewById(R.id.detail_end_top);
+        TextView bottom = (TextView) view.findViewById(R.id.detail_end_bottom);
+        top.setVisibility(View.GONE);
+        bottom.setVisibility(View.GONE);
 
         icao.setText(data.icao+ " (" + data.country + ") - " + Airport.getAptType(data.type));
         type.setText(data.name);
         loc.setText("LAT: " + data.location.latitude + " / LON: " + data.location.longitude + " @ " + data.elevation + getContext().getString(R.string.calc_unit_m));
-        icon.setImageBitmap(data.icon);
+        icon.setBackground(new BitmapDrawable(getContext().getResources(), data.icon));
         icon.setScaleX(0.5f);
         icon.setScaleY(0.5f);
 
-        LinearLayout list = (LinearLayout) view.findViewById(R.id.detail_ap_list);
+        layoutLists.addView(view);
 
         for (Airport.Radio r : data.radios){
-            LinearLayout rV = (LinearLayout) inflater.inflate(R.layout.dialog_detail_airport_section_tiem, null);
+            View rV = inflater.inflate(R.layout.dialog_detail_airport_section_tiem, null);
 
             TextView rTitle = (TextView) rV.findViewById(R.id.detail_ap_section_title);
             String text = getContext().getString(R.string.airport_radio)+ ": " + Airport.getRadioCategory(r.category) + " - " + r.frequency + " - " + r.type;
@@ -93,11 +99,11 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
             if (r.description.length() > 0) rText.setText(getContext().getString(R.string.airport_radio_desc)+ ": " + r.description);
             else rText.setVisibility(View.GONE);
 
-            list.addView(rV);
+            layoutLists.addView(rV);
         }
 
         for (Airport.Runway r : data.runways){
-            View rV = inflater.inflate(R.layout.dialog_detail_airport_section_tiem, list, false);
+            View rV = inflater.inflate(R.layout.dialog_detail_airport_section_tiem, null);
 
             TextView rTitle = (TextView) rV.findViewById(R.id.detail_ap_section_title);
             rTitle.setText(getContext().getString(R.string.airport_rwy) + ": " + r.name + " (" + Airport.getRwyOperations(r.operations) + ")");
@@ -112,7 +118,9 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
                     text += "(" + r.strength_value + ")";
 
             }
-            text += ": " + r.length + getContext().getString(R.string.calc_unit_m) + " x " + r.width + getContext().getString(R.string.calc_unit_m);
+            String len = new DecimalFormat("#").format(r.length);
+            String wid = new DecimalFormat("#").format(r.width);
+            text += ": " + len + " X " + wid + m;
 
             for (Airport.Direction d: r.directions){
                 text += "\n" +getContext().getString(R.string.airport_rwy_tc) + ": " + d.tc;
@@ -123,10 +131,8 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
 
             rText.setText(text);
 
-            list.addView(rV);
+            layoutLists.addView(rV);
         }
-
-        layoutLists.addView(view);
     }
 
     /**
@@ -176,6 +182,8 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
         TextView dist = (TextView) v.findViewById(R.id.detail_end_top);
         TextView bear = (TextView) v.findViewById(R.id.detail_end_bottom);
         TextView icon = (TextView) v.findViewById(R.id.detail_icon);
+        TextView bottom =  (TextView) v.findViewById(R.id.detail_bottom_center);
+        bottom.setVisibility(View.GONE);
 
         icao.setText(dt.icao);
         type.setText(Airport.getAptType(dt.type) + " - " + dt.name);
@@ -206,6 +214,8 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
         TextView top = (TextView) v.findViewById(R.id.detail_end_top);
         TextView bottom = (TextView) v.findViewById(R.id.detail_end_bottom);
         TextView type = (TextView) v.findViewById(R.id.detail_icon);
+        TextView gone =  (TextView) v.findViewById(R.id.detail_bottom_center);
+        gone.setVisibility(View.GONE);
 
         int cut = -1;
         int end = dt.name.indexOf("(");

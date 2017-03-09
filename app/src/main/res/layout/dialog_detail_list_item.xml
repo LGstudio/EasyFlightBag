@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/row_padding"
-    android:layout_centerVertical="true"
-    android:background="?attr/backgroundColor"
-    android:layout_marginBottom="@dimen/row_divider"
-    android:gravity="center_vertical"
-    android:clickable="true"
-    android:elevation="@dimen/elevation_8">
+    style="@style/Detail_airport_section">
 
     <TextView
         android:layout_width="@dimen/row_height"
@@ -19,8 +10,9 @@
         android:layout_centerVertical="true"
         android:textSize="@dimen/row_xsmall_text"
         android:maxLines="1"
-        android:gravity="center"
-        android:layout_marginEnd="@dimen/row_padding"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="@dimen/row_padding"
+        android:gravity="center" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -62,6 +54,16 @@
         android:layout_toEndOf="@id/detail_icon"
         android:maxLines="1"
         android:layout_toStartOf="@id/detail_end_bottom"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/primaryTextColor"
+        android:id="@+id/detail_bottom_center"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:layout_toEndOf="@id/detail_icon"
+        android:layout_below="@id/detail_description"/>
 
 
 </RelativeLayout>

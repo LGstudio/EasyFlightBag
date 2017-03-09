@@ -3,7 +3,6 @@ package sk.lgstudio.easyflightbag.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
@@ -11,11 +10,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.R;
-import sk.lgstudio.easyflightbag.calculations.CalculatorWB;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 
 /**
@@ -153,7 +150,7 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
     private void addFuelTank(String n, double a, double c, double u){
         final RowTank row = new RowTank();
-        row.row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_editor_tank, null);
+        row.row = (TableRow) getLayoutInflater().inflate(R.layout.dialog_airplane_editor_tank_row, null);
         row.name = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_title);
         row.arm = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_arm);
         row.cap = (EditText) row.row.findViewById(R.id.ap_edit_fuel_row_capacity);
@@ -178,7 +175,7 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
     private void addWeights(String n, double a, double m) {
         final RowWeight row = new RowWeight();
-        row.row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_editor_weights, null);
+        row.row = (TableRow) getLayoutInflater().inflate(R.layout.dialog_airplane_editor_weights_row, null);
         row.name = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_title);
         row.arm = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_arm);
         row.max = (EditText) row.row.findViewById(R.id.ap_edit_weight_row_max);
@@ -201,7 +198,7 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
     private void addLimits(double a, double w) {
         final RowLimit row = new RowLimit();
-        row.row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_editor_limits, null);
+        row.row = (TableRow) getLayoutInflater().inflate(R.layout.dialog_airplane_editor_limits_row, null);
         row.arm = (EditText) row.row.findViewById(R.id.ap_edit_limit_row_arm);
         row.weight = (EditText) row.row.findViewById(R.id.ap_edit_limit_row_weight);
         row.del = (ImageButton) row.row.findViewById(R.id.ap_edit_limit_row_del);

@@ -315,9 +315,12 @@
 
     <style name="Detail_airport_section">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:paddingTop">@dimen/row_padding</item>
-        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/row_padding</item>
+        <item name="android:background">?attr/backgroundColor</item>
+        <item name="android:layout_marginBottom">@dimen/row_divider</item>
+        <item name="android:clickable">true</item>
+        <item name="android:elevation">@dimen/elevation_8</item>
     </style>
 
     <style name="Detail_airport_section_text">

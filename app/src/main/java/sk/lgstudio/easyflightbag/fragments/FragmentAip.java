@@ -129,7 +129,7 @@ public class FragmentAip extends Fragment {
 
         for (int i = 0; i < openedLevel; i++){
             final int l = i;
-            adapters.add(new FileAdapter(getContext(), R.layout.aip_list_item, getOpenedLevel(i+1), i+1));
+            adapters.add(new FileAdapter(getContext(), R.layout.documents_list_item, getOpenedLevel(i+1), i+1));
             ListView list = (ListView) inflater.inflate(R.layout.aip_list, scrollLayout, false);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) (screenWidth*0.8), ViewGroup.LayoutParams.MATCH_PARENT);

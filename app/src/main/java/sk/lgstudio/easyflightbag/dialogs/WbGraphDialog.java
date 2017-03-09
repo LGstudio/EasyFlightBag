@@ -3,12 +3,8 @@ package sk.lgstudio.easyflightbag.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Paint;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -237,7 +233,7 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
     }
 
     private TableRow createRow(String txt, double w, double a){
-        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.row_airplane_wb_summary, null);
+        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.calc_wb_summary_row, null);
         TextView txtName = (TextView) row.findViewById(R.id.wb_sum_title);
         txtName.setText(txt);
         TextView txtW = (TextView) row.findViewById(R.id.wb_sum_weight);

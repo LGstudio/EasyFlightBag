@@ -69,6 +69,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private FragmentChklist fChk = new FragmentChklist();
     private FragmentSettings fSet  = new FragmentSettings();
     private FragmentAip fAip = new FragmentAip();
+    private FragmentDocs fDocs = new FragmentDocs();
 
     // menu paging related
     private TabViewPager viewPager;
@@ -226,6 +227,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         if (!aipFolder.exists())
             aipFolder.mkdir();
 
+        fDocs.folder = new File(rootDir.getPath() + getString(R.string.folder_docs));
+        if (!fDocs.folder.exists())
+            fDocs.folder.mkdir();
+
         airFolder = new File(rootDir.getPath() + getString(R.string.folder_airspace));
         if (!airFolder.exists())
             airFolder.mkdir();
@@ -250,7 +255,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         fA.addFragment(fAip);
         fChk.prefs = prefs;
         fA.addFragment(fChk);
-        fA.addFragment(new FragmentDocs());
+        fA.addFragment(fDocs);
         fSet.activity = this;
         fA.addFragment(fSet);
 

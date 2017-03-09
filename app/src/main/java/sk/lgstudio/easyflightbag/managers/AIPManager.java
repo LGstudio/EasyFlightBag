@@ -123,19 +123,20 @@ public class AIPManager {
         }
     }
 
-    private void stopService(){
-        switch (started){
-            case AIP_AT:
-                activity.stopService(new Intent(activity, AIPat.class));
-                LocalBroadcastManager.getInstance(activity).unregisterReceiver(this.aipDownloadedReceiver);
-                activity.aipDataChange(started);
-                break;
-            case AIP_CZ:
-                activity.stopService(new Intent(activity, AIPcz.class));
-                LocalBroadcastManager.getInstance(activity).unregisterReceiver(this.aipDownloadedReceiver);
-                activity.aipDataChange(started);
-                break;
-        }
+    private void stopService(int c){
+        if (started == c)
+            switch (started){
+                case AIP_AT:
+                    activity.stopService(new Intent(activity, AIPat.class));
+                    LocalBroadcastManager.getInstance(activity).unregisterReceiver(this.aipDownloadedReceiver);
+                    activity.aipDataChange(started);
+                    break;
+                case AIP_CZ:
+                    activity.stopService(new Intent(activity, AIPcz.class));
+                    LocalBroadcastManager.getInstance(activity).unregisterReceiver(this.aipDownloadedReceiver);
+                    activity.aipDataChange(started);
+                    break;
+            }
         started = -1;
 
     }
@@ -154,7 +155,7 @@ public class AIPManager {
                 activity.aipDataChange(started);
                 break;
             default:
-                stopService();
+                stopService(c);
         }
     }
 
@@ -180,7 +181,7 @@ public class AIPManager {
                         Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.aip_error_download), Toast.LENGTH_SHORT).show();
                     }
 
-                    stopService();
+                    stopService(country);
                     if (!waiting.isEmpty()){
                         startService(waiting.get(0));
                         waiting.remove(0);
