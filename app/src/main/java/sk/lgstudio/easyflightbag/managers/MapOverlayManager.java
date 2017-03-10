@@ -1,5 +1,6 @@
 package sk.lgstudio.easyflightbag.managers;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -307,9 +308,9 @@ public class MapOverlayManager {
 
     }
 
-    public BitmapDescriptor getBitmapDescriptor(int id) {
+    public static BitmapDescriptor getBitmapDescriptor(int id, Activity a) {
 
-        VectorDrawable vectorDrawable = (VectorDrawable) activity.getDrawable(id);
+        VectorDrawable vectorDrawable = (VectorDrawable) a.getDrawable(id);
 
         int h = vectorDrawable.getIntrinsicHeight();
         int w = vectorDrawable.getIntrinsicWidth();

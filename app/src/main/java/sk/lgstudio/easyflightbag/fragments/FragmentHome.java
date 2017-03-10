@@ -161,7 +161,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         mapLayout.getMapAsync(this);
 
-        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(mapOverlayManager.getBitmapDescriptor(R.drawable.ic_plane_map)).anchor(0.5f, 0.5f);
+        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(MapOverlayManager.getBitmapDescriptor(R.drawable.ic_plane_map, activity)).anchor(0.5f, 0.5f);
 
         return view;
     }
@@ -173,7 +173,6 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     public void onResume() {
         super.onResume();
         if (mapLayout != null) mapLayout.onResume();
-        Log.e("HOME SCREEN", "RESUME");
     }
 
     /**
@@ -181,7 +180,6 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
      */
     @Override
     public void onPause() {
-        Log.e("HOME SCREEN", "PAUSE");
         if (mapLayout != null) mapLayout.onPause();
         mapReady = false;
         super.onPause();

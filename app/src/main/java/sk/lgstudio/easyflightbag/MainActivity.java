@@ -12,7 +12,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
 import android.view.View;
@@ -29,8 +31,6 @@ import sk.lgstudio.easyflightbag.dialogs.SplashDialog;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
-import sk.lgstudio.easyflightbag.menu.TabFragmentAdapter;
-import sk.lgstudio.easyflightbag.menu.TabViewPager;
 import sk.lgstudio.easyflightbag.fragments.FragmentAip;
 import sk.lgstudio.easyflightbag.fragments.FragmentCalc;
 import sk.lgstudio.easyflightbag.fragments.FragmentChklist;
@@ -72,7 +72,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private FragmentDocs fDocs = new FragmentDocs();
 
     // menu paging related
-    private TabViewPager viewPager;
     public ArrayList<ImageButton> menuTabs = new ArrayList<>();
     private int selectedTab = 0;
 
@@ -97,9 +96,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         activity = this;
-        setContentView(R.layout.activity_main);
 
         splash = new SplashDialog(this, R.style.FullScreenDialog);
         splash.setContentView(R.layout.dialog_splash);
@@ -138,7 +135,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         stopService(new Intent(this, GPSTrackerService.class));
         LocalBroadcastManager.getInstance(this).unregisterReceiver(gpsReceiver);
 
-        //TODO: stop AIP downloader ???
     }
 
     /**
@@ -242,32 +238,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     /**
-     * Initializes fragments and top menu on the view
+     * Initializes the view for the first use
      */
     public void initView(){
-        final TabFragmentAdapter fA = new TabFragmentAdapter(getSupportFragmentManager());
-
-        fHome.mapOverlayManager = mapOverlayManager;
-        fHome.activity = this;
-        fA.addFragment(fHome);
-        fCalc.prefs = prefs;
-        fA.addFragment(fCalc);
-        fA.addFragment(fAip);
-        fChk.prefs = prefs;
-        fA.addFragment(fChk);
-        fA.addFragment(fDocs);
-        fSet.activity = this;
-        fA.addFragment(fSet);
-
-        viewPager = (TabViewPager) findViewById(R.id.view_fragment_pager);
-        viewPager.setAdapter(fA);
-        viewPager.setPagingEnabled(false); // TODO !!! preloading neighbouring views
 
         for (int id : tabIds)
             activity.menuTabs.add((ImageButton) findViewById(id));
 
         for (ImageButton ib : activity.menuTabs)
             ib.setOnClickListener(this);
+
+        FragmentTransaction fragmentView = getSupportFragmentManager().beginTransaction();
+        fragmentView.add(R.id.view_fragment,  fHome);
+        fragmentView.addToBackStack(null);
+        fragmentView.commit();
     }
 
     /**
@@ -294,7 +278,33 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         activity.menuTabs.get(selectedTab).setAlpha((float) 0.5);
         activity.menuTabs.get(clicked).setBackgroundResource(R.drawable.bck_tab_selected);
         activity.menuTabs.get(clicked).setAlpha((float) 1.0);
-        viewPager.setCurrentItem(clicked, false);
+
+        FragmentTransaction fragmentView = getSupportFragmentManager().beginTransaction();
+
+        switch (clicked){
+            case 0:
+                fragmentView.replace(R.id.view_fragment,  fHome);
+                break;
+            case 1:
+                fragmentView.replace(R.id.view_fragment,  fCalc);
+                break;
+            case 2:
+                fragmentView.replace(R.id.view_fragment,  fAip);
+                break;
+            case 3:
+                fragmentView.replace(R.id.view_fragment,  fChk);
+                break;
+            case 4:
+                fragmentView.replace(R.id.view_fragment,  fDocs);
+                break;
+            case 5:
+                fragmentView.replace(R.id.view_fragment,  fSet);
+                break;
+        }
+
+        fragmentView.addToBackStack(null);
+        fragmentView.commit();
+
         selectedTab = clicked;
     }
 
@@ -389,8 +399,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             // start gps service
             startGPSService();
 
-            // load default position
-            fHome.lastPosition = new LatLng(prefs.getFloat(getString(R.string.gps_latitude), 0),prefs.getFloat(getString(R.string.gps_longitude), 0));
+            // load values to fragments
+            fHome.lastPosition = new LatLng(prefs.getFloat(getString(R.string.gps_latitude), 0), prefs.getFloat(getString(R.string.gps_longitude), 0));
+            fHome.activity = activity;
+            fHome.mapOverlayManager = mapOverlayManager;
+            fCalc.prefs = prefs;
+            fChk.prefs = prefs;
+            fSet.activity = activity;
 
             return null;
         }
@@ -398,6 +413,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         @Override
         protected void onPostExecute(Void param) {
             // creates fragments
+            setContentView(R.layout.activity_main);
             initView();
 
             // show the screen

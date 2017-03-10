@@ -79,13 +79,18 @@
 
         </LinearLayout>
     </HorizontalScrollView>
-
+<!--
     <sk.lgstudio.easyflightbag.menu.TabViewPager
         android:id="@+id/view_fragment_pager"
         android:layout_below="@id/menu_tab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-
+-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/menu_tab"
+        android:id="@+id/view_fragment"/>
 
 </RelativeLayout>
