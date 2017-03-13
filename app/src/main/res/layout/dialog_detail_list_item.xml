@@ -60,7 +60,6 @@
         android:layout_height="wrap_content"
         android:textColor="?attr/primaryTextColor"
         android:id="@+id/detail_bottom_center"
-        android:gravity="center_horizontal"
         android:maxLines="1"
         android:layout_toEndOf="@id/detail_icon"
         android:layout_below="@id/detail_description"/>

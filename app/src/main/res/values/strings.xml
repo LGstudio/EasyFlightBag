@@ -80,6 +80,10 @@
     <string name="btn_edit">Edit</string>
     <string name="btn_orient">Orientation</string>
     <string name="btn_airplane">Airplanes</string>
+    <string name="btn_yes">Yes</string>
+    <string name="btn_no">No</string>
+
+    <string name="ask_sure">Are you sure?</string>
 
     <string name="list_name">Checklist title</string>
     <string name="list_name_mandatory">Please enter checklist title here.</string>

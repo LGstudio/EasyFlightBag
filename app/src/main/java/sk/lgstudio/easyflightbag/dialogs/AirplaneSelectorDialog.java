@@ -2,6 +2,7 @@ package sk.lgstudio.easyflightbag.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,15 @@ import java.util.ArrayList;
 import sk.lgstudio.easyflightbag.R;
 
 /**
- * Created by L on 16/10/05.
+ * Airplane Selector Dialog
+ *
+ * Load content needs to be called after setContentView() before show()
+ * 2 modes:
+ *  - file (.json) selector : .loadContent(file, true)
+ *  - folders selector : .loadContent(file, false)
  */
 
-public class AirplaneSelectorDialog extends Dialog implements View.OnClickListener {
+public class AirplaneSelectorDialog extends Dialog implements View.OnClickListener, DialogInterface.OnCancelListener {
 
     private File root;
     private boolean files = false;
@@ -36,10 +42,18 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
 
     private ArrayList<String> content;
 
+    /**
+     * Constructor
+     */
     public AirplaneSelectorDialog(Context context) {
         super(context);
     }
 
+    /**
+     * Loads and initializes content onto the view
+     * @param f
+     * @param areFiles
+     */
     public void loadContent(File f, boolean areFiles){
         root = f;
         files = areFiles;
@@ -57,10 +71,12 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
         fillSpinner();
     }
 
+    /**
+     * Fills the spinner with the json/folder names from root
+     */
     private void fillSpinner(){
 
         content = new ArrayList<>();
-
 
         for (File inFile : root.listFiles()) {
             if (inFile.isDirectory() && ! files) {
@@ -76,6 +92,10 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
         planeSpinner.setAdapter(new PlaneAdapter(getContext()));
     }
 
+    /**
+     * Button onClick listener
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -86,10 +106,7 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
                     addNewPlaneFolder();
                 break;
             case R.id.chk_airplane_delete:
-                if (files)
-                    deleteJsonFile();
-                else
-                    deletePlaneFolder();
+                askToDelete();
                 break;
             case R.id.chk_airplane_done:
                 saveSelection();
@@ -98,6 +115,9 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
         }
     }
 
+    /**
+     * Saves the selected file into the selected variable
+     */
     private void saveSelection(){
         if (content.size() > 0){
             String name =  root + "/" + content.get(planeSpinner.getSelectedItemPosition());
@@ -108,6 +128,32 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
         else selected = null;
     }
 
+    /**
+     * Dialog to ask if sure to delete file/folder
+     */
+    private void askToDelete(){
+        DeleteDialog dialog = new DeleteDialog(getContext());
+        dialog.setContentView(R.layout.dialog_delete);
+        dialog.loadContent();
+        dialog.setOnCancelListener(this);
+        dialog.show();
+    }
+
+    /**
+     * Question dialog Yes answer given
+     * @param dialog
+     */
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        if (files)
+            deleteJsonFile();
+        else
+            deletePlaneFolder();
+    }
+
+    /**
+     * Creates new json file int the folder
+     */
     private void addNewJsonFile(){
         if (newPlane.getText() != null){
             File newFile = new File(root + "/" + newPlane.getText().toString() + ".json");
@@ -121,6 +167,9 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
         }
     }
 
+    /**
+     * Deletes json file from folder
+     */
     private void deleteJsonFile(){
         if (content.size() > 0){
             File del = new File(root.getPath() + "/" + content.get(planeSpinner.getSelectedItemPosition()) + ".json");
@@ -129,6 +178,9 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
         }
     }
 
+    /**
+     * Creates new folder to root
+     */
     private void addNewPlaneFolder() {
 
         if (newPlane.getText() != null){
@@ -144,6 +196,9 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
         }
     }
 
+    /**
+     * Deletes the folder from the root
+     */
     private void deletePlaneFolder(){
 
         if (content.size() > 0){
@@ -154,6 +209,10 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
 
     }
 
+    /**
+     * Recursive delete of the content of the folder
+     * @param fileOrDirectory
+     */
     private void deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory())
             for (File child : fileOrDirectory.listFiles())
@@ -162,6 +221,9 @@ public class AirplaneSelectorDialog extends Dialog implements View.OnClickListen
         fileOrDirectory.delete();
     }
 
+    /**
+     * Adapter to load file/folder names into the spinner
+     */
     private class PlaneAdapter extends BaseAdapter {
 
         Context ctx;

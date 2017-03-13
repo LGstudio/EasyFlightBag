@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?attr/backgroundColor"
+    android:padding="@dimen/row_padding">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_delete"
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="@dimen/row_big_text"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/row_padding_small"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ask_sure"
+        android:textColor="?attr/primaryTextColor"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/row_padding"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_no"
+            android:padding="@dimen/row_padding_small"
+            android:background="?attr/primaryColor"
+            android:textColor="?attr/highlightColor"
+            android:id="@+id/delete_btn_no" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_yes"
+            android:padding="@dimen/row_padding_small"
+            android:background="?attr/primaryColor"
+            android:textColor="?attr/highlightColor"
+            android:layout_marginStart="@dimen/row_padding_small"
+            android:id="@+id/delete_btn_yes" />
+
+    </LinearLayout>
+
+</LinearLayout>

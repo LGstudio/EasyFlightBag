@@ -3,6 +3,7 @@ package sk.lgstudio.easyflightbag.dialogs;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.view.View;
 import android.widget.EditText;
@@ -17,9 +18,12 @@ import java.util.ArrayList;
 import sk.lgstudio.easyflightbag.R;
 
 /**
- * Created by L on 16/09/14.
+ * Checklist Editor Screen
+ * Constructor with full-screen mode theme call is recommended
+ *
+ * loadContent function call is necessary before show()
  */
-public class ChklistEditorDialog extends Dialog implements View.OnClickListener {
+public class ChklistEditorDialog extends Dialog implements View.OnClickListener, DialogInterface.OnCancelListener {
 
     public static final int BACK = 0;
     public static final int SAVE_NEW = 1;
@@ -44,6 +48,13 @@ public class ChklistEditorDialog extends Dialog implements View.OnClickListener 
         super(context, themeStyle);
     }
 
+    /**
+     * Load content int the view
+     * @param f - text file with tasks
+     * @param isnew - true if new file is being created
+     * @param title - list title/name
+     * @param tasks - strings of tasks
+     */
     public void loadContent(File f, boolean isnew, String title, ArrayList<String> tasks){
 
         isNew = isnew;
@@ -75,6 +86,10 @@ public class ChklistEditorDialog extends Dialog implements View.OnClickListener 
         }
     }
 
+    /**
+     * Button onClick listener handler
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -92,6 +107,9 @@ public class ChklistEditorDialog extends Dialog implements View.OnClickListener 
         }
     }
 
+    /**
+     * Saves the edited list
+     */
     @TargetApi(Build.VERSION_CODES.M)
     private void saveList(){
         if (textTitle.getText().length() == 0){
@@ -118,8 +136,23 @@ public class ChklistEditorDialog extends Dialog implements View.OnClickListener 
         }
     }
 
+    /**
+     * Asks to delete the list
+     */
     private void deleteList(){
-        // TODO: ask to delete
+        DeleteDialog dialog = new DeleteDialog(getContext());
+        dialog.setContentView(R.layout.dialog_delete);
+        dialog.loadContent();
+        dialog.setOnCancelListener(this);
+        dialog.show();
+    }
+
+    /**
+     * Deletes the list, is DeleteDialog was answered with "Yes"
+     * @param dialog
+     */
+    @Override
+    public void onCancel(DialogInterface dialog) {
         File f = new File(folder, textTitle.getText() + ".txt");
         if (f.delete()){
             Toast.makeText(getContext(), getContext().getString(R.string.chk_deleted_toast), Toast.LENGTH_SHORT).show();
