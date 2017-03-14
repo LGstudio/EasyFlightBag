@@ -67,6 +67,10 @@
     <string name="chk_deleted_toast">Checklist deleted</string>
     <string name="chk_deleted_fail_toast">Unable to delete checklist</string>
 
+    <string name="manage_airplanes">Manage Airplanes</string>
+    <string name="manage_plans">Manage Flight Plans</string>
+    <string name="flight_plan_add">Add new flight plan</string>
+
     <string name="btn_back">Back</string>
     <string name="btn_save">Save</string>
     <string name="btn_import">Import</string>

@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -54,7 +55,12 @@ import sk.lgstudio.easyflightbag.openAIP.Airspace;
 /**
  *
  */
-public class FragmentHome extends Fragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
+public class FragmentHome extends Fragment implements
+        View.OnClickListener,
+        OnMapReadyCallback,
+        GoogleMap.OnCameraMoveListener,
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnMarkerClickListener {
 
     private RelativeLayout panelBottom;
     private RelativeLayout panelMap;
@@ -63,6 +69,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
     private Button btnFlightPlan;
     private LineChartView elevationChart;
     private LinearLayout panelInfo;
+    private LinearLayout panelChart;
+    private NumberPicker chartDistance;
 
     private TextView txtAccuracy;
     private TextView txtSpeed;
@@ -154,7 +162,12 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
         btnCenterMap.setOnClickListener(this);
         btnRotateMap.setOnClickListener(this);
 
+        panelChart = (LinearLayout) view.findViewById(R.id.home_elevation_graph_panel);
         elevationChart = (LineChartView) view.findViewById(R.id.home_elevation_graph);
+        chartDistance = (NumberPicker) view.findViewById(R.id.home_elevation_graph_picker);
+        chartDistance.setMinValue(1);
+        chartDistance.setMaxValue(10);
+        chartDistance.setValue(10);
 
         mapLayout = (MapView) view.findViewById(R.id.home_map_view);
         mapLayout.onCreate(savedInstanceState);
@@ -252,11 +265,11 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
             if (isElevationGraphVisible) {
                 panelSize = (int) (fullLayout.getHeight() * 0.3);
-                elevationChart.setVisibility(View.VISIBLE);
+                panelChart.setVisibility(View.VISIBLE);
                 btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
             } else {
                 panelSize = panelInfo.getHeight();
-                elevationChart.setVisibility(View.GONE);
+                panelChart.setVisibility(View.GONE);
                 btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
             }
 
@@ -334,8 +347,6 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
 
         map = googleMap;
         map.setOnCameraMoveListener(this);
-        //map.setMyLocationEnabled(true);
-        //map.setOnMyLocationButtonClickListener(this);
         map.setOnMapClickListener(this);
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         map.setBuildingsEnabled(false);
@@ -413,7 +424,6 @@ public class FragmentHome extends Fragment implements View.OnClickListener, OnMa
             }
         }
     }
-
 
     /**
      * Get POIs at map coordinates

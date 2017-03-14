@@ -21,15 +21,13 @@ import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
-import sk.lgstudio.easyflightbag.dialogs.AirplaneSelectorDialog;
+import sk.lgstudio.easyflightbag.dialogs.SelectorDialog;
 import sk.lgstudio.easyflightbag.dialogs.ChklistEditorDialog;
 
 /**
@@ -62,7 +60,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
     private ArrayList<String> tasksNext = new ArrayList<>();
 
     private ChklistEditorDialog dialogListEdit;
-    private AirplaneSelectorDialog dialogAirplane;
+    private SelectorDialog dialogAirplane;
 
     protected int selectedFile = FILE_NONE;
     protected int actualTask = 0;
@@ -278,10 +276,10 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     private void createAirplaneSelectorDialog(){
 
-        dialogAirplane = new AirplaneSelectorDialog(getContext());
+        dialogAirplane = new SelectorDialog(getContext());
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogAirplane.setContentView(R.layout.dialog_airplane_selector);
-        dialogAirplane.loadContent(folder, false);
+        dialogAirplane.setContentView(R.layout.dialog_selector);
+        dialogAirplane.loadContent(folder, false, R.string.manage_airplanes ,R.string.chk_add_airplane);
         dialogAirplane.setOnCancelListener(this);
         dialogAirplane.show();
     }

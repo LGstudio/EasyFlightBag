@@ -22,7 +22,9 @@ import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 
 /**
- * Created by LGstudio on 2017-02-09.
+ * Dialog to calculate the Weight & balane of the airplane based on the airplane preferences
+ *
+ * loadContent() must be called before show()
  */
 
 public class WbGraphDialog extends Dialog implements View.OnClickListener {
@@ -31,6 +33,10 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
         super(context);
     }
 
+    /**
+     * Loads the content into the view
+     * @param airplane
+     */
     public void loadContent(AirplaneManager airplane){
 
         // getting graph colors
@@ -232,6 +238,13 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
 
     }
 
+    /**
+     * Creates table row for the details table
+     * @param txt
+     * @param w
+     * @param a
+     * @return
+     */
     private TableRow createRow(String txt, double w, double a){
         TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.calc_wb_summary_row, null);
         TextView txtName = (TextView) row.findViewById(R.id.wb_sum_title);

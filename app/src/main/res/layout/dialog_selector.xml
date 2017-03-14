@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/backgroundDarkColor"
+    android:orientation="vertical"
+    android:padding="@dimen/row_padding">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/selector_title"
+        android:textSize="@dimen/row_big_text"
+        android:textColor="?attr/primaryTextColor"
+        android:layout_marginBottom="@dimen/row_padding"
+        android:gravity="center_horizontal"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/row_padding">
+
+        <ImageButton
+            android:src="@drawable/ic_add"
+            android:padding="@dimen/row_padding"
+            android:layout_marginStart="@dimen/row_padding"
+            android:background="?attr/primaryColor"
+            android:id="@+id/selector_new_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/btn_delete"
+            android:elevation="@dimen/elevation_4"
+            android:layout_alignParentEnd="true"/>
+
+        <EditText
+            android:id="@+id/selector_new_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/backgroundColor"
+            android:textColor="?attr/primaryTextColor"
+            android:textColorHint="?attr/fadedTextColor"
+            android:hint="@string/chk_add_airplane"
+            android:textCursorDrawable="@null"
+            android:textColorHighlight="?attr/backgroundColorHighlightLight"
+            android:elevation="@dimen/elevation_4"
+            android:padding="@dimen/row_padding"
+            android:layout_toStartOf="@id/selector_new_add"
+/>
+
+
+    </RelativeLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/selector_list"
+        android:background="?attr/backgroundColor"
+        android:elevation="@dimen/elevation_4">
+
+    </ListView>
+
+</LinearLayout>

@@ -22,7 +22,7 @@ import java.io.File;
 
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.dialogs.AirplaneEditorDialog;
-import sk.lgstudio.easyflightbag.dialogs.AirplaneSelectorDialog;
+import sk.lgstudio.easyflightbag.dialogs.SelectorDialog;
 import sk.lgstudio.easyflightbag.dialogs.WbGraphDialog;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 
@@ -34,7 +34,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
 
     private File selectedPlane = null;
     private File parentFolder = null;
-    private AirplaneSelectorDialog dialogAirplane;
+    private SelectorDialog dialogAirplane;
     private AirplaneManager airplane;
     private boolean selectorDialogOpened = false;
 
@@ -157,10 +157,10 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
      */
     private void createAirplaneSelectorDialog(){
         selectorDialogOpened = true;
-        dialogAirplane = new AirplaneSelectorDialog(context);
+        dialogAirplane = new SelectorDialog(context);
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogAirplane.setContentView(R.layout.dialog_airplane_selector);
-        dialogAirplane.loadContent(parentFolder, true);
+        dialogAirplane.setContentView(R.layout.dialog_selector);
+        dialogAirplane.loadContent(parentFolder, true, R.string.manage_airplanes, R.string.chk_add_airplane);
         dialogAirplane.selected = selectedPlane;
         dialogAirplane.setOnCancelListener(this);
         dialogAirplane.show();
@@ -188,15 +188,16 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
             if (selectedPlane != null){
                 prefs.edit().putString(context.getString(R.string.pref_wb_selected), selectedPlane.getPath()).apply();
                 airplaneEditor.setClickable(true);
+                if (dialogAirplane.edit) createAirplaneEditorDialog();
             }
             else {
                 prefs.edit().remove(context.getString(R.string.pref_wb_selected)).apply();
                 airplaneEditor.setClickable(false);
             }
+            dialogAirplane = null;
         }
 
         reloadContent();
-
     }
 
     private void reloadContent(){
