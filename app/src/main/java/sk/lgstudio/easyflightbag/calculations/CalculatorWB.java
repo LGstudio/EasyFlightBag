@@ -30,13 +30,13 @@ import sk.lgstudio.easyflightbag.managers.AirplaneManager;
  * Created by LGstudio on 2017-01-31.
  */
 
-public class CalculatorWB extends Calculator implements View.OnClickListener, DialogInterface.OnCancelListener {
+public class CalculatorWB extends Calculator implements View.OnClickListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
     private File selectedPlane = null;
     private File parentFolder = null;
     private SelectorDialog dialogAirplane;
     private AirplaneManager airplane;
-    private boolean selectorDialogOpened = false;
+    private boolean isSelectorDialog = false;
 
     private TextView airplaneId = null;
     private ImageButton airplaneEditor = null;
@@ -156,13 +156,13 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
      * Creates Airplane Selector Dialog
      */
     private void createAirplaneSelectorDialog(){
-        selectorDialogOpened = true;
+        isSelectorDialog = true;
         dialogAirplane = new SelectorDialog(context);
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogAirplane.setContentView(R.layout.dialog_selector);
-        dialogAirplane.loadContent(parentFolder, true, R.string.manage_airplanes, R.string.chk_add_airplane);
-        dialogAirplane.selected = selectedPlane;
+        dialogAirplane.loadContent(parentFolder, selectedPlane ,true, R.string.manage_airplanes, R.string.chk_add_airplane);
         dialogAirplane.setOnCancelListener(this);
+        dialogAirplane.setOnDismissListener(this);
         dialogAirplane.show();
     }
 
@@ -170,7 +170,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
      * Creates Airplane Selector Dialog
      */
     private void createAirplaneEditorDialog(){
-        selectorDialogOpened = false;
+        isSelectorDialog = false;
         AirplaneEditorDialog dialog = new AirplaneEditorDialog(context, R.style.FullScreenDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_airplane_editor);
@@ -183,7 +183,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
     @Override
     public void onCancel(DialogInterface dialog) {
 
-        if (selectorDialogOpened){
+        if (isSelectorDialog){
             selectedPlane = dialogAirplane.selected;
             if (selectedPlane != null){
                 prefs.edit().putString(context.getString(R.string.pref_wb_selected), selectedPlane.getPath()).apply();
@@ -199,6 +199,18 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
 
         reloadContent();
     }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (isSelectorDialog) {
+            if (dialogAirplane.selected == null) {
+                prefs.edit().remove(context.getString(R.string.pref_chk_folder)).apply();
+                selectedPlane = null;
+            }
+            dialogAirplane = null;
+        }
+    }
+
 
     private void reloadContent(){
 

@@ -61,6 +61,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
 
     private ChklistEditorDialog dialogListEdit;
     private SelectorDialog dialogAirplane;
+    private boolean isSelector = false;
 
     protected int selectedFile = FILE_NONE;
     protected int actualTask = 0;
@@ -275,27 +276,14 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      * Creates Airplane Selector Dialog
      */
     private void createAirplaneSelectorDialog(){
-
+        isSelector = true;
         dialogAirplane = new SelectorDialog(getContext());
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogAirplane.setContentView(R.layout.dialog_selector);
-        dialogAirplane.loadContent(folder, false, R.string.manage_airplanes ,R.string.chk_add_airplane);
+        dialogAirplane.loadContent(folder, folderActual, false, R.string.manage_airplanes ,R.string.chk_add_airplane);
         dialogAirplane.setOnCancelListener(this);
+        dialogAirplane.setOnDismissListener(this);
         dialogAirplane.show();
-    }
-
-    /**
-     * Handles the return from the airplane selector dialog
-     * @param dialog
-     */
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        if (dialogAirplane.selected != null){
-            prefs.edit().putString(getString(R.string.pref_chk_folder), dialogAirplane.selected.getPath()).apply();
-            folderActual = dialogAirplane.selected;
-        }
-        dialogAirplane = null;
-        reloadFiles();
     }
 
     /**
@@ -303,6 +291,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     private void createEditorDialog(){
 
+        isSelector = false;
         boolean isNew = (selectedFile < 0);
 
         String title = null;
@@ -315,30 +304,59 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
         dialogListEdit = new ChklistEditorDialog(getContext(), R.style.FullScreenDialog);
         dialogListEdit.setContentView(R.layout.dialog_chk_editor);
         dialogListEdit.loadContent(folderActual, isNew, title, tasks);
+        dialogListEdit.setOnCancelListener(this);
         dialogListEdit.setOnDismissListener(this);
         dialogListEdit.show();
 
     }
 
     /**
-     * Handles the return from editor dialog
+     * Handles the both dialog onCancel events
+     * @param dialog
+     */
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        if (isSelector) {
+            folderActual = dialogAirplane.selected;
+            if (folderActual != null)
+                prefs.edit().putString(getString(R.string.pref_chk_folder), folderActual.getPath()).apply();
+            else
+                prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
+        }
+        else {
+            dialogListEdit = null;
+        }
+        reloadFiles();
+    }
+
+    /**
+     * Handles both dialogs onDismiss events;
      * @param dialog
      */
     @Override
     public void onDismiss(DialogInterface dialog) {
-        switch (dialogListEdit.returnStatus){
-            case ChklistEditorDialog.SAVE_NEW:
-            case ChklistEditorDialog.DELETE:
-                selectedFile = FILE_NONE;
-            case ChklistEditorDialog.SAVE_EDIT:
-                actualTask = 0;
-                tasks.clear();
-                reloadFiles();
-                break;
-            case ChklistEditorDialog.BACK:
-                break;
+        if (isSelector){
+            if (dialogAirplane.selected == null){
+                prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
+                folderActual = null;
+            }
+            dialogAirplane = null;
         }
-        dialogListEdit = null;
+        else {
+            switch (dialogListEdit.returnStatus){
+                case ChklistEditorDialog.SAVE_NEW:
+                case ChklistEditorDialog.DELETE:
+                    selectedFile = FILE_NONE;
+                case ChklistEditorDialog.SAVE_EDIT:
+                    actualTask = 0;
+                    tasks.clear();
+                    reloadFiles();
+                    break;
+                case ChklistEditorDialog.BACK:
+                    break;
+            }
+            dialogListEdit = null;
+        }
     }
 
     /**

@@ -1,17 +1,12 @@
 package sk.lgstudio.easyflightbag.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -25,7 +20,7 @@ import java.util.ArrayList;
 import sk.lgstudio.easyflightbag.R;
 
 /**
- * Selector Dialog - loads subfolder list .json file list in root folder
+ * Selector Dialog - loads subfolder list .json file list in rootFolder folder
  *
  * Load content needs to be called after setContentView() before show()
  * 2 modes:
@@ -35,7 +30,7 @@ import sk.lgstudio.easyflightbag.R;
 
 public class SelectorDialog extends Dialog implements View.OnClickListener, DialogInterface.OnCancelListener {
 
-    private File root;
+    private File rootFolder;
     private boolean files = false;
     public File selected = null; // the selected file/folder is returned in here
     public boolean edit = false; // if edit button was pressed set to true
@@ -56,12 +51,16 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
 
     /**
      * Loads and initializes content onto the view
-     * @param f
-     * @param areFiles
+     * @param root - rootFolder folder to look for
+     * @param selectedFile - actual selected file
+     * @param areFiles - are wee looking for folders or files
+     * @param titleResource - Resource id of the dialog title
+     * @param hintResource - Resource id of the "add new" hint text
      */
-    public void loadContent(File f, boolean areFiles, int titleResource, int hintResource){
-        root = f;
+    public void loadContent(File root, File selectedFile, boolean areFiles, int titleResource, int hintResource){
+        rootFolder = root;
         files = areFiles;
+        selected = selectedFile;
 
         title = (TextView) findViewById(R.id.selector_title);
         txtNew = (EditText) findViewById(R.id.selector_new_text);
@@ -78,13 +77,13 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
     }
 
     /**
-     * Fills the list with the json/folder names from root
+     * Fills the list with the json/folder names from rootFolder
      */
     private void fillList(){
 
         content = new ArrayList<>();
 
-        for (File inFile : root.listFiles()) {
+        for (File inFile : rootFolder.listFiles()) {
             if (inFile.isDirectory() && ! files) {
                 content.add(inFile);
             }
@@ -97,6 +96,9 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
         }
 
         list.setAdapter(new ListAdapter(getContext(), R.layout.dialog_selector_row, content));
+
+        if(content.isEmpty())
+            selected = null;
     }
 
     /**
@@ -143,7 +145,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
      */
     private void addNewJsonFile(){
         if (txtNew.getText() != null){
-            File newFile = new File(root + "/" + txtNew.getText().toString() + ".json");
+            File newFile = new File(rootFolder + "/" + txtNew.getText().toString() + ".json");
             try {
                 newFile.createNewFile();
                 selected = newFile;
@@ -165,12 +167,12 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
     }
 
     /**
-     * Creates new folder to root
+     * Creates new folder to rootFolder
      */
     private void addNewFolder() {
 
         if (txtNew.getText() != null){
-            File newDir = new File(root + "/" + txtNew.getText());
+            File newDir = new File(rootFolder + "/" + txtNew.getText());
             if(!newDir.exists()) {
                 newDir.mkdir();
                 selected = newDir;
@@ -183,7 +185,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
     }
 
     /**
-     * Deletes the folder from the root
+     * Deletes the folder from the rootFolder
      */
     private void deleteFolder(){
         deleteRecursive(selected);

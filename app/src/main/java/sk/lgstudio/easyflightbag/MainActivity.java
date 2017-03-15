@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -29,6 +28,7 @@ import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.dialogs.SplashDialog;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
+import sk.lgstudio.easyflightbag.managers.FlightPlanManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.fragments.FragmentAip;
@@ -78,9 +78,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     // public variables for fragments
     public SharedPreferences prefs;
     public boolean nightMode = false;
-    public AIPManager aipManager;
-    public MapOverlayManager mapOverlayManager;
-    public File airFolder;
 
     // random private variables needed for some reason
     private boolean inited = false;
@@ -184,7 +181,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      * Checks if directories exist on internal memory
      * Adds default data in case of first app launch or when data were deleted
      */
-    private void checkDirectory(){
+    private void loadIntoFragments(){
+
+        // init all folders
         File rootDir = new File(Environment.getExternalStorageDirectory() + getString(R.string.folder_root));
         if(!rootDir.exists()) {
             rootDir.mkdir();
@@ -227,14 +226,34 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         if (!fDocs.folder.exists())
             fDocs.folder.mkdir();
 
-        airFolder = new File(rootDir.getPath() + getString(R.string.folder_airspace));
-        if (!airFolder.exists())
-            airFolder.mkdir();
-
         //TODO: move to AIP to handle this
         fAip.folder = new File(aipFolder.getPath() + getString(R.string.folder_cz));
         if (!fAip.folder.exists())
             fAip.folder.mkdir();
+
+        // init managers
+        MapOverlayManager mapOverlayManager = new MapOverlayManager(activity);
+        FlightPlanManager flightPlanManager = new FlightPlanManager(activity);
+        AIPManager aipManager = new AIPManager(activity);
+
+        mapOverlayManager.folder = new File(rootDir.getPath() + getString(R.string.folder_airspace));
+        if (!mapOverlayManager.folder.exists())
+            mapOverlayManager.folder.mkdir();
+
+        flightPlanManager.folder = new File(rootDir.getPath() + getString(R.string.folder_plans));
+        if (!flightPlanManager.folder.exists())
+            flightPlanManager.folder.mkdir();
+
+        // load values to fragments
+        fHome.lastPosition = new LatLng(prefs.getFloat(getString(R.string.gps_latitude), 0), prefs.getFloat(getString(R.string.gps_longitude), 0));
+        fHome.activity = activity;
+        fHome.mapOverlayManager = mapOverlayManager;
+        fHome.flightPlanManager = flightPlanManager;
+        fCalc.prefs = prefs;
+        fChk.prefs = prefs;
+        fSet.activity = activity;
+        fSet.aipManager = aipManager;
+        fSet.mapOverlayManager = mapOverlayManager;
     }
 
     /**
@@ -242,16 +261,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      */
     public void initView(){
 
+        FragmentTransaction fragmentView = getSupportFragmentManager().beginTransaction();
+        fragmentView.add(R.id.view_fragment,  fHome);
+        fragmentView.addToBackStack(null);
+        fragmentView.commit();
+
         for (int id : tabIds)
             activity.menuTabs.add((ImageButton) findViewById(id));
 
         for (ImageButton ib : activity.menuTabs)
             ib.setOnClickListener(this);
 
-        FragmentTransaction fragmentView = getSupportFragmentManager().beginTransaction();
-        fragmentView.add(R.id.view_fragment,  fHome);
-        fragmentView.addToBackStack(null);
-        fragmentView.commit();
     }
 
     /**
@@ -386,26 +406,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             permissionCheck();
             inited = true;
 
-            // checks internal storage for existing files
-            checkDirectory();
-
             // Load selected theme
             changeToNight();
 
-            // create managers
-            aipManager = new AIPManager(activity);
-            mapOverlayManager = new MapOverlayManager(activity);
+            // checks internal storage for existing files
+            loadIntoFragments();
 
             // start gps service
             startGPSService();
-
-            // load values to fragments
-            fHome.lastPosition = new LatLng(prefs.getFloat(getString(R.string.gps_latitude), 0), prefs.getFloat(getString(R.string.gps_longitude), 0));
-            fHome.activity = activity;
-            fHome.mapOverlayManager = mapOverlayManager;
-            fCalc.prefs = prefs;
-            fChk.prefs = prefs;
-            fSet.activity = activity;
 
             return null;
         }

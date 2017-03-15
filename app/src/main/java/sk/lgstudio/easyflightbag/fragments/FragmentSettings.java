@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.managers.AIPManager;
+import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 
 /**
  *
@@ -40,6 +42,8 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
     private TextView airspace_txt;
 
     public MainActivity activity;
+    public AIPManager aipManager;
+    public MapOverlayManager mapOverlayManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,9 +75,9 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
     @Override
     public void onResume(){
         for (int i = 0; i < aip_txt.size(); i++){
-            aip_txt.get(i).setText(activity.aipManager.getStatus(i));
+            aip_txt.get(i).setText(aipManager.getStatus(i));
         }
-        airspace_txt.setText(activity.mapOverlayManager.getStatus());
+        airspace_txt.setText(mapOverlayManager.getStatus());
         super.onResume();
     }
 
@@ -98,22 +102,22 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
 
         for (int i = 0; i < aip_btn_id.length; i++){
             if (aip_btn_id[i] == vId){
-                activity.aipManager.getUpdate(i);
+                aipManager.getUpdate(i);
                 found = true;
             }
         }
         if (!found && vId == R.id.set_refresh_airspace){
-            activity.mapOverlayManager.getUpdate();
+            mapOverlayManager.getUpdate();
         }
 
     }
 
     public void reloadAirspaceData(){
-        airspace_txt.setText(activity.mapOverlayManager.getStatus());
+        airspace_txt.setText(mapOverlayManager.getStatus());
     }
 
     public void reloadAipData(int c){
-        aip_txt.get(c).setText(activity.aipManager.getStatus(c));
+        aip_txt.get(c).setText(aipManager.getStatus(c));
     }
 
 

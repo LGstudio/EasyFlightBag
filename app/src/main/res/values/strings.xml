@@ -35,6 +35,7 @@
     <string name="folder_hu" translatable="false">/hu</string>
     <string name="file_aip_data" translatable="false">/data.txt</string>
     <string name="folder_airspace" translatable="false">/Airspace</string>
+    <string name="folder_plans" translatable="false">/Plans</string>
 
     <string name="file_chk_plane">Switch Add and Delete airplane type.txt</string>
     <string name="file_chk_plane_">Click on the airplane icon\n

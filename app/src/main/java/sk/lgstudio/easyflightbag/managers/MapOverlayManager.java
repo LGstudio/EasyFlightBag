@@ -50,6 +50,7 @@ public class MapOverlayManager {
     // List of content
     public ArrayList<Airspace.Data> airspaces = null;
     public ArrayList<Airport.Data> airports = null;
+    public File folder;
 
     /**
      * Constructor
@@ -70,13 +71,13 @@ public class MapOverlayManager {
         airports = new ArrayList<>();
         for (int i = 0; i < countries.length; i++){
             // airspaces
-            String fileName = activity.airFolder.getPath()+"/"+countries[i]+filetypes[1];
+            String fileName = folder.getPath()+"/"+countries[i]+filetypes[1];
             File f = new File(fileName);
             if (f.exists())
                 airspaces.addAll(new Airspace.Parser().parse(f));
 
             // airports
-            fileName = activity.airFolder.getPath()+"/"+countries[i]+filetypes[0];
+            fileName = folder.getPath()+"/"+countries[i]+filetypes[0];
             f = new File(fileName);
             if (f.exists()) {
                 airports.addAll(new Airport.Parser().parse(f));

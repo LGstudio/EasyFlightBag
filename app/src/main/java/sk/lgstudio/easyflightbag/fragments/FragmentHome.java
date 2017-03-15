@@ -1,26 +1,19 @@
 package sk.lgstudio.easyflightbag.fragments;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +24,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -48,6 +40,8 @@ import lecho.lib.hellocharts.view.LineChartView;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.dialogs.OverlayDetailDialog;
+import sk.lgstudio.easyflightbag.dialogs.SelectorDialog;
+import sk.lgstudio.easyflightbag.managers.FlightPlanManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 import sk.lgstudio.easyflightbag.openAIP.Airport;
 import sk.lgstudio.easyflightbag.openAIP.Airspace;
@@ -60,13 +54,14 @@ public class FragmentHome extends Fragment implements
         OnMapReadyCallback,
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnMapClickListener,
-        GoogleMap.OnMarkerClickListener {
+        GoogleMap.OnMarkerClickListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
     private RelativeLayout panelBottom;
     private RelativeLayout panelMap;
     private LinearLayout fullLayout;
     private ImageButton btnPanelBottom;
     private Button btnFlightPlan;
+    private ListView listFlightPlan;
     private LineChartView elevationChart;
     private LinearLayout panelInfo;
     private LinearLayout panelChart;
@@ -86,6 +81,8 @@ public class FragmentHome extends Fragment implements
     protected MapView mapLayout = null;
     protected GoogleMap map = null;
 
+    private boolean planing = false;
+
     private boolean isElevationGraphVisible = true;
     private boolean mapReady = false;
     private boolean mapNorthUp = true;
@@ -97,7 +94,10 @@ public class FragmentHome extends Fragment implements
     private MarkerOptions locaionMarkerOptions;
     private Marker locationMarker = null;
 
+    private SelectorDialog dialogPlans = null;
+
     public MapOverlayManager mapOverlayManager = null;
+    public FlightPlanManager flightPlanManager = null;
     public MainActivity activity;
 
     /**
@@ -110,7 +110,7 @@ public class FragmentHome extends Fragment implements
 
         if (savedInstanceState != null) {
             isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
-            changePanelState(isElevationGraphVisible);
+            changeLayoutPanels(isElevationGraphVisible);
             if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
         }
     }
@@ -139,7 +139,7 @@ public class FragmentHome extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         btnPanelBottom = (ImageButton) view.findViewById(R.id.home_panel_bottom_btn);
-        btnFlightPlan = (Button) view.findViewById(R.id.home_fl_plan_btn);
+        btnFlightPlan = (Button) view.findViewById(R.id.home_button_plan_top);
 
         btnPanelBottom.setOnClickListener(this);
         btnFlightPlan.setOnClickListener(this);
@@ -148,6 +148,7 @@ public class FragmentHome extends Fragment implements
         panelBottom = (RelativeLayout) view.findViewById(R.id.home_panel_bottom);
         panelInfo = (LinearLayout) view.findViewById(R.id.home_gps_info_panel);
         panelMap = (RelativeLayout) view.findViewById(R.id.home_map_layout);
+        listFlightPlan = (ListView) view.findViewById(R.id.home_plan_list);
 
         txtAccuracy = (TextView) view.findViewById(R.id.home_data_accuracy);
         txtSpeed = (TextView) view.findViewById(R.id.home_data_speed);
@@ -230,9 +231,9 @@ public class FragmentHome extends Fragment implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.home_panel_bottom_btn:
-                changePanelState(!isElevationGraphVisible);
+                changeLayoutPanels(!isElevationGraphVisible);
                 break;
-            case R.id.home_fl_plan_btn:
+            case R.id.home_button_plan_top:
                 openFlightPlans();
                 break;
             case R.id.home_map_center:
@@ -250,27 +251,83 @@ public class FragmentHome extends Fragment implements
      * Create flight plan chooser dialog
      */
     private void openFlightPlans(){
-        // todo: create flight plan selector
+        dialogPlans = new SelectorDialog(getContext());
+        dialogPlans.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogPlans.setContentView(R.layout.dialog_selector);
+        dialogPlans.loadContent(flightPlanManager.folder, flightPlanManager.selectedFile, true, R.string.manage_plans, R.string.flight_plan_add);
+        dialogPlans.setOnCancelListener(this);
+        dialogPlans.setOnDismissListener(this);
+        dialogPlans.show();
+    }
+
+    /**
+     * Plan seletor Dialog on cancel handler
+     * @param dialog
+     */
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        flightPlanManager.selectedFile = dialogPlans.selected;
+        if (flightPlanManager.selectedFile != null){
+            activity.prefs.edit().putString(getString(R.string.pref_wb_selected), flightPlanManager.selectedFile.getPath()).apply();
+            planing = dialogPlans.edit;
+        }
+        else {
+            activity.prefs.edit().remove(getString(R.string.pref_wb_selected)).apply();
+        }
+        dialogPlans = null;
+        changeLayoutPanels(isElevationGraphVisible);
+        loadFlightPlan();
+    }
+
+    /**
+     * Plan selector Dialog dismiss handler
+     * @param dialog
+     */
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (dialogPlans.selected == null) {
+            activity.prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
+            flightPlanManager.selectedFile = null;
+            planing = false;
+            loadFlightPlan();
+        }
+        dialogPlans = null;
+    }
+
+    /**
+     * Loads flight plan into the list
+     */
+    private void loadFlightPlan(){
+
     }
 
     /**
      * Show/Hide elevaton graph on the bottom
      * @param isGraph
      */
-    private void changePanelState(boolean isGraph) {
+    private void changeLayoutPanels(boolean isGraph) {
 
             isElevationGraphVisible = isGraph;
 
             int panelSize = 0;
 
-            if (isElevationGraphVisible) {
-                panelSize = (int) (fullLayout.getHeight() * 0.3);
-                panelChart.setVisibility(View.VISIBLE);
-                btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
-            } else {
-                panelSize = panelInfo.getHeight();
-                panelChart.setVisibility(View.GONE);
-                btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
+            if (!planing){
+                if (isElevationGraphVisible) {
+                    panelSize = (int) (fullLayout.getHeight() * 0.3);
+                    panelChart.setVisibility(View.VISIBLE);
+                    btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
+                } else {
+                    panelSize = panelInfo.getHeight();
+                    panelChart.setVisibility(View.GONE);
+                    btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
+                    btnPanelBottom.setEnabled(!planing);
+                }
+                listFlightPlan.setVisibility(View.GONE);
+                btnFlightPlan.setText(R.string.home_fl_plan);
+            }
+            else{
+                listFlightPlan.setVisibility(View.VISIBLE);
+                btnFlightPlan.setText(R.string.btn_save);
             }
 
             panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, panelSize));
@@ -283,7 +340,7 @@ public class FragmentHome extends Fragment implements
      */
     public void addNewLocation(boolean isEnabled, Location loc) {
 
-        if (isEnabled){
+        if (isEnabled && !planing){
             lastPosition = new LatLng(loc.getLatitude(), loc.getLongitude());
 
             locaionMarkerOptions.position(lastPosition).rotation(loc.getBearing());
@@ -300,12 +357,16 @@ public class FragmentHome extends Fragment implements
             txtAlt.setText(new DecimalFormat("#").format(loc.getAltitude()));
             txtBearing.setText(new DecimalFormat("#").format(loc.getBearing()));
             txtNoGps.setVisibility(View.GONE);
+            return;
         }
 
-        else if (lastPosition != null) {
+        else if (lastPosition != null && !planing) {
             lastPosition = null;
             if (mapReady) {
-                if (locationMarker != null) locationMarker.remove();
+                if (locationMarker != null) {
+                    locationMarker.remove();
+                    locationMarker = null;
+                }
                 mapFollow = false;
             }
 
@@ -317,7 +378,13 @@ public class FragmentHome extends Fragment implements
             txtAlt.setText("-");
             txtBearing.setText("-");
         }
-
+        else if (mapReady) {
+            if (locationMarker != null) {
+                locationMarker.remove();
+                locationMarker = null;
+            }
+            mapFollow = false;
+        }
     }
 
     /**
@@ -389,13 +456,20 @@ public class FragmentHome extends Fragment implements
 
     @Override
     public void onMapClick(LatLng latLng) {
-        (new GetPOITask()).execute((LatLng) latLng);
+        if (planing){
+
+        }
+        else (new GetPOITask()).execute((LatLng) latLng);
     }
 
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        (new GetPOITask()).execute(marker.getPosition());
+        if (planing){
+
+        }
+        else (new GetPOITask()).execute(marker.getPosition());
+
         return false;
     }
 
