@@ -233,22 +233,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         // init managers
         MapOverlayManager mapOverlayManager = new MapOverlayManager(activity);
-        FlightPlanManager flightPlanManager = new FlightPlanManager(activity);
         AIPManager aipManager = new AIPManager(activity);
 
         mapOverlayManager.folder = new File(rootDir.getPath() + getString(R.string.folder_airspace));
         if (!mapOverlayManager.folder.exists())
             mapOverlayManager.folder.mkdir();
 
-        flightPlanManager.folder = new File(rootDir.getPath() + getString(R.string.folder_plans));
-        if (!flightPlanManager.folder.exists())
-            flightPlanManager.folder.mkdir();
+        fHome.plansFolder = new File(rootDir.getPath() + getString(R.string.folder_plans));
+        if (!fHome.plansFolder.exists())
+            fHome.plansFolder.mkdir();
 
         // load values to fragments
         fHome.lastPosition = new LatLng(prefs.getFloat(getString(R.string.gps_latitude), 0), prefs.getFloat(getString(R.string.gps_longitude), 0));
         fHome.activity = activity;
         fHome.mapOverlayManager = mapOverlayManager;
-        fHome.flightPlanManager = flightPlanManager;
         fCalc.prefs = prefs;
         fChk.prefs = prefs;
         fSet.activity = activity;

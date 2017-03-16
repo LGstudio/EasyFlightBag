@@ -20,7 +20,7 @@ import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPat;
 import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPcz;
 
 /**
- * Created by LGstudio on 2017-01-27.
+ * AIP manager - manages AIP downloading and their status
  */
 
 public class AIPManager {
@@ -35,10 +35,12 @@ public class AIPManager {
     private MainActivity activity;
 
     private int started = -1;
-
     private ArrayList<Integer> waiting;
 
-
+    /**
+     * Constructor
+     * @param a
+     */
     public AIPManager(MainActivity a){
         activity = a;
         prefs = a.prefs;
@@ -47,6 +49,11 @@ public class AIPManager {
         //TODO: check if every AIP exists in internal memory && data.txt line count = file count-1
     }
 
+    /**
+     * Returns the AIP status if it is downloading, waiting to be downloaded, or if already downloaded
+     * @param country
+     * @return
+     */
     public String getStatus(int country){
 
         if (started == country)
@@ -73,6 +80,11 @@ public class AIPManager {
         return "";
     }
 
+    /**
+     * Returns if the AIP of a given country is already downloaded or not
+     * @param country
+     * @return
+     */
     public boolean exists(int country){
         String str = getPrefId(country);
         if (str != null){
@@ -84,6 +96,11 @@ public class AIPManager {
         return false;
     }
 
+    /**
+     * returns shared preference string ID based on country code
+     * @param country
+     * @return
+     */
     private String getPrefId(int country){
         switch (country){
             case AIP_AT:
@@ -100,15 +117,26 @@ public class AIPManager {
         return null;
     }
 
+    /**
+     * Saves the download status into the shared preferences
+     */
     private void saveSharedPref(){
         Date dt = new Date(System.currentTimeMillis());
         prefs.edit().putLong(getPrefId(started), dt.getTime()).apply();
     }
 
+    /**
+     * Stops the downloading process
+     * @param country
+     */
     public void stopUpdate(int country){
         // TODO: force stop update
     }
 
+    /**
+     * Request AIP update of a country
+     * @param country
+     */
     public void getUpdate(int country){
         if (started < 0){
             startService(country);
@@ -123,6 +151,10 @@ public class AIPManager {
         }
     }
 
+    /**
+     * Stops the downloading service
+     * @param c
+     */
     private void stopService(int c){
         if (started == c)
             switch (started){
@@ -141,6 +173,10 @@ public class AIPManager {
 
     }
 
+    /**
+     * Starts the downloading service
+     * @param c
+     */
     private void startService(int c){
         started = c;
         switch (started){
@@ -159,17 +195,19 @@ public class AIPManager {
         }
     }
 
+    /**
+     * Broadcast Receiver for the downloader service
+     */
     public BroadcastReceiver aipDownloadedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
             int code = intent.getIntExtra(activity.getString(R.string.intent_aip_status), -1);
-            int fileCount = intent.getIntExtra(activity.getString(R.string.intent_aip_count), -1);
             int country = intent.getIntExtra(activity.getString(R.string.intent_aip_country), -1);
 
             switch (code){
                 case AIPDownloader.STATUS_STARTED:
-                    Log.i("AIP downloading", String.valueOf(country) + " - " + String.valueOf(fileCount));
+
                     break;
                 case AIPDownloader.STATUS_ERROR:
                 case AIPDownloader.STATUS_FINISHED:

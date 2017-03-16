@@ -51,7 +51,7 @@
             android:orientation="vertical">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/home_fl_plan"
                 android:background="?attr/backgroundDarkColor"
@@ -60,21 +60,21 @@
                 android:id="@+id/home_button_plan_top" />
 
             <ListView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/backgroundColor"
                 android:id="@+id/home_plan_list"
                 android:visibility="gone"/>
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_stop"
                 android:background="?attr/backgroundDarkColor"
                 android:padding="@dimen/row_padding"
                 android:textColor="?attr/primaryTextColor"
                 android:id="@+id/home_button_plan_bottom"
-                />
+                android:visibility="gone"/>
 
         </LinearLayout>
         

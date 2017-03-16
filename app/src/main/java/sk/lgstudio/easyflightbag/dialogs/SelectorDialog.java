@@ -149,6 +149,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
             try {
                 newFile.createNewFile();
                 selected = newFile;
+                edit = true;
                 cancel();
             } catch (IOException e) {
                 Toast.makeText(getContext(), getContext().getString(R.string.chk_plane_exists_toast), Toast.LENGTH_SHORT).show();

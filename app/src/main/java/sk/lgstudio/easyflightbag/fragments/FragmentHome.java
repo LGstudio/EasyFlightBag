@@ -1,5 +1,6 @@
 package sk.lgstudio.easyflightbag.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -33,6 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -47,25 +51,32 @@ import sk.lgstudio.easyflightbag.openAIP.Airport;
 import sk.lgstudio.easyflightbag.openAIP.Airspace;
 
 /**
- *
+ * The 1st fragment
+ * Features:
+ *  - Flight planning
+ *  - Flight navigation
+ *  - Shows gps data
  */
 public class FragmentHome extends Fragment implements
         View.OnClickListener,
         OnMapReadyCallback,
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnMapClickListener,
-        GoogleMap.OnMarkerClickListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
+        GoogleMap.OnMarkerClickListener,
+        DialogInterface.OnCancelListener,
+        DialogInterface.OnDismissListener,
+        AdapterView.OnItemClickListener {
 
     private RelativeLayout panelBottom;
     private RelativeLayout panelMap;
     private LinearLayout fullLayout;
     private ImageButton btnPanelBottom;
-    private Button btnFlightPlan;
+    private Button btnFlightPlanTop;
+    private Button btnFlightPlanBottom;
     private ListView listFlightPlan;
     private LineChartView elevationChart;
     private LinearLayout panelInfo;
     private LinearLayout panelChart;
-    private NumberPicker chartDistance;
 
     private TextView txtAccuracy;
     private TextView txtSpeed;
@@ -81,6 +92,7 @@ public class FragmentHome extends Fragment implements
     protected MapView mapLayout = null;
     protected GoogleMap map = null;
 
+    public File plansFolder;
     private boolean planing = false;
 
     private boolean isElevationGraphVisible = true;
@@ -93,6 +105,7 @@ public class FragmentHome extends Fragment implements
     private LatLng mapTargetArea = null;
     private MarkerOptions locaionMarkerOptions;
     private Marker locationMarker = null;
+    private ArrayList<Marker> editorMarkers;
 
     private SelectorDialog dialogPlans = null;
 
@@ -100,32 +113,9 @@ public class FragmentHome extends Fragment implements
     public FlightPlanManager flightPlanManager = null;
     public MainActivity activity;
 
-    /**
-     * Reload view settings after fragment reopened
-     * @param savedInstanceState
-     */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
-            changeLayoutPanels(isElevationGraphVisible);
-            if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
-        }
-    }
-
-    /**
-     * Save view settings befor closing fragment
-     * @param outState
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-        outState.putBoolean("PBottom", isElevationGraphVisible);
-
-        super.onSaveInstanceState(outState);
-    }
+    // ---------------------------------------------------------------
+    // Lifecycle
+    // ---------------------------------------------------------------
 
     /**
      * Create layout and load default settings for the layout
@@ -139,10 +129,12 @@ public class FragmentHome extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         btnPanelBottom = (ImageButton) view.findViewById(R.id.home_panel_bottom_btn);
-        btnFlightPlan = (Button) view.findViewById(R.id.home_button_plan_top);
+        btnFlightPlanTop = (Button) view.findViewById(R.id.home_button_plan_top);
+        btnFlightPlanBottom = (Button) view.findViewById(R.id.home_button_plan_bottom);
 
         btnPanelBottom.setOnClickListener(this);
-        btnFlightPlan.setOnClickListener(this);
+        btnFlightPlanTop.setOnClickListener(this);
+        btnFlightPlanBottom.setOnClickListener(this);
 
         fullLayout = (LinearLayout) view.findViewById(R.id.home_screen);
         panelBottom = (RelativeLayout) view.findViewById(R.id.home_panel_bottom);
@@ -165,7 +157,7 @@ public class FragmentHome extends Fragment implements
 
         panelChart = (LinearLayout) view.findViewById(R.id.home_elevation_graph_panel);
         elevationChart = (LineChartView) view.findViewById(R.id.home_elevation_graph);
-        chartDistance = (NumberPicker) view.findViewById(R.id.home_elevation_graph_picker);
+        NumberPicker chartDistance = (NumberPicker) view.findViewById(R.id.home_elevation_graph_picker);
         chartDistance.setMinValue(1);
         chartDistance.setMaxValue(10);
         chartDistance.setValue(10);
@@ -215,124 +207,35 @@ public class FragmentHome extends Fragment implements
     }
 
     /**
-     * Low mamory google map action
+     * Reload view settings after fragment reopened
+     * @param savedInstanceState
      */
     @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        if (mapLayout != null) mapLayout.onLowMemory();
-    }
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-    /**
-     * Button click listener
-     * @param v
-     */
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.home_panel_bottom_btn:
-                changeLayoutPanels(!isElevationGraphVisible);
-                break;
-            case R.id.home_button_plan_top:
-                openFlightPlans();
-                break;
-            case R.id.home_map_center:
-                mapFollow = true;
-                changeMapPosition();
-                break;
-            case R.id.home_map_rotate:
-                mapNorthUp = !mapNorthUp;
-                changeMapPosition();
-                break;
+        if (savedInstanceState != null) {
+            isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
+            changeLayoutPanels(isElevationGraphVisible);
+            if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
         }
     }
 
     /**
-     * Create flight plan chooser dialog
-     */
-    private void openFlightPlans(){
-        dialogPlans = new SelectorDialog(getContext());
-        dialogPlans.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogPlans.setContentView(R.layout.dialog_selector);
-        dialogPlans.loadContent(flightPlanManager.folder, flightPlanManager.selectedFile, true, R.string.manage_plans, R.string.flight_plan_add);
-        dialogPlans.setOnCancelListener(this);
-        dialogPlans.setOnDismissListener(this);
-        dialogPlans.show();
-    }
-
-    /**
-     * Plan seletor Dialog on cancel handler
-     * @param dialog
+     * Save view settings befor closing fragment
+     * @param outState
      */
     @Override
-    public void onCancel(DialogInterface dialog) {
-        flightPlanManager.selectedFile = dialogPlans.selected;
-        if (flightPlanManager.selectedFile != null){
-            activity.prefs.edit().putString(getString(R.string.pref_wb_selected), flightPlanManager.selectedFile.getPath()).apply();
-            planing = dialogPlans.edit;
-        }
-        else {
-            activity.prefs.edit().remove(getString(R.string.pref_wb_selected)).apply();
-        }
-        dialogPlans = null;
-        changeLayoutPanels(isElevationGraphVisible);
-        loadFlightPlan();
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putBoolean("PBottom", isElevationGraphVisible);
+
+        super.onSaveInstanceState(outState);
     }
 
-    /**
-     * Plan selector Dialog dismiss handler
-     * @param dialog
-     */
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        if (dialogPlans.selected == null) {
-            activity.prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
-            flightPlanManager.selectedFile = null;
-            planing = false;
-            loadFlightPlan();
-        }
-        dialogPlans = null;
-    }
-
-    /**
-     * Loads flight plan into the list
-     */
-    private void loadFlightPlan(){
-
-    }
-
-    /**
-     * Show/Hide elevaton graph on the bottom
-     * @param isGraph
-     */
-    private void changeLayoutPanels(boolean isGraph) {
-
-            isElevationGraphVisible = isGraph;
-
-            int panelSize = 0;
-
-            if (!planing){
-                if (isElevationGraphVisible) {
-                    panelSize = (int) (fullLayout.getHeight() * 0.3);
-                    panelChart.setVisibility(View.VISIBLE);
-                    btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
-                } else {
-                    panelSize = panelInfo.getHeight();
-                    panelChart.setVisibility(View.GONE);
-                    btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
-                    btnPanelBottom.setEnabled(!planing);
-                }
-                listFlightPlan.setVisibility(View.GONE);
-                btnFlightPlan.setText(R.string.home_fl_plan);
-            }
-            else{
-                listFlightPlan.setVisibility(View.VISIBLE);
-                btnFlightPlan.setText(R.string.btn_save);
-            }
-
-            panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, panelSize));
-            panelMap.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullLayout.getHeight() - panelSize));
-    }
+    // ---------------------------------------------------------------
+    // Map
+    // ---------------------------------------------------------------
 
     /**
      * Called from activity to handle new location
@@ -357,7 +260,6 @@ public class FragmentHome extends Fragment implements
             txtAlt.setText(new DecimalFormat("#").format(loc.getAltitude()));
             txtBearing.setText(new DecimalFormat("#").format(loc.getBearing()));
             txtNoGps.setVisibility(View.GONE);
-            return;
         }
 
         else if (lastPosition != null && !planing) {
@@ -388,7 +290,7 @@ public class FragmentHome extends Fragment implements
     }
 
     /**
-     * Jump to position on the map based on
+     * Jump to position on the map based on the follow and bearing settings
      */
     private void changeMapPosition(){
         float b;
@@ -444,7 +346,6 @@ public class FragmentHome extends Fragment implements
 
         if (mapOverlayManager != null) loadOverlays();
 
-
     }
 
     @Override
@@ -457,7 +358,7 @@ public class FragmentHome extends Fragment implements
     @Override
     public void onMapClick(LatLng latLng) {
         if (planing){
-
+            // TODO
         }
         else (new GetPOITask()).execute((LatLng) latLng);
     }
@@ -466,7 +367,7 @@ public class FragmentHome extends Fragment implements
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (planing){
-
+            // TODO
         }
         else (new GetPOITask()).execute(marker.getPosition());
 
@@ -498,6 +399,227 @@ public class FragmentHome extends Fragment implements
             }
         }
     }
+
+
+    /**
+     * Low mamory google map action
+     */
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        if (mapLayout != null) mapLayout.onLowMemory();
+    }
+
+    // ---------------------------------------------------------------
+    // Layout
+    // ---------------------------------------------------------------
+
+    /**
+     * Button click listener
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.home_panel_bottom_btn:
+                changeLayoutPanels(!isElevationGraphVisible);
+                break;
+            case R.id.home_button_plan_top:
+                openFlightPlans();
+                break;
+            case R.id.home_button_plan_bottom:
+                cancelRoute();
+                break;
+            case R.id.home_map_center:
+                mapFollow = true;
+                changeMapPosition();
+                break;
+            case R.id.home_map_rotate:
+                mapNorthUp = !mapNorthUp;
+                changeMapPosition();
+                break;
+        }
+    }
+
+    /**
+     * Handle Flight plan list item click listener
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // TODO: open details at point
+    }
+
+    /**
+     * Show/Hide elevaton graph on the bottom
+     * @param isGraph
+     */
+    private void changeLayoutPanels(boolean isGraph) {
+
+            isElevationGraphVisible = isGraph;
+
+            int panelSize = 0;
+
+            if (!planing){
+                if (isElevationGraphVisible) {
+                    panelSize = (int) (fullLayout.getHeight() * 0.3);
+                    panelChart.setVisibility(View.VISIBLE);
+                    btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
+                } else {
+                    panelSize = panelInfo.getHeight();
+                    panelChart.setVisibility(View.GONE);
+                    btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
+                    btnPanelBottom.setEnabled(!planing);
+                }
+
+                if (flightPlanManager == null){
+                    listFlightPlan.setVisibility(View.GONE);
+                    btnFlightPlanBottom.setVisibility(View.GONE);
+                    btnFlightPlanTop.setText(R.string.home_fl_plan);
+                    btnFlightPlanTop.setEnabled(true);
+                }
+                else {
+                    listFlightPlan.setVisibility(View.VISIBLE);
+                    btnFlightPlanBottom.setVisibility(View.VISIBLE);
+                    btnFlightPlanBottom.setText(R.string.btn_stop);
+                    btnFlightPlanTop.setText(new DecimalFormat("#.#").format(flightPlanManager.getRoutLength() + " " + getString(R.string.calc_unit_km)));
+                    btnFlightPlanTop.setEnabled(false);
+                    listFlightPlan.setAdapter(new PlanAdapter(getContext(), R.layout.list_text_item, flightPlanManager.plan));
+                    listFlightPlan.setOnItemClickListener(this);
+                }
+
+            }
+            else{
+                listFlightPlan.setVisibility(View.VISIBLE);
+                btnFlightPlanBottom.setVisibility(View.VISIBLE);
+                btnFlightPlanTop.setText(R.string.btn_save);
+                btnFlightPlanTop.setEnabled(true);
+                btnFlightPlanBottom.setText(R.string.btn_cancel);
+            }
+
+            panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, panelSize));
+            panelMap.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullLayout.getHeight() - panelSize));
+    }
+
+    // ---------------------------------------------------------------
+    // Flight plans
+    // ---------------------------------------------------------------
+
+    /**
+     * Create flight plan chooser dialog
+     */
+    private void openFlightPlans(){
+        dialogPlans = new SelectorDialog(getContext());
+        dialogPlans.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogPlans.setContentView(R.layout.dialog_selector);
+        dialogPlans.loadContent(plansFolder, plansFolder, true, R.string.manage_plans, R.string.flight_plan_add);
+        dialogPlans.setOnCancelListener(this);
+        dialogPlans.setOnDismissListener(this);
+        dialogPlans.show();
+    }
+
+    /**
+     * Plan seletor Dialog on cancel handler
+     * @param dialog
+     */
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        if (dialogPlans.selected != null){
+            flightPlanManager = new FlightPlanManager(dialogPlans.selected);
+            planing = dialogPlans.edit;
+        }
+        else {
+            flightPlanManager = null;
+        }
+
+        dialogPlans = null;
+        changeLayoutPanels(isElevationGraphVisible);
+        loadFlightPlan();
+    }
+
+    /**
+     * Plan selector Dialog dismiss handler
+     * @param dialog
+     */
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (dialogPlans.selected == null) {
+            flightPlanManager = null;
+            planing = false;
+            loadFlightPlan();
+        }
+        dialogPlans = null;
+    }
+
+    /**
+     * Loads flight plan into the list TODO
+     */
+    private void loadFlightPlan(){
+        if (planing){}
+        else{}
+    }
+
+    /**
+     * On planning cancel button press TODO
+     */
+    private void cancelRoute(){
+        if (planing){}
+        else{}
+    }
+
+    // ---------------------------------------------------------------
+    // List Adapters
+    // ---------------------------------------------------------------
+
+    /**
+     * List afrapter for flight plan
+     */
+    private class PlanAdapter extends ArrayAdapter<FlightPlanManager.Point> {
+
+        private ArrayList<FlightPlanManager.Point> data;
+
+        public PlanAdapter(Context context, int resource, ArrayList<FlightPlanManager.Point> objects) {
+            super(context, resource, objects);
+            data = objects;
+        }
+
+        @Override
+        public View getView(int position, View row, ViewGroup parent) {
+
+
+            return row;
+        }
+
+    }
+
+    /**
+     * List adrapter for flight plan editing
+     */
+    private class PlanEditorAdapter extends ArrayAdapter<FlightPlanManager.Point> {
+
+        private ArrayList<FlightPlanManager.Point> data;
+
+        public PlanEditorAdapter(Context context, int resource, ArrayList<FlightPlanManager.Point> objects) {
+            super(context, resource, objects);
+            data = objects;
+        }
+
+        @Override
+        public View getView(int position, View row, ViewGroup parent) {
+
+
+
+            return row;
+        }
+
+    }
+
+    // ---------------------------------------------------------------
+    // Async Tasks
+    // ---------------------------------------------------------------
 
     /**
      * Get POIs at map coordinates

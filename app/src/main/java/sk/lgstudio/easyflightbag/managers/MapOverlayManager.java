@@ -32,7 +32,10 @@ import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader;
 import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
 
 /**
- * Created by LGstudio on 2017-02-20.
+ * Map overlay manager
+ *  - reads the map overlays from .aip files
+ *  - makes layout property calculations
+ *  - specifies layout icons and colors based on their properties
  */
 
 public class MapOverlayManager {
@@ -53,7 +56,7 @@ public class MapOverlayManager {
     public File folder;
 
     /**
-     * Constructor
+     * Constructor - loads data from .aip files
      * @param a - MainActivity
      */
     public MapOverlayManager(MainActivity a){

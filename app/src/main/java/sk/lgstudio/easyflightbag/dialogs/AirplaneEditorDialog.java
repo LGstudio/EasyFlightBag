@@ -16,14 +16,12 @@ import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 
 /**
- * Created by LGstudio on 2017-02-01.
+ * Airplane Editor - fullscreen dialog
+ *
+ * loadContent() must be called before show()
  */
 
 public class AirplaneEditorDialog extends Dialog implements View.OnClickListener{
-
-    private ImageButton btnBack;
-    private ImageButton btnSave;
-    private TextView airplaneId;
 
     private EditText edtCruiseSp;
     private EditText edtClimbSp;
@@ -49,22 +47,30 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
     private TableLayout tableLimits;
     private ArrayList<RowLimit> limits = new ArrayList<>();
 
-
     private AirplaneManager airplane;
 
+    /**
+     * Constructor
+     * @param context
+     * @param fullScreenDialog
+     */
     public AirplaneEditorDialog(Context context, int fullScreenDialog) {
         super(context, fullScreenDialog);
     }
 
+    /**
+     * Loades the editor view based on the airplane manager data
+     * @param ap
+     */
     public void loadContent(AirplaneManager ap){
         airplane = ap;
 
-        btnBack = (ImageButton) findViewById(R.id.airplane_editor_back);
-        btnSave = (ImageButton) findViewById(R.id.airplane_editor_save);
+        ImageButton btnBack = (ImageButton) findViewById(R.id.airplane_editor_back);
+        ImageButton btnSave = (ImageButton) findViewById(R.id.airplane_editor_save);
         btnBack.setOnClickListener(this);
         btnSave.setOnClickListener(this);
 
-        airplaneId = (TextView) findViewById(R.id.airplane_editor_name);
+        TextView airplaneId = (TextView) findViewById(R.id.airplane_editor_name);
         airplaneId.setText(airplane.getName());
 
         edtCruiseSp =  (EditText) findViewById(R.id.ap_edit_perf_cr_sp);
@@ -126,6 +132,10 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         }
     }
 
+    /**
+     * Handles button clicks
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -148,6 +158,13 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         }
     }
 
+    /**
+     * Adds a Fuel Tank row into the table
+     * @param n
+     * @param a
+     * @param c
+     * @param u
+     */
     private void addFuelTank(String n, double a, double c, double u){
         final RowTank row = new RowTank();
         row.row = (TableRow) getLayoutInflater().inflate(R.layout.dialog_airplane_editor_tank_row, null);
@@ -173,6 +190,12 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         tableTanks.addView(row.row);
     }
 
+    /**
+     * Adds a weights wor into the table
+     * @param n
+     * @param a
+     * @param m
+     */
     private void addWeights(String n, double a, double m) {
         final RowWeight row = new RowWeight();
         row.row = (TableRow) getLayoutInflater().inflate(R.layout.dialog_airplane_editor_weights_row, null);
@@ -196,6 +219,11 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         tableWeights.addView(row.row);
     }
 
+    /**
+     * Adds a limit row int the table
+     * @param a
+     * @param w
+     */
     private void addLimits(double a, double w) {
         final RowLimit row = new RowLimit();
         row.row = (TableRow) getLayoutInflater().inflate(R.layout.dialog_airplane_editor_limits_row, null);
@@ -219,7 +247,9 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
     }
 
-
+    /**
+     * Test and saves the filled editor
+     */
     private void saveAirplane(){
         if (tanks.size() < 1){
             Toast.makeText(getContext(), getContext().getString(R.string.calc_warning_tank), Toast.LENGTH_SHORT).show();
@@ -285,6 +315,10 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         }
     }
 
+    /**
+     * Tests if any field is left blank
+     * @return
+     */
     private boolean isEmpty(){
         boolean empty = (edtCruiseSp.getText().length() == 0)
                 && (edtClimbSp.getText().length() == 0)
@@ -319,6 +353,9 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         return empty;
     }
 
+    /**
+     * Holds the data of a fuel tank
+     */
     private class RowTank{
         TableRow row;
         EditText name;
@@ -328,6 +365,9 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         ImageButton del;
     }
 
+    /**
+     * Holds the data of a weight
+     */
     private class RowWeight{
         TableRow row;
         EditText name;
@@ -336,6 +376,9 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         ImageButton del;
     }
 
+    /**
+     * Holds the data of a limit point
+     */
     private class RowLimit{
         TableRow row;
         EditText arm;

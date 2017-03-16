@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:background="?attr/backgroundColor"
     android:layout_height="wrap_content"
-    android:padding="@dimen/row_padding"
+    android:padding="@dimen/row_padding_small"
     android:layout_margin="0dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner_text_item"
+        android:id="@+id/list_text"
         android:textColor="?attr/primaryTextColor"
         android:gravity="center_vertical"
         android:textSize="@dimen/calc_text_size"/>

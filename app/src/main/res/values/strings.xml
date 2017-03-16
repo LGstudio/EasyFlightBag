@@ -83,6 +83,7 @@
     <string name="btn_new">New</string>
     <string name="btn_add">Add</string>
     <string name="btn_edit">Edit</string>
+    <string name="btn_cancel">Cancel</string>
     <string name="btn_orient">Orientation</string>
     <string name="btn_airplane">Airplanes</string>
     <string name="btn_yes">Yes</string>
@@ -231,7 +232,6 @@
 
     <string name="service_aip_download" translatable="false">intent_aip_download</string>
     <string name="intent_aip_status" translatable="false">intent_aip_status</string>
-    <string name="intent_aip_count" translatable="false">intent_aip_count</string>
     <string name="intent_aip_country" translatable="false">intent_aip_country</string>
     <string name="service_air_download" translatable="false">intent_air_download</string>
     

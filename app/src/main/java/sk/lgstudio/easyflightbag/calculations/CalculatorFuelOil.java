@@ -1,7 +1,6 @@
 package sk.lgstudio.easyflightbag.calculations;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,9 +126,9 @@ public class CalculatorFuelOil extends Calculator implements AdapterView.OnItemS
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(ctx);
-            View spinnerElement = inflater.inflate(R.layout.spinner_text_item, null);
+            View spinnerElement = inflater.inflate(R.layout.list_text_item, null);
 
-            TextView airplane = (TextView) spinnerElement.findViewById(R.id.spinner_text_item);
+            TextView airplane = (TextView) spinnerElement.findViewById(R.id.list_text);
             airplane.setText(fuel[position]);
 
             return spinnerElement;

@@ -102,7 +102,6 @@ public abstract class AIPDownloader extends IntentService {
                 Intent intent = new Intent(context.getString(R.string.service_aip_download));
 
                 intent.putExtra(context.getString(R.string.intent_aip_status), status);
-                intent.putExtra(context.getString(R.string.intent_aip_count), downloadedcount);
                 intent.putExtra(context.getString(R.string.intent_aip_country), country);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
