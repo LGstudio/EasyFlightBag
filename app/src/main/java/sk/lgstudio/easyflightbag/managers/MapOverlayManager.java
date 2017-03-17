@@ -35,7 +35,7 @@ import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
  * Map overlay manager
  *  - reads the map overlays from .aip files
  *  - makes layout property calculations
- *  - specifies layout icons and colors based on their properties
+ *  - specifies layout icons and colors based on
  */
 
 public class MapOverlayManager {
@@ -53,15 +53,16 @@ public class MapOverlayManager {
     // List of content
     public ArrayList<Airspace.Data> airspaces = null;
     public ArrayList<Airport.Data> airports = null;
-    public File folder;
+    private File folder;
 
     /**
      * Constructor - loads data from .aip files
      * @param a - MainActivity
      */
-    public MapOverlayManager(MainActivity a){
+    public MapOverlayManager(MainActivity a, File f){
         activity = a;
         prefs = a.prefs;
+        folder = f;
         if (exists())
             loadData();
     }
@@ -399,17 +400,17 @@ public class MapOverlayManager {
         public void onReceive(Context context, Intent intent) {
 
             int code = intent.getIntExtra(activity.getString(R.string.intent_aip_status), -1);
-            String fileCount = intent.getStringExtra(activity.getString(R.string.intent_aip_count));
+            String fileCount = intent.getStringExtra(activity.getString(R.string.service_air_name));
 
             switch (code) {
                 case AIPDownloader.STATUS_STARTED:
-                    Log.i("openAIP: success", String.valueOf(fileCount));
+                    //Log.i("openAIP: success", String.valueOf(fileCount));
                     break;
                 case AIPDownloader.STATUS_ERROR:
-                    Log.e("openAIP error", String.valueOf(fileCount));
+                    //Log.e("openAIP error", String.valueOf(fileCount));
                     break;
                 case AIPDownloader.STATUS_FINISHED:
-                    Log.i("openAIP: finished", String.valueOf(fileCount));
+                    //Log.i("openAIP: finished", String.valueOf(fileCount));
                     stopService();
                     saveSharedPref();
                     Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.air_done_download), Toast.LENGTH_SHORT).show();

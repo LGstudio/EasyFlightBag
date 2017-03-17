@@ -233,6 +233,7 @@
     <string name="service_aip_download" translatable="false">intent_aip_download</string>
     <string name="intent_aip_status" translatable="false">intent_aip_status</string>
     <string name="intent_aip_country" translatable="false">intent_aip_country</string>
+    <string name="service_air_name" translatable="false">intent_air_name</string>
     <string name="service_air_download" translatable="false">intent_air_download</string>
     
     <string name="url_cz_ais" translatable="false">http://lis.rlp.cz/ais_data/aip/control/aip_obsah_en.htm</string>
@@ -252,6 +253,9 @@
     <string name="home_gps_speed">Speed</string>
     <string name="home_gps_alt">Altitude</string>
     <string name="home_gps_bear">Bearing</string>
+
+    <string name="plan_warning_saved">Flight plan saved</string>
+    <string name="plan_warning_save_error">Unable to save plan</string>
 
     <string name="airports">Airports</string>
     <string name="airspaces">Airspaces</string>

@@ -150,7 +150,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
                 newFile.createNewFile();
                 selected = newFile;
                 edit = true;
-                cancel();
+                dismiss();
             } catch (IOException e) {
                 Toast.makeText(getContext(), getContext().getString(R.string.chk_plane_exists_toast), Toast.LENGTH_SHORT).show();
             }
@@ -177,7 +177,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
             if(!newDir.exists()) {
                 newDir.mkdir();
                 selected = newDir;
-                cancel();
+                dismiss();
             }
             else{
                 Toast.makeText(getContext(), getContext().getString(R.string.chk_plane_exists_toast), Toast.LENGTH_SHORT).show();
@@ -246,7 +246,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
                     public void onClick(View v) {
                         selected = f;
                         edit = true;
-                        cancel();
+                        dismiss();
                     }
                 });
             }
@@ -266,7 +266,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
                 @Override
                 public void onClick(View v) {
                     selected = f;
-                    cancel();
+                    dismiss();
                 }
             });
 

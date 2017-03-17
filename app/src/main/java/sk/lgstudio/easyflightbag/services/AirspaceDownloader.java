@@ -89,7 +89,7 @@ public class AirspaceDownloader extends IntentService {
                 Intent intent = new Intent(context.getString(R.string.service_air_download));
 
                 intent.putExtra(context.getString(R.string.intent_aip_status), status);
-                intent.putExtra(context.getString(R.string.intent_aip_count), name);
+                intent.putExtra(context.getString(R.string.service_air_name), name);
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }

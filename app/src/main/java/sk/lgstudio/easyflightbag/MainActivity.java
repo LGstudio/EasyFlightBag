@@ -231,13 +231,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         if (!fAip.folder.exists())
             fAip.folder.mkdir();
 
-        // init managers
-        MapOverlayManager mapOverlayManager = new MapOverlayManager(activity);
-        AIPManager aipManager = new AIPManager(activity);
+        File fldr = new File(rootDir.getPath() + getString(R.string.folder_airspace));
+        if (!fldr.exists())
+            fldr.mkdir();
 
-        mapOverlayManager.folder = new File(rootDir.getPath() + getString(R.string.folder_airspace));
-        if (!mapOverlayManager.folder.exists())
-            mapOverlayManager.folder.mkdir();
+        // init managers
+        MapOverlayManager mapOverlayManager = new MapOverlayManager(activity, fldr);
+        AIPManager aipManager = new AIPManager(activity);
 
         fHome.plansFolder = new File(rootDir.getPath() + getString(R.string.folder_plans));
         if (!fHome.plansFolder.exists())

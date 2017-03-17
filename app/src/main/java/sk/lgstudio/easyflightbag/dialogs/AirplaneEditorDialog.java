@@ -140,7 +140,7 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.airplane_editor_back:
-                cancel();
+                dismiss();
                 break;
             case R.id.airplane_editor_save:
                 saveAirplane();

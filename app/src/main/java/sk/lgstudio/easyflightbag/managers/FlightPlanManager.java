@@ -3,6 +3,7 @@ package sk.lgstudio.easyflightbag.managers;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,14 +102,30 @@ public class FlightPlanManager {
             return false;
         }
 
+        plan = editedPlan;
+
         return true;
+    }
+
+    /**
+     * Adds new free point to the editor
+     */
+    public void addNewPoint(LatLng loc){
+
+    }
+
+    /**
+     * Adds new point to the editor with name and not draggable
+     */
+    public void addNewPoint(LatLng loc, String name){
+
     }
 
     /**
      * Calculates the length of the route in km
      * @return
      */
-    public double getRoutLength(){
+    public float getRoutLength(){
         float length = 0f;
 
         for (int i = 1; i < plan.size() - 1; i++){

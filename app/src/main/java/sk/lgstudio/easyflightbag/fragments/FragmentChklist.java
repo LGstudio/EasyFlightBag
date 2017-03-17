@@ -61,7 +61,6 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
 
     private ChklistEditorDialog dialogListEdit;
     private SelectorDialog dialogAirplane;
-    private boolean isSelector = false;
 
     protected int selectedFile = FILE_NONE;
     protected int actualTask = 0;
@@ -276,7 +275,6 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      * Creates Airplane Selector Dialog
      */
     private void createAirplaneSelectorDialog(){
-        isSelector = true;
         dialogAirplane = new SelectorDialog(getContext());
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogAirplane.setContentView(R.layout.dialog_selector);
@@ -290,8 +288,6 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      * Creates Checklist editor dialog
      */
     private void createEditorDialog(){
-
-        isSelector = false;
         boolean isNew = (selectedFile < 0);
 
         String title = null;
@@ -304,7 +300,6 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
         dialogListEdit = new ChklistEditorDialog(getContext(), R.style.FullScreenDialog);
         dialogListEdit.setContentView(R.layout.dialog_chk_editor);
         dialogListEdit.loadContent(folderActual, isNew, title, tasks);
-        dialogListEdit.setOnCancelListener(this);
         dialogListEdit.setOnDismissListener(this);
         dialogListEdit.show();
 
@@ -316,17 +311,14 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     @Override
     public void onCancel(DialogInterface dialog) {
-        if (isSelector) {
-            folderActual = dialogAirplane.selected;
-            if (folderActual != null)
-                prefs.edit().putString(getString(R.string.pref_chk_folder), folderActual.getPath()).apply();
-            else
+        if (dialogAirplane != null) {
+            if (dialogAirplane.selected == null){
                 prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
+                folderActual = null;
+            }
+            dialogAirplane = null;
         }
-        else {
-            dialogListEdit = null;
-        }
-        reloadFiles();
+
     }
 
     /**
@@ -335,14 +327,18 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if (isSelector){
-            if (dialogAirplane.selected == null){
+        if (dialogAirplane != null){
+
+            folderActual = dialogAirplane.selected;
+            if (folderActual != null)
+                prefs.edit().putString(getString(R.string.pref_chk_folder), folderActual.getPath()).apply();
+            else
                 prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
-                folderActual = null;
-            }
+
             dialogAirplane = null;
+            reloadFiles();
         }
-        else {
+        if (dialogListEdit != null) {
             switch (dialogListEdit.returnStatus){
                 case ChklistEditorDialog.SAVE_NEW:
                 case ChklistEditorDialog.DELETE:

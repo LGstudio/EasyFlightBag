@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -27,7 +28,7 @@ import sk.lgstudio.easyflightbag.dialogs.WbGraphDialog;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 
 /**
- * Created by LGstudio on 2017-01-31.
+ * Weight and Balance calculator screen and manager
  */
 
 public class CalculatorWB extends Calculator implements View.OnClickListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
@@ -36,10 +37,10 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
     private File parentFolder = null;
     private SelectorDialog dialogAirplane;
     private AirplaneManager airplane;
-    private boolean isSelectorDialog = false;
 
     private TextView airplaneId = null;
     private ImageButton airplaneEditor = null;
+    private boolean editPlane = false;
 
     private ScrollView scrollView;
     private NumberPicker flightTimeH;
@@ -156,7 +157,6 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
      * Creates Airplane Selector Dialog
      */
     private void createAirplaneSelectorDialog(){
-        isSelectorDialog = true;
         dialogAirplane = new SelectorDialog(context);
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogAirplane.setContentView(R.layout.dialog_selector);
@@ -170,39 +170,18 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
      * Creates Airplane Selector Dialog
      */
     private void createAirplaneEditorDialog(){
-        isSelectorDialog = false;
         AirplaneEditorDialog dialog = new AirplaneEditorDialog(context, R.style.FullScreenDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_airplane_editor);
         dialog.loadContent(airplane);
-        dialog.setOnCancelListener(this);
+        dialog.setOnDismissListener(this);
         dialog.show();
 
     }
 
     @Override
     public void onCancel(DialogInterface dialog) {
-
-        if (isSelectorDialog){
-            selectedPlane = dialogAirplane.selected;
-            if (selectedPlane != null){
-                prefs.edit().putString(context.getString(R.string.pref_wb_selected), selectedPlane.getPath()).apply();
-                airplaneEditor.setClickable(true);
-                if (dialogAirplane.edit) createAirplaneEditorDialog();
-            }
-            else {
-                prefs.edit().remove(context.getString(R.string.pref_wb_selected)).apply();
-                airplaneEditor.setClickable(false);
-            }
-            dialogAirplane = null;
-        }
-
-        reloadContent();
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        if (isSelectorDialog) {
+        if (dialogAirplane != null){
             if (dialogAirplane.selected == null) {
                 prefs.edit().remove(context.getString(R.string.pref_chk_folder)).apply();
                 selectedPlane = null;
@@ -211,7 +190,27 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         }
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (dialogAirplane != null) {
+            selectedPlane = dialogAirplane.selected;
+            if (selectedPlane != null){
+                prefs.edit().putString(context.getString(R.string.pref_wb_selected), selectedPlane.getPath()).apply();
+                if (dialogAirplane.edit) editPlane = true;
+            }
+            else {
+                prefs.edit().remove(context.getString(R.string.pref_wb_selected)).apply();
+            }
+            dialogAirplane = null;
+        }
 
+        reloadContent();
+    }
+
+
+    /**
+     * Relaod the view and the tables beased on the selected airplane
+     */
     private void reloadContent(){
 
         for (int i = tableFuel.getChildCount(); i > 2; i--){
@@ -227,7 +226,12 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
             airplane = new AirplaneManager(selectedPlane);
             airplaneId.setText(airplane.getName());
 
-            if (airplane.loaded){
+            if (editPlane){
+                editPlane = false;
+                createAirplaneEditorDialog();
+            }
+
+            else if (airplane.loaded){
                 scrollView.setVisibility(View.VISIBLE);
 
                 for(final AirplaneManager.Tanks t: airplane.tanks) {
