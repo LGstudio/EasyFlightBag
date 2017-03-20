@@ -120,9 +120,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onDestroy(){
         super.onDestroy();
 
-        prefs.edit().putFloat(getString(R.string.gps_latitude) ,(float) fHome.lastPosition.latitude).apply();
-        prefs.edit().putFloat(getString(R.string.gps_longitude) ,(float) fHome.lastPosition.longitude).apply();
-
+        if (fHome.lastPosition != null) {
+            prefs.edit().putFloat(getString(R.string.gps_latitude), (float) fHome.lastPosition.latitude).apply();
+            prefs.edit().putFloat(getString(R.string.gps_longitude), (float) fHome.lastPosition.longitude).apply();
+        }
         if (fChk.folderActual != null)
             prefs.edit().putString(getString(R.string.pref_chk_folder), fChk.folderActual.getPath()).apply();
         else
@@ -386,8 +387,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onBackPressed() {
         if (selectedTab != MENU_NAV)
             changeTab(MENU_NAV);
-        else
-            super.onBackPressed();
     }
 
     /**

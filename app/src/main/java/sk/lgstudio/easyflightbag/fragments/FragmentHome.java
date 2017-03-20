@@ -76,11 +76,13 @@ public class FragmentHome extends Fragment implements
 
     private RelativeLayout panelBottom;
     private RelativeLayout panelMap;
-    private LinearLayout fullLayout;
+
     private ImageButton btnPanelBottom;
     private Button btnFlightPlanTop;
     private Button btnFlightPlanBottom;
     private ListView listFlightPlan;
+    private int planWidth = 0;
+
     private LineChartView elevationChart;
     private LinearLayout panelInfo;
     private LinearLayout panelChart;
@@ -141,7 +143,6 @@ public class FragmentHome extends Fragment implements
         btnFlightPlanTop.setOnClickListener(this);
         btnFlightPlanBottom.setOnClickListener(this);
 
-        fullLayout = (LinearLayout) view.findViewById(R.id.home_screen);
         panelBottom = (RelativeLayout) view.findViewById(R.id.home_panel_bottom);
         panelInfo = (LinearLayout) view.findViewById(R.id.home_gps_info_panel);
         panelMap = (RelativeLayout) view.findViewById(R.id.home_map_layout);
@@ -363,6 +364,7 @@ public class FragmentHome extends Fragment implements
 
     @Override
     public void onMapClick(LatLng latLng) {
+        Log.e("Click", String.valueOf(editing));
         if (editing){
             flightPlanManager.addNewPoint(latLng);
             listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.editedPlan));
@@ -374,6 +376,7 @@ public class FragmentHome extends Fragment implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        Log.e("Marker", String.valueOf(editing));
         if (editing){
             LatLng latLng = marker.getPosition();
             String name = "";
@@ -491,55 +494,75 @@ public class FragmentHome extends Fragment implements
         }
     }
 
+
     /**
      * Show/Hide elevaton graph on the bottom
      * @param isGraph
      */
     private void changeLayoutPanels(boolean isGraph) {
 
-            isElevationGraphVisible = isGraph;
+        if (planWidth == 0) {
+            btnFlightPlanTop.setVisibility(View.VISIBLE);
+            planWidth = btnFlightPlanTop.getWidth();
+        }
 
-            int panelSize = 0;
+        int h = getView().getHeight();
 
-            if (!editing){
-                if (isElevationGraphVisible) {
-                    panelSize = (int) (fullLayout.getHeight() * 0.3);
-                    panelChart.setVisibility(View.VISIBLE);
-                    btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
-                } else {
-                    panelSize = panelInfo.getHeight();
-                    panelChart.setVisibility(View.GONE);
-                    btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
-                    btnPanelBottom.setEnabled(!editing);
-                }
+        isElevationGraphVisible = isGraph;
 
-                if (flightPlanManager == null){
-                    listFlightPlan.setVisibility(View.GONE);
-                    btnFlightPlanBottom.setVisibility(View.GONE);
-                    btnFlightPlanTop.setText(R.string.home_fl_plan);
-                    btnFlightPlanTop.setEnabled(true);
-                }
-                else {
-                    listFlightPlan.setVisibility(View.VISIBLE);
-                    btnFlightPlanBottom.setVisibility(View.VISIBLE);
-                    btnFlightPlanBottom.setText(R.string.btn_stop);
-                    btnFlightPlanTop.setText(new DecimalFormat("#.#").format(flightPlanManager.getRoutLength() + " " + getString(R.string.calc_unit_km)));
-                    btnFlightPlanTop.setEnabled(false);
-                    listFlightPlan.setAdapter(new PlanAdapter(getContext(), R.layout.list_text_item, flightPlanManager.plan));
-                }
+        int panelSize = 0;
 
+        btnFlightPlanTop.getLayoutParams().width = planWidth;
+        btnFlightPlanBottom.getLayoutParams().width = planWidth;
+        listFlightPlan.getLayoutParams().width = planWidth;
+
+        if (!editing){
+            if (isElevationGraphVisible) {
+                panelChart.setVisibility(View.VISIBLE);
+                btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
+                panelSize = (int) (h * 0.3);
+            } else {
+                panelSize = panelInfo.getHeight();
+                panelChart.setVisibility(View.GONE);
+                btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
+                btnPanelBottom.setEnabled(!editing);
             }
-            else{
+
+            if (flightPlanManager == null){
+                listFlightPlan.setVisibility(View.GONE);
+                btnFlightPlanBottom.setVisibility(View.GONE);
+                btnFlightPlanTop.setText(R.string.home_fl_plan);
+                btnFlightPlanTop.setEnabled(true);
+            }
+            else {
                 listFlightPlan.setVisibility(View.VISIBLE);
                 btnFlightPlanBottom.setVisibility(View.VISIBLE);
-                btnFlightPlanTop.setText(R.string.btn_save);
-                btnFlightPlanTop.setEnabled(true);
-                btnFlightPlanBottom.setText(R.string.btn_cancel);
-                listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.plan));
+                btnFlightPlanBottom.setText(R.string.btn_stop);
+                btnFlightPlanTop.setEnabled(false);
+
+                float dst = flightPlanManager.getRoutLength();
+                if (dst > 0) btnFlightPlanTop.setText(new DecimalFormat("#.#").format(dst + " " + getString(R.string.calc_unit_km)));
+                else btnFlightPlanTop.setText("0.0 " + getString(R.string.calc_unit_km));
+
+                listFlightPlan.setAdapter(new PlanAdapter(getContext(), R.layout.list_text_item, flightPlanManager.plan));
             }
 
+            panelBottom.setVisibility(View.VISIBLE);
             panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, panelSize));
-            panelMap.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullLayout.getHeight() - panelSize));
+
+        }
+        else{
+            listFlightPlan.setVisibility(View.VISIBLE);
+            btnFlightPlanBottom.setVisibility(View.VISIBLE);
+            panelBottom.setVisibility(View.GONE);
+            btnFlightPlanTop.setText(R.string.btn_save);
+            btnFlightPlanTop.setEnabled(true);
+            btnFlightPlanBottom.setText(R.string.btn_cancel);
+            listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.plan));
+        }
+
+        panelMap.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h - panelSize));
+
     }
 
     // ---------------------------------------------------------------
