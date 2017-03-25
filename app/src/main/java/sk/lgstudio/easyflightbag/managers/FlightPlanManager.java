@@ -111,14 +111,22 @@ public class FlightPlanManager {
      * Adds new free point to the editor
      */
     public void addNewPoint(LatLng loc){
-
+        Point p = new Point();
+        p.editeble = true;
+        p.location = loc;
+        p.name = String.valueOf(editedPlan.size());
+        editedPlan.add(p);
     }
 
     /**
      * Adds new point to the editor with name and not draggable
      */
     public void addNewPoint(LatLng loc, String name){
-
+        Point p = new Point();
+        p.editeble = false;
+        p.location = loc;
+        p.name = name;
+        editedPlan.add(p);
     }
 
     /**
@@ -134,7 +142,7 @@ public class FlightPlanManager {
 
             float[] results = new float[1];
             Location.distanceBetween(p1.location.latitude, p1.location.longitude, p2.location.latitude, p2.location.longitude, results);
-            length += results[0];
+            length += results[0]/1000;
 
         }
 

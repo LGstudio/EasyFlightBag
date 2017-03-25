@@ -110,6 +110,7 @@ public class FragmentHome extends Fragment implements
     private LatLng mapTargetArea = null;
     private MarkerOptions locaionMarkerOptions;
     private Marker locationMarker = null;
+    private BitmapDescriptor mapPointIcon;
 
     private boolean editing = false;
     private ArrayList<Marker> planMarkers = new ArrayList<>();
@@ -174,7 +175,7 @@ public class FragmentHome extends Fragment implements
 
         mapLayout.getMapAsync(this);
 
-        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(MapOverlayManager.getBitmapDescriptor(R.drawable.ic_plane_map, activity)).anchor(0.5f, 0.5f);
+        initMapDrawables();
 
         return view;
     }
@@ -364,7 +365,6 @@ public class FragmentHome extends Fragment implements
 
     @Override
     public void onMapClick(LatLng latLng) {
-        Log.e("Click", String.valueOf(editing));
         if (editing){
             flightPlanManager.addNewPoint(latLng);
             listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.editedPlan));
@@ -376,7 +376,6 @@ public class FragmentHome extends Fragment implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Log.e("Marker", String.valueOf(editing));
         if (editing){
             LatLng latLng = marker.getPosition();
             String name = "";
@@ -435,17 +434,16 @@ public class FragmentHome extends Fragment implements
         planMarkers.clear();
 
         if (flightPlanManager != null) {
-            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_point);
             if (editing){
                 for (FlightPlanManager.Point p: flightPlanManager.editedPlan){
-                    MarkerOptions o = new MarkerOptions().position(p.location).draggable(p.editeble).icon(icon);
+                    MarkerOptions o = new MarkerOptions().position(p.location).draggable(p.editeble).icon(mapPointIcon).anchor(0.5f,0.5f);
                     Marker m = map.addMarker(o);
                     planMarkers.add(m);
                 }
             }
             else {
                 for (FlightPlanManager.Point p: flightPlanManager.plan){
-                    MarkerOptions o = new MarkerOptions().position(p.location).draggable(false).icon(icon);
+                    MarkerOptions o = new MarkerOptions().position(p.location).draggable(false).icon(mapPointIcon).anchor(0.5f,0.5f);
                     Marker m = map.addMarker(o);
                     planMarkers.add(m);
                 }
@@ -494,6 +492,21 @@ public class FragmentHome extends Fragment implements
         }
     }
 
+    /**
+     * Initializes the icons that will be put on map
+     */
+    private void initMapDrawables(){
+        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(MapOverlayManager.getBitmapDescriptor(R.drawable.ic_plane_map, activity)).anchor(0.5f, 0.5f);
+
+        VectorDrawable vectorDrawable = (VectorDrawable) activity.getDrawable(R.drawable.map_marker);
+        int h = vectorDrawable.getIntrinsicHeight();
+        int w = vectorDrawable.getIntrinsicWidth();
+        vectorDrawable.setBounds(0, 0, w, h);
+        Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+        vectorDrawable.draw(canvas);
+        mapPointIcon = BitmapDescriptorFactory.fromBitmap(bm);
+    }
 
     /**
      * Show/Hide elevaton graph on the bottom
@@ -539,12 +552,7 @@ public class FragmentHome extends Fragment implements
                 btnFlightPlanBottom.setVisibility(View.VISIBLE);
                 btnFlightPlanBottom.setText(R.string.btn_stop);
                 btnFlightPlanTop.setEnabled(false);
-
-                float dst = flightPlanManager.getRoutLength();
-                if (dst > 0) btnFlightPlanTop.setText(new DecimalFormat("#.#").format(dst + " " + getString(R.string.calc_unit_km)));
-                else btnFlightPlanTop.setText("0.0 " + getString(R.string.calc_unit_km));
-
-                listFlightPlan.setAdapter(new PlanAdapter(getContext(), R.layout.list_text_item, flightPlanManager.plan));
+                btnFlightPlanTop.setText(new DecimalFormat("#.#").format(flightPlanManager.getRoutLength()) + " " + getString(R.string.calc_unit_km));
             }
 
             panelBottom.setVisibility(View.VISIBLE);
@@ -558,7 +566,6 @@ public class FragmentHome extends Fragment implements
             btnFlightPlanTop.setText(R.string.btn_save);
             btnFlightPlanTop.setEnabled(true);
             btnFlightPlanBottom.setText(R.string.btn_cancel);
-            listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.plan));
         }
 
         panelMap.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h - panelSize));
@@ -641,7 +648,7 @@ public class FragmentHome extends Fragment implements
     private void cancelRoute(){
         if (editing){
             editing = false;
-            changeLayoutPanels(isElevationGraphVisible);
+            changeLayoutPanels(isElevationGraphVisible); // TODO: layout bug - in 'else' also
             loadFlightPlan();
         }
         else{

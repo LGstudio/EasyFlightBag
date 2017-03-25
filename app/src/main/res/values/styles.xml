@@ -28,6 +28,7 @@
         <item name="greenColor">@color/colorGreen</item>
         <item name="redColor">@color/colorRed</item>
         <item name="orangeColor">@color/colorOrange</item>
+        <item name="pinkColor">@color/colorPink</item>
     </style>
 
     <!-- Base application theme. DARK -->
@@ -58,6 +59,7 @@
         <item name="greenColor">@color/colorGreenDark</item>
         <item name="redColor">@color/colorRedDark</item>
         <item name="orangeColor">@color/colorOrangeDark</item>
+        <item name="pinkColor">@color/colorPinkDark</item>
 
     </style>
 
