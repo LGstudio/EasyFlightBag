@@ -91,6 +91,7 @@ public class FlightPlanManager {
                 o.put(KEY_LAT, p.location.latitude);
                 o.put(KEY_LON, p.location.longitude);
                 o.put(KEY_EDITABLE, p.editeble);
+                json.put(o);
             }
 
             FileWriter writer = new FileWriter(file);

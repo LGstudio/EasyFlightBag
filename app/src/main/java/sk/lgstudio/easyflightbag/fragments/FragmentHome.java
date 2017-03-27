@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.VectorDrawable;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -41,6 +42,8 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 
 import java.io.File;
@@ -114,6 +117,7 @@ public class FragmentHome extends Fragment implements
 
     private boolean editing = false;
     private ArrayList<Marker> planMarkers = new ArrayList<>();
+    private Polyline planLine;
 
     private SelectorDialog dialogPlans = null;
 
@@ -432,13 +436,17 @@ public class FragmentHome extends Fragment implements
             m.remove();
         }
         planMarkers.clear();
+        if (planLine != null)
+            planLine.remove();
 
         if (flightPlanManager != null) {
+            PolylineOptions po = new PolylineOptions().geodesic(true).clickable(false).width(4f).color(Color.MAGENTA);
             if (editing){
-                for (FlightPlanManager.Point p: flightPlanManager.editedPlan){
-                    MarkerOptions o = new MarkerOptions().position(p.location).draggable(p.editeble).icon(mapPointIcon).anchor(0.5f,0.5f);
+                for (FlightPlanManager.Point p: flightPlanManager.editedPlan) {
+                    MarkerOptions o = new MarkerOptions().position(p.location).draggable(p.editeble).icon(mapPointIcon).anchor(0.5f, 0.5f);
                     Marker m = map.addMarker(o);
                     planMarkers.add(m);
+                    po.add(p.location);
                 }
             }
             else {
@@ -446,8 +454,10 @@ public class FragmentHome extends Fragment implements
                     MarkerOptions o = new MarkerOptions().position(p.location).draggable(false).icon(mapPointIcon).anchor(0.5f,0.5f);
                     Marker m = map.addMarker(o);
                     planMarkers.add(m);
+                    po.add(p.location);
                 }
             }
+            planLine = map.addPolyline(po);
         }
     }
 
