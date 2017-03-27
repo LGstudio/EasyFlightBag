@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -621,7 +623,9 @@ public class FragmentHome extends Fragment implements
      */
     @Override
     public void onDismiss(DialogInterface dialog) {
-        // possibly new plan was selected
+
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         if (dialogPlans != null){
             if (dialogPlans.selected != null){
                 flightPlanManager = new FlightPlanManager(dialogPlans.selected);
@@ -632,9 +636,9 @@ public class FragmentHome extends Fragment implements
             }
 
             dialogPlans = null;
-            changeLayoutPanels(isElevationGraphVisible);
             loadFlightPlan();
             reloadPlanMarkers();
+            changeLayoutPanels(isElevationGraphVisible);
         }
     }
 
@@ -658,7 +662,7 @@ public class FragmentHome extends Fragment implements
     private void cancelRoute(){
         if (editing){
             editing = false;
-            changeLayoutPanels(isElevationGraphVisible); // TODO: layout bug - in 'else' also
+            changeLayoutPanels(isElevationGraphVisible);
             loadFlightPlan();
         }
         else{
@@ -695,9 +699,7 @@ public class FragmentHome extends Fragment implements
         int pos = listFlightPlan.getFirstVisiblePosition();
         listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.editedPlan));
         listFlightPlan.scrollListBy(pos);
-
         reloadPlanMarkers();
-
     }
 
     /**

@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -47,6 +49,9 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
      */
     public SelectorDialog(Context context) {
         super(context);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     }
 
     /**
@@ -73,7 +78,6 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
         txtNew.clearFocus();
 
         fillList();
-
     }
 
     /**
