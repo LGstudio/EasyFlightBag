@@ -30,6 +30,7 @@
             android:layout_margin="@dimen/bar_spacing"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             />
 
         <TextView
@@ -42,6 +43,7 @@
             android:layout_above="@id/home_nonet"
             android:layout_margin="@dimen/bar_spacing"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             />
 
         <RelativeLayout
@@ -76,8 +78,8 @@
                 android:background="?attr/backgroundColor"
                 android:id="@+id/home_plan_list"
                 android:visibility="gone"
-                android:layout_toEndOf="@id/home_button_plan_top"
-                android:layout_toStartOf="@id/home_button_plan_bottom"/>
+                android:layout_below="@id/home_button_plan_top"
+                android:layout_above="@id/home_button_plan_bottom"/>
 
         </RelativeLayout>
         

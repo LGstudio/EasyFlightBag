@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -340,7 +339,7 @@ public class FragmentHome extends Fragment implements
         if (activity.nightMode)
             success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
         else
-            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
+            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_light));
 
         if (!success) Log.w("Map style", "Failed to load from RAW file");
 
@@ -358,7 +357,15 @@ public class FragmentHome extends Fragment implements
 
         mapReady = true;
 
-        if (mapOverlayManager != null) loadOverlays();
+        if (mapOverlayManager != null){
+            loadOverlays();
+        }
+
+        if (planMarkers.size() > 0){
+            changeLayoutPanels(isElevationGraphVisible);
+            loadFlightPlan();
+            loadPlanMarkers();
+        }
 
     }
 
@@ -375,7 +382,7 @@ public class FragmentHome extends Fragment implements
             flightPlanManager.addNewPoint(latLng);
             listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.editedPlan));
             listFlightPlan.setSelection(flightPlanManager.editedPlan.size()-1);
-            reloadPlanMarkers();
+            loadPlanMarkers();
         }
         else (new GetPOITask()).execute((LatLng) latLng);
     }
@@ -392,11 +399,15 @@ public class FragmentHome extends Fragment implements
                 }
             }
 
-            flightPlanManager.addNewPoint(latLng, name);
+            if (name.equals(""))
+                flightPlanManager.addNewPoint(latLng);
+            else
+                flightPlanManager.addNewPoint(latLng, name);
+
             listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.editedPlan));
             listFlightPlan.setSelection(flightPlanManager.editedPlan.size()-1);
 
-            reloadPlanMarkers();
+            loadPlanMarkers();
         }
         else (new GetPOITask()).execute(marker.getPosition());
 
@@ -432,7 +443,7 @@ public class FragmentHome extends Fragment implements
     /**
      * Reloads/creates plan markers for them map.
      */
-    private void reloadPlanMarkers(){
+    private void loadPlanMarkers(){
 
         for (Marker m: planMarkers){
             m.remove();
@@ -532,6 +543,7 @@ public class FragmentHome extends Fragment implements
         }
 
         int h = getView().getHeight();
+        int w = getView().getWidth();
 
         isElevationGraphVisible = isGraph;
 
@@ -558,6 +570,9 @@ public class FragmentHome extends Fragment implements
                 btnFlightPlanBottom.setVisibility(View.GONE);
                 btnFlightPlanTop.setText(R.string.home_fl_plan);
                 btnFlightPlanTop.setEnabled(true);
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                lp.setMarginStart(0);
+                mapLayout.setLayoutParams(lp);
             }
             else {
                 listFlightPlan.setVisibility(View.VISIBLE);
@@ -565,6 +580,9 @@ public class FragmentHome extends Fragment implements
                 btnFlightPlanBottom.setText(R.string.btn_stop);
                 btnFlightPlanTop.setEnabled(false);
                 btnFlightPlanTop.setText(new DecimalFormat("#.#").format(flightPlanManager.getRoutLength()) + " " + getString(R.string.calc_unit_km));
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(w-planWidth, RelativeLayout.LayoutParams.MATCH_PARENT);
+                lp.setMarginStart(planWidth);
+                mapLayout.setLayoutParams(lp);
             }
 
             panelBottom.setVisibility(View.VISIBLE);
@@ -578,6 +596,9 @@ public class FragmentHome extends Fragment implements
             btnFlightPlanTop.setText(R.string.btn_save);
             btnFlightPlanTop.setEnabled(true);
             btnFlightPlanBottom.setText(R.string.btn_cancel);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(w-planWidth, RelativeLayout.LayoutParams.MATCH_PARENT);
+            lp.setMarginStart(planWidth);
+            mapLayout.setLayoutParams(lp);
         }
 
         panelMap.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h - panelSize));
@@ -612,7 +633,7 @@ public class FragmentHome extends Fragment implements
             flightPlanManager = null;
             editing = false;
             loadFlightPlan();
-            reloadPlanMarkers();
+            loadPlanMarkers();
         }
         dialogPlans = null;
     }
@@ -637,7 +658,7 @@ public class FragmentHome extends Fragment implements
 
             dialogPlans = null;
             loadFlightPlan();
-            reloadPlanMarkers();
+            loadPlanMarkers();
             changeLayoutPanels(isElevationGraphVisible);
         }
     }
@@ -670,7 +691,7 @@ public class FragmentHome extends Fragment implements
             changeLayoutPanels(isElevationGraphVisible);
         }
 
-        reloadPlanMarkers();
+        loadPlanMarkers();
 
     }
 
@@ -683,6 +704,7 @@ public class FragmentHome extends Fragment implements
        if (flightPlanManager.saveEditedPlan()){
            flightPlanManager.editedPlan = null;
            editing = false;
+           loadFlightPlan();
            changeLayoutPanels(isElevationGraphVisible);
            Toast.makeText(getContext(), getContext().getString(R.string.plan_warning_saved), Toast.LENGTH_SHORT).show();
        }
@@ -699,7 +721,7 @@ public class FragmentHome extends Fragment implements
         int pos = listFlightPlan.getFirstVisiblePosition();
         listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.editedPlan));
         listFlightPlan.scrollListBy(pos);
-        reloadPlanMarkers();
+        loadPlanMarkers();
     }
 
     /**
