@@ -78,18 +78,13 @@ public class FragmentHome extends Fragment implements
         DialogInterface.OnDismissListener,
         AdapterView.OnItemClickListener {
 
-    private RelativeLayout panelBottom;
     private RelativeLayout panelMap;
+    private LinearLayout panelInfo;
 
-    private ImageButton btnPanelBottom;
     private Button btnFlightPlanTop;
     private Button btnFlightPlanBottom;
     private ListView listFlightPlan;
     private int planWidth = 0;
-
-    private LineChartView elevationChart;
-    private LinearLayout panelInfo;
-    private LinearLayout panelChart;
 
     private TextView txtAccuracy;
     private TextView txtSpeed;
@@ -104,7 +99,6 @@ public class FragmentHome extends Fragment implements
 
     public File plansFolder;
 
-    private boolean isElevationGraphVisible = true;
     private boolean mapReady = false;
     private boolean mapNorthUp = true;
     private boolean mapFollow = true;
@@ -141,15 +135,12 @@ public class FragmentHome extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        btnPanelBottom = (ImageButton) view.findViewById(R.id.home_panel_bottom_btn);
         btnFlightPlanTop = (Button) view.findViewById(R.id.home_button_plan_top);
         btnFlightPlanBottom = (Button) view.findViewById(R.id.home_button_plan_bottom);
 
-        btnPanelBottom.setOnClickListener(this);
         btnFlightPlanTop.setOnClickListener(this);
         btnFlightPlanBottom.setOnClickListener(this);
 
-        panelBottom = (RelativeLayout) view.findViewById(R.id.home_panel_bottom);
         panelInfo = (LinearLayout) view.findViewById(R.id.home_gps_info_panel);
         panelMap = (RelativeLayout) view.findViewById(R.id.home_map_layout);
         listFlightPlan = (ListView) view.findViewById(R.id.home_plan_list);
@@ -167,13 +158,6 @@ public class FragmentHome extends Fragment implements
         ImageButton btnRotateMap = (ImageButton) view.findViewById(R.id.home_map_rotate);
         btnCenterMap.setOnClickListener(this);
         btnRotateMap.setOnClickListener(this);
-
-        panelChart = (LinearLayout) view.findViewById(R.id.home_elevation_graph_panel);
-        elevationChart = (LineChartView) view.findViewById(R.id.home_elevation_graph);
-        NumberPicker chartDistance = (NumberPicker) view.findViewById(R.id.home_elevation_graph_picker);
-        chartDistance.setMinValue(1);
-        chartDistance.setMaxValue(10);
-        chartDistance.setValue(10);
 
         mapLayout = (MapView) view.findViewById(R.id.home_map_view);
         mapLayout.onCreate(savedInstanceState);
@@ -228,8 +212,6 @@ public class FragmentHome extends Fragment implements
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            isElevationGraphVisible = savedInstanceState.getBoolean("PBottom");
-            changeLayoutPanels(isElevationGraphVisible);
             if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
         }
     }
@@ -240,9 +222,6 @@ public class FragmentHome extends Fragment implements
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
-        outState.putBoolean("PBottom", isElevationGraphVisible);
-
         super.onSaveInstanceState(outState);
     }
 
@@ -266,8 +245,6 @@ public class FragmentHome extends Fragment implements
                 if (mapFollow) changeMapPosition();
             }
 
-            (new RedrawElevationGraphTask()).execute((Void) null);
-
             txtAccuracy.setText(new DecimalFormat("#.#").format(loc.getAccuracy()));
             txtSpeed.setText(new DecimalFormat("#.#").format(loc.getSpeed()));
             txtAlt.setText(new DecimalFormat("#").format(loc.getAltitude()));
@@ -284,8 +261,6 @@ public class FragmentHome extends Fragment implements
                 }
                 mapFollow = false;
             }
-
-            (new RedrawElevationGraphTask()).execute((Void) null);
 
             txtNoGps.setVisibility(View.VISIBLE);
             txtAccuracy.setText("-");
@@ -330,7 +305,7 @@ public class FragmentHome extends Fragment implements
         map = googleMap;
         map.setOnCameraMoveListener(this);
         map.setOnMapClickListener(this);
-        map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        //map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         map.setBuildingsEnabled(false);
         map.setTrafficEnabled(false);
         map.setOnMarkerClickListener(this);
@@ -362,7 +337,7 @@ public class FragmentHome extends Fragment implements
         }
 
         if (planMarkers.size() > 0){
-            changeLayoutPanels(isElevationGraphVisible);
+            changeLayoutPanels();
             loadFlightPlan();
             loadPlanMarkers();
         }
@@ -494,9 +469,6 @@ public class FragmentHome extends Fragment implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.home_panel_bottom_btn:
-                changeLayoutPanels(!isElevationGraphVisible);
-                break;
             case R.id.home_button_plan_top:
                 if (editing) saveEditedRoute();
                 else openFlightPlans();
@@ -533,37 +505,21 @@ public class FragmentHome extends Fragment implements
 
     /**
      * Show/Hide elevaton graph on the bottom
-     * @param isGraph
      */
-    private void changeLayoutPanels(boolean isGraph) {
+    private void changeLayoutPanels() {
 
         if (planWidth == 0) {
             btnFlightPlanTop.setVisibility(View.VISIBLE);
             planWidth = btnFlightPlanTop.getWidth();
         }
 
-        int h = getView().getHeight();
         int w = getView().getWidth();
-
-        isElevationGraphVisible = isGraph;
-
-        int panelSize = 0;
 
         btnFlightPlanTop.getLayoutParams().width = planWidth;
         btnFlightPlanBottom.getLayoutParams().width = planWidth;
         listFlightPlan.getLayoutParams().width = planWidth;
 
         if (!editing){
-            if (isElevationGraphVisible) {
-                panelChart.setVisibility(View.VISIBLE);
-                btnPanelBottom.setImageResource(R.drawable.ic_expand_down_inv);
-                panelSize = (int) (h * 0.3);
-            } else {
-                panelSize = panelInfo.getHeight();
-                panelChart.setVisibility(View.GONE);
-                btnPanelBottom.setImageResource(R.drawable.ic_expand_up_inv);
-                btnPanelBottom.setEnabled(!editing);
-            }
 
             if (flightPlanManager == null){
                 listFlightPlan.setVisibility(View.GONE);
@@ -585,14 +541,14 @@ public class FragmentHome extends Fragment implements
                 mapLayout.setLayoutParams(lp);
             }
 
-            panelBottom.setVisibility(View.VISIBLE);
-            panelBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, panelSize));
+            panelInfo.setVisibility(View.VISIBLE);
+
 
         }
         else{
             listFlightPlan.setVisibility(View.VISIBLE);
             btnFlightPlanBottom.setVisibility(View.VISIBLE);
-            panelBottom.setVisibility(View.GONE);
+            panelInfo.setVisibility(View.GONE);
             btnFlightPlanTop.setText(R.string.btn_save);
             btnFlightPlanTop.setEnabled(true);
             btnFlightPlanBottom.setText(R.string.btn_cancel);
@@ -600,8 +556,6 @@ public class FragmentHome extends Fragment implements
             lp.setMarginStart(planWidth);
             mapLayout.setLayoutParams(lp);
         }
-
-        panelMap.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h - panelSize));
 
     }
 
@@ -659,7 +613,7 @@ public class FragmentHome extends Fragment implements
             dialogPlans = null;
             loadFlightPlan();
             loadPlanMarkers();
-            changeLayoutPanels(isElevationGraphVisible);
+            changeLayoutPanels();
         }
     }
 
@@ -683,12 +637,12 @@ public class FragmentHome extends Fragment implements
     private void cancelRoute(){
         if (editing){
             editing = false;
-            changeLayoutPanels(isElevationGraphVisible);
+            changeLayoutPanels();
             loadFlightPlan();
         }
         else{
             flightPlanManager = null;
-            changeLayoutPanels(isElevationGraphVisible);
+            changeLayoutPanels();
         }
 
         loadPlanMarkers();
@@ -705,7 +659,7 @@ public class FragmentHome extends Fragment implements
            flightPlanManager.editedPlan = null;
            editing = false;
            loadFlightPlan();
-           changeLayoutPanels(isElevationGraphVisible);
+           changeLayoutPanels();
            Toast.makeText(getContext(), getContext().getString(R.string.plan_warning_saved), Toast.LENGTH_SHORT).show();
        }
        else
@@ -858,20 +812,6 @@ public class FragmentHome extends Fragment implements
             d.setContentView(R.layout.dialog_overlay_detail);
             d.loadContent(lastPosition, airspaces, airports);
             d.show();
-        }
-    }
-
-    /**
-     * Redraw elevation graph
-     */
-    public class RedrawElevationGraphTask extends AsyncTask<Void, Void, Void>{
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            // TODO: Update graph in RedrawLocationData
-
-            return null;
         }
     }
 
