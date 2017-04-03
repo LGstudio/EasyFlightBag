@@ -366,13 +366,7 @@ public class FragmentHome extends Fragment implements
     public boolean onMarkerClick(Marker marker) {
         if (editing){
             LatLng latLng = marker.getPosition();
-            String name = "";
-            for (Airport.Data d: mapOverlayManager.airports){
-                if (latLng.latitude == d.location.latitude && latLng.longitude == d.location.longitude){
-                    name = d.icao;
-                    break;
-                }
-            }
+            String name = mapOverlayManager.getAirportICAO(latLng);
 
             if (name.equals(""))
                 flightPlanManager.addNewPoint(latLng);
@@ -393,26 +387,26 @@ public class FragmentHome extends Fragment implements
      * Load map overlays from mapOverlayManager
      */
     private void loadOverlays(){
-        if (mapOverlayManager.airspaces != null) {
-            for (Airspace.Data d : mapOverlayManager.airspaces) {
+
+            for (Airspace.Data d : mapOverlayManager.getAirspaces()) {
                 PolygonOptions options = new PolygonOptions()
                         .addAll(d.polygon)
                         .strokeWidth(4)
-                        .strokeColor(mapOverlayManager.airspaceStrokeColor(d.category))
-                        .fillColor(mapOverlayManager.airspaceFillColor(d.category));
+                        .strokeColor(MapOverlayManager.airspaceStrokeColor(d.category))
+                        .fillColor(MapOverlayManager.airspaceFillColor(d.category));
 
                 map.addPolygon(options);
             }
-        }
-        if (mapOverlayManager.airports != null){
-            for (Airport.Data d: mapOverlayManager.airports){
+
+
+            for (Airport.Data d: mapOverlayManager.getAirports()){
                 MarkerOptions options = new MarkerOptions()
                         .position(d.location)
                         .icon(BitmapDescriptorFactory.fromBitmap(d.icon));
 
                 map.addMarker(options).setAnchor(0.5f, 0.5f);
             }
-        }
+
     }
 
     /**

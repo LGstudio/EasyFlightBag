@@ -28,8 +28,8 @@ import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.dialogs.SplashDialog;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
-import sk.lgstudio.easyflightbag.managers.FlightPlanManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
+import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.fragments.FragmentAip;
 import sk.lgstudio.easyflightbag.fragments.FragmentCalc;
@@ -78,6 +78,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     // public variables for fragments
     public SharedPreferences prefs;
     public boolean nightMode = false;
+    public boolean gpsViaBt = false;
 
     // random private variables needed for some reason
     private boolean inited = false;
@@ -130,8 +131,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
 
 
-        stopService(new Intent(this, GPSTrackerService.class));
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(gpsReceiver);
+        if (gpsViaBt)
+            stopBTService();
+        else
+            startGPSService();
 
     }
 
@@ -328,11 +331,52 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     /**
+     * Called to turn on/off GPS simulation via Bt
+     * @param toBt
+     */
+    public void switchPositionService(boolean toBt){
+        prefs.edit().putBoolean(getString(R.string.pref_gps_bt),toBt).apply();
+        gpsViaBt = toBt;
+        if (toBt) {
+            stopGPSService();
+            startBTService();
+        }
+        else {
+            stopBTService();
+            startGPSService();
+        }
+    }
+
+    /**
      * Starts GPS service
      */
     private void startGPSService() {
         startService(new Intent(this, GPSTrackerService.class));
         LocalBroadcastManager.getInstance(this).registerReceiver(gpsReceiver, new IntentFilter(this.getString(R.string.gps_intent_filter)));
+    }
+
+    /**
+     * Stop GPS Service
+     */
+    private void stopGPSService() {
+        stopService(new Intent(this, GPSTrackerService.class));
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(this.gpsReceiver);
+    }
+
+    /**
+     * Starts GPS service
+     */
+    private void startBTService() {
+        //startService(new Intent(this, GPSTrackerService.class));
+        //LocalBroadcastManager.getInstance(this).registerReceiver(gpsReceiver, new IntentFilter(this.getString(R.string.gps_intent_filter)));
+    }
+
+    /**
+     * Stop GPS Service
+     */
+    private void stopBTService() {
+        //stopService(new Intent(this, GPSTrackerService.class));
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(this.gpsReceiver);
     }
 
     /**
@@ -342,25 +386,25 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if (selectedTab == MENU_NAV){
-                boolean isEnabled = intent.getBooleanExtra(context.getString(R.string.gps_enabled), false);
+        if (selectedTab == MENU_NAV){
+            boolean isEnabled = intent.getBooleanExtra(context.getString(R.string.gps_enabled), false);
 
-                if (isEnabled) {
-                    Location newLoc = new Location(getString(R.string.gps_location));
-                    newLoc.setLatitude(intent.getDoubleExtra(context.getString(R.string.gps_latitude), 0.0));
-                    newLoc.setLongitude(intent.getDoubleExtra(context.getString(R.string.gps_longitude), 0.0));
-                    newLoc.setAccuracy(intent.getFloatExtra(context.getString(R.string.gps_accuracy), 0f));
-                    newLoc.setBearing(intent.getFloatExtra(context.getString(R.string.gps_bearing), 0f));
-                    newLoc.setSpeed(intent.getFloatExtra(context.getString(R.string.gps_speed), 0f));
-                    newLoc.setTime(intent.getLongExtra(context.getString(R.string.gps_time), 0));
-                    newLoc.setAltitude(intent.getDoubleExtra(context.getString(R.string.gps_altitude), 0.0));
+            if (isEnabled) {
+                Location newLoc = new Location(getString(R.string.gps_location));
+                newLoc.setLatitude(intent.getDoubleExtra(context.getString(R.string.gps_latitude), 0.0));
+                newLoc.setLongitude(intent.getDoubleExtra(context.getString(R.string.gps_longitude), 0.0));
+                newLoc.setAccuracy(intent.getFloatExtra(context.getString(R.string.gps_accuracy), 0f));
+                newLoc.setBearing(intent.getFloatExtra(context.getString(R.string.gps_bearing), 0f));
+                newLoc.setSpeed(intent.getFloatExtra(context.getString(R.string.gps_speed), 0f));
+                newLoc.setTime(intent.getLongExtra(context.getString(R.string.gps_time), 0));
+                newLoc.setAltitude(intent.getDoubleExtra(context.getString(R.string.gps_altitude), 0.0));
 
-                    fHome.addNewLocation(isEnabled, newLoc);
-                }
-                else {
-                    fHome.addNewLocation(isEnabled, null);
-                }
+                fHome.addNewLocation(isEnabled, newLoc);
             }
+            else {
+                fHome.addNewLocation(isEnabled, null);
+            }
+        }
         }
     };
 
@@ -379,7 +423,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      */
     public void airDataChange(){
         if (selectedTab == MENU_SET){
-            fSet.reloadAirspaceData();
+            fSet.reloadMapOverlayData();
         }
     }
 
@@ -410,7 +454,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             loadIntoFragments();
 
             // start gps service
-            startGPSService();
+            gpsViaBt = prefs.getBoolean(getString(R.string.pref_gps_bt), false);
+            if (gpsViaBt)
+                startBTService();
+            else
+                startGPSService();
 
             return null;
         }

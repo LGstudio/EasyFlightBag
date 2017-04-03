@@ -51,8 +51,8 @@ public class MapOverlayManager {
     private boolean started = false;
 
     // List of content
-    public ArrayList<Airspace.Data> airspaces = null;
-    public ArrayList<Airport.Data> airports = null;
+    private ArrayList<Airspace.Data> airspaces = null;
+    private ArrayList<Airport.Data> airports = null;
     private File folder;
 
     /**
@@ -90,6 +90,37 @@ public class MapOverlayManager {
             }
 
         }
+    }
+
+    /**
+     * Returns the airspaces based on the country selection riteria
+     * @return
+     */
+    public ArrayList<Airspace.Data> getAirspaces(){
+        // TODO: select based on country
+        return airspaces;
+    }
+
+    /**
+     * Returns the airports based on the country selection riteria
+     * @return
+     */
+    public ArrayList<Airport.Data> getAirports(){
+        // TODO: select based on country
+        return airports;
+    }
+
+    /**
+     * Looks for the airport ICAO at position
+     */
+    public String getAirportICAO(LatLng latLng){
+        for (Airport.Data d: airports){
+            if (latLng.latitude == d.location.latitude && latLng.longitude == d.location.longitude){
+                return d.icao;
+            }
+        }
+
+        return "";
     }
 
     /**

@@ -32,6 +32,31 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:layout_marginTop="@dimen/row_padding"
+        android:layout_marginEnd="@dimen/row_padding"
+        android:layout_marginStart="@dimen/row_padding"
+        android:padding="@dimen/row_padding"
+        android:elevation="@dimen/elevation_8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_gps_mode"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/set_gps_mode_switch"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         style="@style/Block_title_text_style.inSettings"
         android:layout_marginBottom="@dimen/row_padding"
         android:layout_marginTop="@dimen/row_padding">

@@ -14,6 +14,7 @@
 
     <string name="pref_chk_folder" translatable="false">chk_folder</string>
     <string name="pref_theme" translatable="false">app_theme</string>
+    <string name="pref_gps_bt" translatable="false">gps_via_bt</string>
     <string name="pref_aip_last_update_at" translatable="false">aip_last_update_at</string>
     <string name="pref_aip_last_update_cz" translatable="false">aip_last_update_cz</string>
     <string name="pref_aip_last_update_sk" translatable="false">aip_last_update_sk</string>
@@ -229,6 +230,7 @@
     <string name="set_theme">Night mode</string>
     <string name="set_aip">AIP data</string>
     <string name="set_airspace">Airspace and Airports</string>
+    <string name="set_gps_mode">Get GPS data via Blutooth</string>
 
     <string name="service_aip_download" translatable="false">intent_aip_download</string>
     <string name="intent_aip_status" translatable="false">intent_aip_status</string>

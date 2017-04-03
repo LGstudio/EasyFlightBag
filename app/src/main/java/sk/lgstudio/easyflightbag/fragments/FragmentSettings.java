@@ -18,7 +18,11 @@ import sk.lgstudio.easyflightbag.managers.AIPManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 
 /**
- *
+ * Settings Fragment -
+ * - Switch Night/Day mode
+ * - Switch GPS mode (GPS/BT)
+ * - Map overlay data refresh
+ * - AIP downloaders
  */
 public class FragmentSettings extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
@@ -45,6 +49,13 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
     public AIPManager aipManager;
     public MapOverlayManager mapOverlayManager;
 
+    /**
+     * Creates the view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
@@ -52,6 +63,10 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         Switch nightSwith = (Switch) view.findViewById(R.id.set_night_switch);
         nightSwith.setChecked(activity.nightMode);
         nightSwith.setOnCheckedChangeListener(this);
+
+        Switch gpsViaBt = (Switch) view.findViewById(R.id.set_gps_mode_switch);
+        gpsViaBt.setChecked(activity.gpsViaBt);
+        gpsViaBt.setOnCheckedChangeListener(this);
 
         ImageButton airspaceBtn = (ImageButton) view.findViewById(R.id.set_refresh_airspace);
         airspaceBtn.setOnClickListener(this);
@@ -72,6 +87,9 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         return view;
     }
 
+    /**
+     * Reload the AIP and map overlay status
+     */
     @Override
     public void onResume(){
         for (int i = 0; i < aip_txt.size(); i++){
@@ -81,9 +99,38 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         super.onResume();
     }
 
-
+    /**
+     * On Switch chacked change
+     * @param compoundButton
+     * @param b
+     */
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        switch (compoundButton.getId()){
+            case R.id.set_night_switch:
+                nightSwitchTrigeger(b);
+                break;
+            case R.id.set_gps_mode_switch:
+                changeGpsSource(b);
+                break;
+        }
+    }
+
+    /**
+     * Switch between real GPS and GPS simulation via BT
+     * @param b
+     */
+    private void changeGpsSource(boolean b){
+        if (activity != null){
+            activity.switchPositionService(b);
+        }
+    }
+
+    /**
+     * Change day/nigh mode colors
+     * @param b
+     */
+    private void nightSwitchTrigeger(boolean b){
         if (activity != null){
             activity.prefs.edit().putBoolean(getString(R.string.pref_theme),b).apply();
             activity.changeToNight();
@@ -95,6 +142,10 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         }
     }
 
+    /**
+     * Button Click listener
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         boolean found = false;
@@ -112,10 +163,16 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
 
     }
 
-    public void reloadAirspaceData(){
+    /**
+     * reloads map overlay data text
+     */
+    public void reloadMapOverlayData(){
         airspace_txt.setText(mapOverlayManager.getStatus());
     }
 
+    /**
+     * reloads AIP data text
+     */
     public void reloadAipData(int c){
         aip_txt.get(c).setText(aipManager.getStatus(c));
     }
