@@ -1,12 +1,18 @@
 package sk.lgstudio.easyflightbag.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -15,6 +21,7 @@ import java.util.ArrayList;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
+import sk.lgstudio.easyflightbag.managers.FlightPlanManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 
 /**
@@ -24,7 +31,16 @@ import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
  * - Map overlay data refresh
  * - AIP downloaders
  */
-public class FragmentSettings extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class FragmentSettings extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
+
+    private final static int country_string_id[] = {
+            R.string.country_all,
+            R.string.country_at,
+            R.string.country_cz,
+            R.string.country_hu,
+            R.string.country_pl,
+            R.string.country_sk
+    };
 
     private final static int aip_txt_id[] = {
             R.id.set_aip_text_at,
@@ -44,6 +60,7 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
 
     private ArrayList<TextView> aip_txt;
     private TextView airspace_txt;
+    private Spinner spnCountry;
 
     public MainActivity activity;
     public AIPManager aipManager;
@@ -72,8 +89,14 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         airspaceBtn.setOnClickListener(this);
         airspace_txt = (TextView) view.findViewById(R.id.set_text_airspace);
 
+        spnCountry = (Spinner) view.findViewById(R.id.set_spinner_country);
+        ArrayList<String> countries = new ArrayList<>();
+        for (int i: country_string_id){
+            countries.add(getString(i));
+        }
+        spnCountry.setAdapter(new CountryAdapter(getContext(), countries));
+
         aip_txt = new ArrayList<>();
-        ArrayList<ImageButton> aip_btn = new ArrayList<>();
 
         for( int i : aip_txt_id)
             aip_txt.add((TextView) view.findViewById(i));
@@ -81,7 +104,6 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         for( int i : aip_btn_id){
             ImageButton btn= (ImageButton) view.findViewById(i);
             btn.setOnClickListener(this);
-            aip_btn.add(btn);
         }
 
         return view;
@@ -96,6 +118,10 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
             aip_txt.get(i).setText(aipManager.getStatus(i));
         }
         airspace_txt.setText(mapOverlayManager.getStatus());
+
+        spnCountry.setOnItemSelectedListener(null);
+        spnCountry.setSelection(mapOverlayManager.country);
+        spnCountry.setOnItemSelectedListener(this);
         super.onResume();
     }
 
@@ -122,7 +148,7 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
      */
     private void changeGpsSource(boolean b){
         if (activity != null){
-            activity.switchPositionService(b);
+            activity.switchLocationService(b);
         }
     }
 
@@ -177,6 +203,70 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         aip_txt.get(c).setText(aipManager.getStatus(c));
     }
 
+    /**
+     * Spinner item click listener
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            mapOverlayManager.changeCountry(position);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+
+    // ---------------------------------------------------------------
+    // List Adapters
+    // ---------------------------------------------------------------
+
+    /**
+     * List afrapter for flight plan
+     */
+
+    private class CountryAdapter extends BaseAdapter {
+
+        Context ctx;
+        ArrayList<String> data;
+
+        public CountryAdapter(Context context, ArrayList<String> d) {
+            this.ctx = context;
+            data = d;
+
+        }
+
+        @Override
+        public int getCount() {
+            return data.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(ctx);
+            View spinnerElement = inflater.inflate(R.layout.list_text_item, null);
+
+            TextView airplane = (TextView) spinnerElement.findViewById(R.id.list_text);
+            airplane.setText(data.get(position));
+
+            return spinnerElement;
+        }
+
+    }
 
 
 }

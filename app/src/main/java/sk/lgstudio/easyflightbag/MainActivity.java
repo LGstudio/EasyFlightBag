@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -30,6 +31,7 @@ import sk.lgstudio.easyflightbag.dialogs.SplashDialog;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
+import sk.lgstudio.easyflightbag.services.BTTrackerService;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.fragments.FragmentAip;
 import sk.lgstudio.easyflightbag.fragments.FragmentCalc;
@@ -73,7 +75,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     // menu paging related
     public ArrayList<ImageButton> menuTabs = new ArrayList<>();
-    private int selectedTab = 0;
+    private int selectedTab = -1;
 
     // public variables for fragments
     public SharedPreferences prefs;
@@ -95,6 +97,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         splash = new SplashDialog(this, R.style.FullScreenDialog);
         splash.setContentView(R.layout.dialog_splash);
@@ -125,16 +129,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             prefs.edit().putFloat(getString(R.string.gps_latitude), (float) fHome.lastPosition.latitude).apply();
             prefs.edit().putFloat(getString(R.string.gps_longitude), (float) fHome.lastPosition.longitude).apply();
         }
-        if (fChk.folderActual != null)
-            prefs.edit().putString(getString(R.string.pref_chk_folder), fChk.folderActual.getPath()).apply();
-        else
-            prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
+        if (fChk.folderActual != null) prefs.edit().putString(getString(R.string.pref_chk_folder), fChk.folderActual.getPath()).apply();
+        else prefs.edit().remove(getString(R.string.pref_chk_folder)).apply();
 
-
-        if (gpsViaBt)
-            stopBTService();
-        else
-            startGPSService();
+        if (gpsViaBt) stopService(new Intent(this, BTTrackerService.class));
+        else stopService(new Intent(this, GPSTrackerService.class));
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(this.gpsReceiver);
 
     }
 
@@ -145,13 +145,22 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         // Request missing location permission.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
             }
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
             }
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 0);
+            }
+            if (checkSelfPermission(Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WAKE_LOCK}, 0);
+            }
+            if (checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, 0);
+            }
+            if (checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_ADMIN}, 0);
             }
         }
     }
@@ -264,7 +273,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void initView(){
 
         FragmentTransaction fragmentView = getSupportFragmentManager().beginTransaction();
-        fragmentView.add(R.id.view_fragment,  fHome);
+        fragmentView.add(R.id.view_fragment, fHome);
         fragmentView.addToBackStack(null);
         fragmentView.commit();
 
@@ -274,6 +283,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         for (ImageButton ib : activity.menuTabs)
             ib.setOnClickListener(this);
 
+        selectedTab = 0;
     }
 
     /**
@@ -334,49 +344,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      * Called to turn on/off GPS simulation via Bt
      * @param toBt
      */
-    public void switchPositionService(boolean toBt){
+    public void switchLocationService(boolean toBt){
         prefs.edit().putBoolean(getString(R.string.pref_gps_bt),toBt).apply();
         gpsViaBt = toBt;
         if (toBt) {
-            stopGPSService();
-            startBTService();
+            stopService(new Intent(this, GPSTrackerService.class));
+            startService(new Intent(this, BTTrackerService.class));
         }
         else {
-            stopBTService();
-            startGPSService();
+            stopService(new Intent(this, BTTrackerService.class));
+            startService(new Intent(this, GPSTrackerService.class));
         }
-    }
-
-    /**
-     * Starts GPS service
-     */
-    private void startGPSService() {
-        startService(new Intent(this, GPSTrackerService.class));
-        LocalBroadcastManager.getInstance(this).registerReceiver(gpsReceiver, new IntentFilter(this.getString(R.string.gps_intent_filter)));
-    }
-
-    /**
-     * Stop GPS Service
-     */
-    private void stopGPSService() {
-        stopService(new Intent(this, GPSTrackerService.class));
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(this.gpsReceiver);
-    }
-
-    /**
-     * Starts GPS service
-     */
-    private void startBTService() {
-        //startService(new Intent(this, GPSTrackerService.class));
-        //LocalBroadcastManager.getInstance(this).registerReceiver(gpsReceiver, new IntentFilter(this.getString(R.string.gps_intent_filter)));
-    }
-
-    /**
-     * Stop GPS Service
-     */
-    private void stopBTService() {
-        //stopService(new Intent(this, GPSTrackerService.class));
-        //LocalBroadcastManager.getInstance(this).unregisterReceiver(this.gpsReceiver);
     }
 
     /**
@@ -386,25 +364,25 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         @Override
         public void onReceive(Context context, Intent intent) {
 
-        if (selectedTab == MENU_NAV){
-            boolean isEnabled = intent.getBooleanExtra(context.getString(R.string.gps_enabled), false);
+            if (selectedTab == MENU_NAV){
+                boolean isEnabled = intent.getBooleanExtra(context.getString(R.string.gps_enabled), false);
 
-            if (isEnabled) {
-                Location newLoc = new Location(getString(R.string.gps_location));
-                newLoc.setLatitude(intent.getDoubleExtra(context.getString(R.string.gps_latitude), 0.0));
-                newLoc.setLongitude(intent.getDoubleExtra(context.getString(R.string.gps_longitude), 0.0));
-                newLoc.setAccuracy(intent.getFloatExtra(context.getString(R.string.gps_accuracy), 0f));
-                newLoc.setBearing(intent.getFloatExtra(context.getString(R.string.gps_bearing), 0f));
-                newLoc.setSpeed(intent.getFloatExtra(context.getString(R.string.gps_speed), 0f));
-                newLoc.setTime(intent.getLongExtra(context.getString(R.string.gps_time), 0));
-                newLoc.setAltitude(intent.getDoubleExtra(context.getString(R.string.gps_altitude), 0.0));
+                if (isEnabled) {
+                    Location newLoc = new Location(getString(R.string.gps_location));
+                    newLoc.setLatitude(intent.getDoubleExtra(context.getString(R.string.gps_latitude), 0.0));
+                    newLoc.setLongitude(intent.getDoubleExtra(context.getString(R.string.gps_longitude), 0.0));
+                    newLoc.setAccuracy(intent.getFloatExtra(context.getString(R.string.gps_accuracy), 0f));
+                    newLoc.setBearing(intent.getFloatExtra(context.getString(R.string.gps_bearing), 0f));
+                    newLoc.setSpeed(intent.getFloatExtra(context.getString(R.string.gps_speed), 0f));
+                    newLoc.setTime(intent.getLongExtra(context.getString(R.string.gps_time), 0));
+                    newLoc.setAltitude(intent.getDoubleExtra(context.getString(R.string.gps_altitude), 0.0));
 
-                fHome.addNewLocation(isEnabled, newLoc);
+                    fHome.addNewLocation(isEnabled, newLoc);
+                }
+                else {
+                    fHome.addNewLocation(isEnabled, null);
+                }
             }
-            else {
-                fHome.addNewLocation(isEnabled, null);
-            }
-        }
         }
     };
 
@@ -456,9 +434,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             // start gps service
             gpsViaBt = prefs.getBoolean(getString(R.string.pref_gps_bt), false);
             if (gpsViaBt)
-                startBTService();
+                startService(new Intent(activity, BTTrackerService.class));
             else
-                startGPSService();
+                startService(new Intent(activity, GPSTrackerService.class));
+            LocalBroadcastManager.getInstance(activity).registerReceiver(gpsReceiver, new IntentFilter(activity.getString(R.string.gps_intent_filter)));
 
             return null;
         }

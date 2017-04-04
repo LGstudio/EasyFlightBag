@@ -388,7 +388,7 @@ public class FragmentHome extends Fragment implements
      */
     private void loadOverlays(){
 
-            for (Airspace.Data d : mapOverlayManager.getAirspaces()) {
+            for (Airspace.Data d : mapOverlayManager.airspaces) {
                 PolygonOptions options = new PolygonOptions()
                         .addAll(d.polygon)
                         .strokeWidth(4)
@@ -399,7 +399,7 @@ public class FragmentHome extends Fragment implements
             }
 
 
-            for (Airport.Data d: mapOverlayManager.getAirports()){
+            for (Airport.Data d: mapOverlayManager.airports){
                 MarkerOptions options = new MarkerOptions()
                         .position(d.location)
                         .icon(BitmapDescriptorFactory.fromBitmap(d.icon));
@@ -802,10 +802,12 @@ public class FragmentHome extends Fragment implements
 
         @Override
         protected void onPostExecute(Void param) {
-            OverlayDetailDialog d = new OverlayDetailDialog(getContext());
-            d.setContentView(R.layout.dialog_overlay_detail);
-            d.loadContent(lastPosition, airspaces, airports);
-            d.show();
+            if (airspaces.size() > 0){
+                OverlayDetailDialog d = new OverlayDetailDialog(getContext());
+                d.setContentView(R.layout.dialog_overlay_detail);
+                d.loadContent(lastPosition, airspaces, airports);
+                d.show();
+            }
         }
     }
 

@@ -58,7 +58,7 @@
 
     <RelativeLayout
         style="@style/Block_title_text_style.inSettings"
-        android:layout_marginBottom="@dimen/row_padding"
+
         android:layout_marginTop="@dimen/row_padding">
 
         <TextView
@@ -85,6 +85,30 @@
             android:layout_toStartOf="@+id/set_refresh_airspace"
             android:layout_centerVertical="true"
             android:textColor="?attr/primaryTextColor"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/Block_title_text_style.inSettings"
+        android:layout_marginBottom="@dimen/row_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_select_country"
+            android:layout_centerVertical="true"
+            android:textColor="?attr/primaryTextColor"
+            android:id="@+id/set_select_txt"
+            android:layout_alignParentStart="true"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/set_select_txt"
+            android:layout_marginStart="@dimen/row_padding"
+            android:id="@+id/set_spinner_country"
+            android:gravity="end"/>
 
     </RelativeLayout>
 

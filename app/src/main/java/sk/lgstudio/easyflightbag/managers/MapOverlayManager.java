@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.VectorDrawable;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -49,10 +50,12 @@ public class MapOverlayManager {
     private SharedPreferences prefs;
     private MainActivity activity;
     private boolean started = false;
+    public int country = 0;
 
     // List of content
-    private ArrayList<Airspace.Data> airspaces = null;
-    private ArrayList<Airport.Data> airports = null;
+    public ArrayList<Airspace.Data> airspaces = null;
+    public ArrayList<Airport.Data> airports = null;
+    public boolean isLoading = false;
     private File folder;
 
     /**
@@ -63,8 +66,23 @@ public class MapOverlayManager {
         activity = a;
         prefs = a.prefs;
         folder = f;
+
+        country = prefs.getInt(activity.getString(R.string.pref_overlay_selected), 0);
+
         if (exists())
             loadData();
+
+    }
+
+    /**
+     * Change the country to be showed
+     * @param i
+     */
+    public void changeCountry(int i){
+        country = i;
+        prefs.edit().putInt(activity.getString(R.string.pref_overlay_selected), i).apply();
+        isLoading = true;
+        (new LoadData()).execute();
     }
 
     /**
@@ -73,7 +91,11 @@ public class MapOverlayManager {
     private void loadData(){
         airspaces = new ArrayList<>();
         airports = new ArrayList<>();
+
         for (int i = 0; i < countries.length; i++){
+
+            if (country != 0 && country != i+1) continue;
+
             // airspaces
             String fileName = folder.getPath()+"/"+countries[i]+filetypes[1];
             File f = new File(fileName);
@@ -88,26 +110,7 @@ public class MapOverlayManager {
                 for (Airport.Data d: airports)
                     d.icon = getAirportIcon(d);
             }
-
         }
-    }
-
-    /**
-     * Returns the airspaces based on the country selection riteria
-     * @return
-     */
-    public ArrayList<Airspace.Data> getAirspaces(){
-        // TODO: select based on country
-        return airspaces;
-    }
-
-    /**
-     * Returns the airports based on the country selection riteria
-     * @return
-     */
-    public ArrayList<Airport.Data> getAirports(){
-        // TODO: select based on country
-        return airports;
     }
 
     /**
@@ -450,5 +453,23 @@ public class MapOverlayManager {
             }
         }
     };
+
+    // ---------------------------------------------------------------
+    // Async Tasks
+    // ---------------------------------------------------------------
+
+    public class LoadData extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            loadData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+            isLoading = false;
+        }
+    }
 
 }

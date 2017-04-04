@@ -24,8 +24,8 @@ public class CalculatorFuelOil extends Calculator implements AdapterView.OnItemS
     private Spinner fuelType;
     private int selectedFuel = 0;
 
-    private final float[] density = {0f, 1f, 2f};
-    private final String[] fuel = {"Custom", "A", "B"};
+    private final float[] density = {0f, 721f, 2f}; // kg/m^3
+    private final String[] fuel = {"Custom", "Avgas", "B"};
 
     public CalculatorFuelOil(float[] r, float[] v, int[] l) {
         super(r, v, l);
