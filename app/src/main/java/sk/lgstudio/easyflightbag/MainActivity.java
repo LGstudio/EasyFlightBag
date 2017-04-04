@@ -405,10 +405,21 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * Triggers map overlay reloading
+     */
+    public void loadNewOverlays(){
+        if (selectedTab == MENU_NAV){
+            fHome.loadOverlays();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (selectedTab != MENU_NAV)
             changeTab(MENU_NAV);
+        else
+            super.onBackPressed();
     }
 
     /**

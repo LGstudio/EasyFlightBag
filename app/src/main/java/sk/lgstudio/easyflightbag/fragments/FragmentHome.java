@@ -305,7 +305,6 @@ public class FragmentHome extends Fragment implements
         map = googleMap;
         map.setOnCameraMoveListener(this);
         map.setOnMapClickListener(this);
-        //map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         map.setBuildingsEnabled(false);
         map.setTrafficEnabled(false);
         map.setOnMarkerClickListener(this);
@@ -386,26 +385,29 @@ public class FragmentHome extends Fragment implements
     /**
      * Load map overlays from mapOverlayManager
      */
-    private void loadOverlays(){
+    public void loadOverlays(){
 
-            for (Airspace.Data d : mapOverlayManager.airspaces) {
-                PolygonOptions options = new PolygonOptions()
-                        .addAll(d.polygon)
-                        .strokeWidth(4)
-                        .strokeColor(MapOverlayManager.airspaceStrokeColor(d.category))
-                        .fillColor(MapOverlayManager.airspaceFillColor(d.category));
+        if (mapOverlayManager.isLoading || !mapReady)
+            return;
 
-                map.addPolygon(options);
-            }
+        for (Airspace.Data d : mapOverlayManager.airspaces) {
+            PolygonOptions options = new PolygonOptions()
+                    .addAll(d.polygon)
+                    .strokeWidth(4)
+                    .strokeColor(MapOverlayManager.airspaceStrokeColor(d.category))
+                    .fillColor(MapOverlayManager.airspaceFillColor(d.category));
+
+            map.addPolygon(options);
+        }
 
 
-            for (Airport.Data d: mapOverlayManager.airports){
-                MarkerOptions options = new MarkerOptions()
-                        .position(d.location)
-                        .icon(BitmapDescriptorFactory.fromBitmap(d.icon));
+        for (Airport.Data d: mapOverlayManager.airports){
+            MarkerOptions options = new MarkerOptions()
+                    .position(d.location)
+                    .icon(BitmapDescriptorFactory.fromBitmap(d.icon));
 
-                map.addMarker(options).setAnchor(0.5f, 0.5f);
-            }
+            map.addMarker(options).setAnchor(0.5f, 0.5f);
+        }
 
     }
 

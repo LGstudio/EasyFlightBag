@@ -448,7 +448,8 @@ public class MapOverlayManager {
                     stopService();
                     saveSharedPref();
                     Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.air_done_download), Toast.LENGTH_SHORT).show();
-                    loadData();
+                    isLoading = true;
+                    (new LoadData()).execute();
                     break;
             }
         }
@@ -469,6 +470,7 @@ public class MapOverlayManager {
         @Override
         protected void onPostExecute(Void param) {
             isLoading = false;
+            activity.loadNewOverlays();
         }
     }
 

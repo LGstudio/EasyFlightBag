@@ -212,7 +212,7 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
      */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            mapOverlayManager.changeCountry(position);
+        mapOverlayManager.changeCountry(position);
     }
 
     @Override
