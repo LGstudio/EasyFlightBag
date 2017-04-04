@@ -53,8 +53,8 @@ public class MapOverlayManager {
     public int country = 0;
 
     // List of content
-    public ArrayList<Airspace.Data> airspaces = null;
-    public ArrayList<Airport.Data> airports = null;
+    private ArrayList<ArrayList<Airspace.Data>> airspaces = null;
+    private ArrayList<ArrayList<Airport.Data>> airports = null;
     public boolean isLoading = false;
     private File folder;
 
@@ -81,8 +81,6 @@ public class MapOverlayManager {
     public void changeCountry(int i){
         country = i;
         prefs.edit().putInt(activity.getString(R.string.pref_overlay_selected), i).apply();
-        isLoading = true;
-        (new LoadData()).execute();
     }
 
     /**
@@ -94,34 +92,70 @@ public class MapOverlayManager {
 
         for (int i = 0; i < countries.length; i++){
 
-            if (country != 0 && country != i+1) continue;
+            ArrayList<Airspace.Data> asp = new ArrayList<>();
+            ArrayList<Airport.Data> aps = new ArrayList<>();
 
             // airspaces
             String fileName = folder.getPath()+"/"+countries[i]+filetypes[1];
             File f = new File(fileName);
             if (f.exists())
-                airspaces.addAll(new Airspace.Parser().parse(f));
+                asp.addAll(new Airspace.Parser().parse(f));
+            airspaces.add(asp);
 
             // airports
             fileName = folder.getPath()+"/"+countries[i]+filetypes[0];
             f = new File(fileName);
             if (f.exists()) {
-                airports.addAll(new Airport.Parser().parse(f));
-                for (Airport.Data d: airports)
+                aps.addAll(new Airport.Parser().parse(f));
+                for (Airport.Data d: aps)
                     d.icon = getAirportIcon(d);
             }
+            airports.add(aps);
         }
+    }
+
+    /**
+     * Returns the list of airports based on the selected country
+     * @return
+     */
+    public ArrayList<Airport.Data> getAirports(){
+        ArrayList<Airport.Data> aps = new ArrayList<>();
+
+        for(int i = 0; i < airports.size(); i++){
+            if (country == 0 || country == i+1){
+                aps.addAll(airports.get(i));
+            }
+        }
+
+        return aps;
+    }
+
+    /**
+     * Returns the list of airspaces based on the selected country
+     * @return
+     */
+    public ArrayList<Airspace.Data> getAirspaces(){
+        ArrayList<Airspace.Data> asp = new ArrayList<>();
+
+        for(int i = 0; i < airspaces.size(); i++){
+            if (country == 0 || country == i+1){
+                asp.addAll(airspaces.get(i));
+            }
+        }
+
+        return asp;
     }
 
     /**
      * Looks for the airport ICAO at position
      */
     public String getAirportICAO(LatLng latLng){
-        for (Airport.Data d: airports){
-            if (latLng.latitude == d.location.latitude && latLng.longitude == d.location.longitude){
-                return d.icao;
+        for (ArrayList<Airport.Data> apt: airports)
+            for (Airport.Data d: apt){
+                if (latLng.latitude == d.location.latitude && latLng.longitude == d.location.longitude){
+                    return d.icao;
+                }
             }
-        }
 
         return "";
     }
@@ -185,17 +219,18 @@ public class MapOverlayManager {
         Airport.Data closest = null;
         float close = Float.MAX_VALUE;
 
-        for (Airport.Data d: airports){
-            float[] results = new float[1];
-            Location.distanceBetween(d.location.latitude, d.location.longitude, point.latitude, point.longitude, results);
-            if (results[0] < close) {
-                closest = d;
-                close = results[0];
+        for (ArrayList<Airport.Data> apt: airports)
+            for (Airport.Data d: apt){
+                float[] results = new float[1];
+                Location.distanceBetween(d.location.latitude, d.location.longitude, point.latitude, point.longitude, results);
+                if (results[0] < close) {
+                    closest = d;
+                    close = results[0];
+                }
+                if (results[0] < 10000){ // 25Km around
+                    data.add(d);
+                }
             }
-            if (results[0] < 10000){ // 25Km around
-                data.add(d);
-            }
-        }
         if (!data.contains(closest)){
             data.add(closest);
         }
@@ -211,9 +246,10 @@ public class MapOverlayManager {
     public ArrayList<Airspace.Data> getAirspacesAt(LatLng point){
         ArrayList<Airspace.Data> data = new ArrayList<>();
 
-        for (Airspace.Data d: airspaces)
-            if (pointInPolygon(point, d.polygon))
-                data.add(d);
+        for (ArrayList<Airspace.Data> asp: airspaces)
+            for (Airspace.Data d: asp)
+                if (pointInPolygon(point, d.polygon))
+                    data.add(d);
 
         return data;
     }

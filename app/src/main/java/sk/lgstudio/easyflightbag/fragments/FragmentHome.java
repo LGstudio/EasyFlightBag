@@ -390,7 +390,7 @@ public class FragmentHome extends Fragment implements
         if (mapOverlayManager.isLoading || !mapReady)
             return;
 
-        for (Airspace.Data d : mapOverlayManager.airspaces) {
+        for (Airspace.Data d : mapOverlayManager.getAirspaces()) {
             PolygonOptions options = new PolygonOptions()
                     .addAll(d.polygon)
                     .strokeWidth(4)
@@ -401,7 +401,7 @@ public class FragmentHome extends Fragment implements
         }
 
 
-        for (Airport.Data d: mapOverlayManager.airports){
+        for (Airport.Data d: mapOverlayManager.getAirports()){
             MarkerOptions options = new MarkerOptions()
                     .position(d.location)
                     .icon(BitmapDescriptorFactory.fromBitmap(d.icon));
