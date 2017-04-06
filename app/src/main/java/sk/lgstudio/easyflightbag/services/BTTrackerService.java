@@ -79,7 +79,7 @@ public class BTTrackerService extends Service {
             BluetoothSocket socket = null;
             BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
 
-            Log.w("BT", mAdapter.getAddress() + " " + mAdapter.getName());
+            Log.e("BT", "Waiting...");
 
             try {
                 BluetoothServerSocket mmServerSocket = mAdapter.listenUsingRfcommWithServiceRecord("MyService", MY_UUID);
@@ -89,7 +89,6 @@ public class BTTrackerService extends Service {
             byte[] buffer = new byte[256];  // buffer store for the stream
             int bytes; // bytes returned from read()
             try {
-                //mmServerSocket.close();
 
                 InputStream tmpIn = null;
 
@@ -104,13 +103,23 @@ public class BTTrackerService extends Service {
                         bytes = mmInStream.read(buffer);
                         String readMessage = new String(buffer, 0, bytes);
 
-                        Log.e("BT", readMessage);
+                        String[] data = readMessage.split(" ");
+
+                        Location loc = new Location("BT");
+                        loc.setAccuracy(0f);
+                        loc.setAltitude(Float.parseFloat(data[2]));
+                        loc.setLongitude(Float.parseFloat(data[0]));
+                        loc.setLatitude(Float.parseFloat(data[1]));
+                        loc.setBearing(Float.parseFloat(data[3]));
+                        loc.setSpeed(Float.parseFloat(data[4]));
+
+                        sendLocation(loc);
                     }
                 }
 
             } catch (Exception e) {}
 
-            Log.e("BT", "END");
+            Log.e("BT", "Failed. Please reset");
 
             return null;
         }
