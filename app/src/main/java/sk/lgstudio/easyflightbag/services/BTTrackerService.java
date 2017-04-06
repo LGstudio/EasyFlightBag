@@ -2,18 +2,18 @@ package sk.lgstudio.easyflightbag.services;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.io.IOException;
+import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
@@ -26,62 +26,21 @@ import sk.lgstudio.easyflightbag.R;
 
 public class BTTrackerService extends Service {
 
-    private Location mLastLocation = null;
-
-    private BluetoothAdapter mBluetoothAdapter = null;
-    private BluetoothSocket btSocket = null;
-    private InputStream connectedInputStream;
-    // Well known SPP UUID (will *probably* map to
-    // RFCOMM channel 1 (default) if not in use);
-    // see comments in onResume().
     private static final UUID MY_UUID =
-            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+            UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee");
 
-    // TODO ==> hardcode your server's MAC address here <==
-    private static String address = "12:23:34:45:56:56";
+    // hardcode your server's MAC address here
+    // private static String address = "34:E6:AD:5A:25:66";
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter == null) {
-            Log.e("BT", "Bluetooth is not available.");
-            sendLocation();
-            return;
-        }
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            Log.e("BT", "Bluetooth is disabled.");
-            sendLocation();
-            return;
-        }
-        Log.i("BT", "ENABLED");
-
-        // via it's MAC address.
-
-        try {
-            BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-            btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
-            connectedInputStream = btSocket.getInputStream();
-        } catch (IOException e) {
-            Log.e("BT", "Socket creation failed.");
-            sendLocation();
-            return;
-        }
-
-        mBluetoothAdapter.cancelDiscovery();
-
-        //if (connectedInputStream != null)
-        //    run();
-        //else
-            Log.e("BT", "END");
+        (new GetBTData()).execute();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
     }
 
     @Nullable
@@ -90,32 +49,8 @@ public class BTTrackerService extends Service {
         return null;
     }
 
-    private void run(){
-        byte[] buffer = new byte[1024];
-        int bytes;
 
-        while (true) {
-            try {
-                bytes = connectedInputStream.read(buffer);
-                String strReceived = new String(buffer, 0, bytes);
-                final String msgReceived = String.valueOf(bytes) +
-                        " bytes received:\n"
-                        + strReceived;
-
-                Log.i("BT", msgReceived);
-
-
-            } catch (IOException e) {
-                final String msgConnectionLost = "Connection lost:\n"
-                        + e.getMessage();
-
-                Log.i("BT", msgConnectionLost);
-
-            }
-        }
-    }
-
-    public void sendLocation() {
+    public void sendLocation(Location mLastLocation) {
 
         Context context = getApplicationContext();
         Intent intent = new Intent(context.getString(R.string.gps_intent_filter));
@@ -134,5 +69,50 @@ public class BTTrackerService extends Service {
             intent.putExtra(getString(R.string.gps_enabled), false);
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private class GetBTData extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            BluetoothSocket socket = null;
+            BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
+
+            Log.w("BT", mAdapter.getAddress() + " " + mAdapter.getName());
+
+            try {
+                BluetoothServerSocket mmServerSocket = mAdapter.listenUsingRfcommWithServiceRecord("MyService", MY_UUID);
+                socket = mmServerSocket.accept();
+            } catch(Exception e){}
+
+            byte[] buffer = new byte[256];  // buffer store for the stream
+            int bytes; // bytes returned from read()
+            try {
+                //mmServerSocket.close();
+
+                InputStream tmpIn = null;
+
+                // Get the BluetoothSocket input stream
+                tmpIn = socket.getInputStream();
+
+                while (true){
+                    if (tmpIn != null){
+                        DataInputStream mmInStream = new DataInputStream(tmpIn);
+
+                        // Read from the InputStream
+                        bytes = mmInStream.read(buffer);
+                        String readMessage = new String(buffer, 0, bytes);
+
+                        Log.e("BT", readMessage);
+                    }
+                }
+
+            } catch (Exception e) {}
+
+            Log.e("BT", "END");
+
+            return null;
+        }
     }
 }
