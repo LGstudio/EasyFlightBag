@@ -235,6 +235,9 @@
     <string name="set_select_country">Show on map: </string>
     <string name="set_gps_mode">Get GPS data via Blutooth</string>
 
+    <string name="bt_waiting">Waitng for a Bluetooth conncetion</string>
+    <string name="bt_failed">No Bluetooth device connected. Please reset to try again.</string>
+
     <string name="service_aip_download" translatable="false">intent_aip_download</string>
     <string name="intent_aip_status" translatable="false">intent_aip_status</string>
     <string name="intent_aip_country" translatable="false">intent_aip_country</string>
