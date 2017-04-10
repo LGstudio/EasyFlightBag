@@ -451,11 +451,15 @@ public class FragmentHome extends Fragment implements
             map.addPolygon(options);
         }
 
+        float r = 0f;
+        if (!mapNorthUp) r = -bearing;
 
         for (Airport.Data d: mapOverlayManager.getAirports()){
             MarkerOptions options = new MarkerOptions()
                     .position(d.location)
-                    .icon(BitmapDescriptorFactory.fromBitmap(d.icon));
+                    .icon(BitmapDescriptorFactory.fromBitmap(d.icon))
+                    .flat(true)
+                    .rotation(r);
 
             map.addMarker(options).setAnchor(0.5f, 0.5f);
         }
