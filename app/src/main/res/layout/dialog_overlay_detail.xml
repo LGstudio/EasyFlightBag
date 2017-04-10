@@ -7,6 +7,22 @@
     android:paddingBottom="@dimen/row_padding"
     android:clipToPadding="false">
 
+    <Button
+        android:id="@+id/detail_fly_to"
+        android:layout_width="match_parent"
+        android:background="?attr/primaryColor"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/row_padding"
+        android:text="@string/fly_here"
+        android:layout_alignParentTop="true"
+        android:elevation="@dimen/elevation_4"
+        android:layout_marginTop="@dimen/row_padding"
+        android:layout_marginStart="@dimen/row_padding"
+        android:layout_marginEnd="@dimen/row_padding"
+        android:textColor="?attr/highlightColor"
+        android:textAllCaps="true"
+        />
+
     <ImageButton
         android:id="@+id/detail_close"
         android:layout_width="match_parent"
@@ -26,7 +42,7 @@
         android:orientation="vertical"
         android:layout_above="@id/detail_close"
         android:layout_margin="@dimen/row_padding"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/detail_fly_to"
         android:clipToPadding="false">
 
         <LinearLayout

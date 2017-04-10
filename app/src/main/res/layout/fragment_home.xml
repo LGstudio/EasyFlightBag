@@ -44,7 +44,8 @@
             <TextView
                 style="@style/Home_gps_data_text_big"
                 android:text="-"
-                android:id="@+id/home_data_speed"/>
+                android:id="@+id/home_data_speed"
+                android:clickable="true"/>
 
             <TextView
                 style="@style/Home_gps_data_text_small"
@@ -62,7 +63,8 @@
             <TextView
                 style="@style/Home_gps_data_text_big"
                 android:text="-"
-                android:id="@+id/home_data_altitude"/>
+                android:id="@+id/home_data_altitude"
+                android:clickable="true"/>
 
             <TextView
                 style="@style/Home_gps_data_text_small"

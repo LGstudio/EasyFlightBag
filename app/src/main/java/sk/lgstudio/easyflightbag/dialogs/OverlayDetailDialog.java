@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,13 +32,13 @@ import static java.lang.Math.min;
 public class OverlayDetailDialog extends Dialog implements View.OnClickListener {
 
     private LinearLayout layoutLists;
-    private ArrayList<Airport.Data> airports;
     protected LatLng location;
     private String km;
     private String d;
     private String m;
     private boolean canBack = false;
-    ArrayList<View> views = null;
+    private ArrayList<View> views = null;
+    public boolean flyTo = false;
 
     /**
      * Constructor
@@ -57,6 +58,49 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
     public void loadContent(Airport.Data data){
         layoutLists = (LinearLayout) findViewById(R.id.detail_lists);
         showAirportLayout(data);
+
+        loadButtons();
+    }
+
+    /**
+     * Load content in airport and airspace list mode
+     * @param myPosition
+     * @param as
+     * @param ap
+     */
+    public void loadContent(LatLng myPosition, ArrayList<Airspace.Data> as, ArrayList<Airport.Data> ap){
+        location = myPosition;
+
+        views = new ArrayList<>();
+        layoutLists = (LinearLayout) findViewById(R.id.detail_lists);
+
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
+        for (Airport.Data a: ap){
+            View row = inflater.inflate(R.layout.dialog_detail_list_item, layoutLists, false);
+            addAirportData(row, a);
+            row.setOnClickListener(this);
+            row.setTag(a);
+            layoutLists.addView(row);
+            views.add(row);
+        }
+
+        for (Airspace.Data a: as){
+            View row = inflater.inflate(R.layout.dialog_detail_list_item, layoutLists, false);
+            addAirspaceData(row, a);
+            layoutLists.addView(row);
+            views.add(row);
+        }
+
+        loadButtons();
+    }
+
+    private void loadButtons(){
+        ImageButton close = (ImageButton) findViewById(R.id.detail_close);
+        close.setOnClickListener(this);
+
+        Button goTo = (Button) findViewById(R.id.detail_fly_to);
+        goTo.setOnClickListener(this);
     }
 
     /**
@@ -135,40 +179,6 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
         }
     }
 
-    /**
-     * Load content in airport and airspace list mode
-     * @param myPosition
-     * @param as
-     * @param ap
-     */
-    public void loadContent(LatLng myPosition, ArrayList<Airspace.Data> as, ArrayList<Airport.Data> ap){
-        airports = ap;
-        location = myPosition;
-
-        views = new ArrayList<>();
-        layoutLists = (LinearLayout) findViewById(R.id.detail_lists);
-
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
-        for (Airport.Data a: ap){
-            View row = inflater.inflate(R.layout.dialog_detail_list_item, layoutLists, false);
-            addAirportData(row, a);
-            row.setOnClickListener(this);
-            row.setTag(a);
-            layoutLists.addView(row);
-            views.add(row);
-        }
-
-        for (Airspace.Data a: as){
-            View row = inflater.inflate(R.layout.dialog_detail_list_item, layoutLists, false);
-            addAirspaceData(row, a);
-            layoutLists.addView(row);
-            views.add(row);
-        }
-
-        ImageButton close = (ImageButton) findViewById(R.id.detail_close);
-        close.setOnClickListener(this);
-    }
 
     /**
      * Inflates airport cards
@@ -245,12 +255,19 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.detail_close)
-            dismiss();
-        else {
-            canBack = true;
-            layoutLists.removeAllViews();
-            showAirportLayout((Airport.Data) v.getTag());
+        switch (v.getId()){
+            case R.id.detail_close:
+                dismiss();
+                break;
+            case R.id.detail_fly_to:
+                flyTo = true;
+                dismiss();
+                break;
+            default:
+                canBack = true;
+                layoutLists.removeAllViews();
+                showAirportLayout((Airport.Data) v.getTag());
+
         }
     }
 

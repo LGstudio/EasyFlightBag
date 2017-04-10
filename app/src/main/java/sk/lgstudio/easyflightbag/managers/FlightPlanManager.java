@@ -1,6 +1,7 @@
 package sk.lgstudio.easyflightbag.managers;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -39,11 +40,13 @@ public class FlightPlanManager {
      * @param f
      */
     public FlightPlanManager(File f){
+        plan = new ArrayList<>();
+
+        if (f == null) return;
+
         file = f;
 
         try {
-            plan = new ArrayList<>();
-
             FileInputStream is = new FileInputStream(file);
             String str = "";
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -137,14 +140,13 @@ public class FlightPlanManager {
     public float getRoutLength(){
         float length = 0f;
 
-        for (int i = 1; i < plan.size() - 1; i++){
+        for (int i = 1; i < plan.size(); i++){
             Point p1 = plan.get(i-1);
             Point p2 = plan.get(i);
 
             float[] results = new float[1];
             Location.distanceBetween(p1.location.latitude, p1.location.longitude, p2.location.latitude, p2.location.longitude, results);
             length += results[0]/1000;
-
         }
 
         return length;

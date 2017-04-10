@@ -248,11 +248,11 @@
     <string name="url_cz_ais_data" translatable="false">http://lis.rlp.cz/ais_data</string>
     <string name="url_at_aip" translatable="false">https://eaip.austrocontrol.at/</string>
 
-    <string name="url_open_aip">http://www.openaip.net/customer_export_fj28JDP2053Jdlpczqi3kLv/</string>
-    <string name="file_airports">_wpt.aip</string>
-    <string name="file_airspace">_asp.aip</string>
-    <string name="file_navaids">_nav.aip</string>
-    <string name="file_hotspots">_hot.aip</string>
+    <string name="url_open_aip" translatable="false">http://www.openaip.net/customer_export_fj28JDP2053Jdlpczqi3kLv/</string>
+    <string name="file_airports" translatable="false">_wpt.aip</string>
+    <string name="file_airspace" translatable="false">_asp.aip</string>
+    <string name="file_navaids" translatable="false">_nav.aip</string>
+    <string name="file_hotspots" translatable="false">_hot.aip</string>
 
     <string name="no_gps">NO GPS</string>
     <string name="no_net">NO INTERNET</string>
@@ -264,6 +264,9 @@
 
     <string name="plan_warning_saved">Flight plan saved</string>
     <string name="plan_warning_save_error">Unable to save plan</string>
+
+    <string name="fly_here">Fly here</string>
+    <string name="fly_here_from">From</string>
 
     <string name="airports">Airports</string>
     <string name="airspaces">Airspaces</string>

@@ -79,7 +79,6 @@ public class FragmentHome extends Fragment implements
         AdapterView.OnItemClickListener {
 
     public final static float M_TO_FT = 3.2808410892388f;
-    public final static float FT_TO_M = 1/M_TO_FT;
     public final static float KMPH_TO_KNOT = 0.539957f;
     public final static float MPS_TO_KNOT = 1.94384f;
     public final static float MPS_TO_KMPH = 3.6f;
@@ -254,18 +253,20 @@ public class FragmentHome extends Fragment implements
 
         if (isEnabled && !editing){
             lastPosition = new LatLng(loc.getLatitude(), loc.getLongitude());
+            bearing = loc.getBearing();
+            speed = loc.getSpeed();
+            alt = loc.getAltitude();
+            acc = loc.getAccuracy();
 
-            locaionMarkerOptions.position(lastPosition).rotation(loc.getBearing());
+            float b = 0f;
+            if (mapNorthUp) b = bearing;
+
+            locaionMarkerOptions.position(lastPosition).rotation(b);
             if (mapReady) {
                 if (locationMarker != null) locationMarker.remove();
                 locationMarker = map.addMarker(locaionMarkerOptions);
                 if (mapFollow) changeMapPosition();
             }
-
-            bearing = loc.getBearing();
-            speed = loc.getSpeed();
-            alt = loc.getAltitude();
-            acc = loc.getAccuracy();
 
             showPositionValues();
 
@@ -303,10 +304,10 @@ public class FragmentHome extends Fragment implements
     private void showPositionValues(){
 
         if (activity.gpsViaBt){ // bt
-            if (isAltMeter) // ft -> m
-                txtAlt.setText(new DecimalFormat("#").format(alt*FT_TO_M));
-            else
+            if (isAltMeter)
                 txtAlt.setText(new DecimalFormat("#").format(alt));
+            else // m -> knot
+                txtAlt.setText(new DecimalFormat("#").format(alt*M_TO_FT));
 
             if (isSpeedKnots) // m/s -> knot
                 txtSpeed.setText(new DecimalFormat("#.#").format(speed*MPS_TO_KNOT));
@@ -530,10 +531,10 @@ public class FragmentHome extends Fragment implements
                 mapNorthUp = !mapNorthUp;
                 changeMapPosition();
                 break;
-            case R.id.home_data_speed_unit:
+            case R.id.home_data_speed:
                 switchSpeedUnit();
                 break;
-            case R.id.home_data_altitude_unit:
+            case R.id.home_data_altitude:
                 switchAltUnit();
                 break;
         }
@@ -544,7 +545,7 @@ public class FragmentHome extends Fragment implements
      */
     private void switchSpeedUnit(){
         isSpeedKnots = !isSpeedKnots;
-        if (isSpeedKnots) txtSpeedUnit.setText(getString(R.string.calc_unit_k));
+        if (isSpeedKnots) txtSpeedUnit.setText(getString(R.string.calc_unit_kn));
         else txtSpeedUnit.setText(getString(R.string.calc_unit_kmh));
         showPositionValues();
     }
@@ -751,6 +752,29 @@ public class FragmentHome extends Fragment implements
     }
 
     /**
+     * Fly directly to one selected point
+     */
+    private void flyToPoint(LatLng point){
+        flightPlanManager = new FlightPlanManager(null);
+
+        FlightPlanManager.Point pFrom = new FlightPlanManager.Point();
+        pFrom.editeble = false;
+        pFrom.location = lastPosition;
+        pFrom.name = getString(R.string.fly_here_from);
+        flightPlanManager.plan.add(pFrom);
+
+        FlightPlanManager.Point p = new FlightPlanManager.Point();
+        p.editeble = false;
+        p.location = point;
+        p.name = getString(R.string.fly_here);
+        flightPlanManager.plan.add(p);
+
+        loadFlightPlan();
+        loadPlanMarkers();
+        changeLayoutPanels();
+    }
+
+    /**
      * Handle Flight plan list item click listener
      * @param parent
      * @param view
@@ -869,10 +893,12 @@ public class FragmentHome extends Fragment implements
         ArrayList<Airport.Data> airports;
         ArrayList<Airspace.Data> airspaces;
 
+        LatLng coord;
+
         @Override
         protected Void doInBackground(LatLng... params) {
 
-            LatLng coord = params[0];
+            coord = params[0];
             airspaces = mapOverlayManager.getAirspacesAt(coord);
             airports = mapOverlayManager.getAirportsCloseBy(coord);
             return null;
@@ -881,9 +907,15 @@ public class FragmentHome extends Fragment implements
         @Override
         protected void onPostExecute(Void param) {
             if (airspaces.size() > 0){
-                OverlayDetailDialog d = new OverlayDetailDialog(getContext());
+                final OverlayDetailDialog d = new OverlayDetailDialog(getContext());
                 d.setContentView(R.layout.dialog_overlay_detail);
                 d.loadContent(lastPosition, airspaces, airports);
+                d.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (d.flyTo) flyToPoint(coord);
+                    }
+                });
                 d.show();
             }
         }
