@@ -78,6 +78,12 @@ public class FragmentHome extends Fragment implements
         DialogInterface.OnDismissListener,
         AdapterView.OnItemClickListener {
 
+    public final static float M_TO_FT = 3.2808410892388f;
+    public final static float FT_TO_M = 1/M_TO_FT;
+    public final static float KMPH_TO_KNOT = 0.539957f;
+    public final static float MPS_TO_KNOT = 1.94384f;
+    public final static float MPS_TO_KMPH = 3.6f;
+
     private RelativeLayout panelMap;
     private LinearLayout panelInfo;
 
@@ -90,6 +96,10 @@ public class FragmentHome extends Fragment implements
     private TextView txtSpeed;
     private TextView txtAlt;
     private TextView txtBearing;
+    private TextView txtSpeedUnit;
+    private TextView txtAltUnit;
+    private boolean isSpeedKnots = true;
+    private boolean isAltMeter = true;
 
     private TextView txtNoGps;
     private TextView txtNoNet;
@@ -104,6 +114,9 @@ public class FragmentHome extends Fragment implements
     private boolean mapFollow = true;
     private float mapZoomLevel = 14f;
     private float bearing = 0f;
+    private float speed = 0f;
+    private double alt = 0f;
+    private float acc = 0f;
     public LatLng lastPosition = null;
     private LatLng mapTargetArea = null;
     private MarkerOptions locaionMarkerOptions;
@@ -150,6 +163,10 @@ public class FragmentHome extends Fragment implements
         txtSpeed = (TextView) view.findViewById(R.id.home_data_speed);
         txtAlt = (TextView) view.findViewById(R.id.home_data_altitude);
         txtBearing = (TextView) view.findViewById(R.id.home_data_bearing);
+        txtSpeedUnit = (TextView) view.findViewById(R.id.home_data_speed_unit);
+        txtAltUnit = (TextView) view.findViewById(R.id.home_data_altitude_unit);
+        txtSpeed.setOnClickListener(this);
+        txtAlt.setOnClickListener(this);
 
         txtNoGps = (TextView) view.findViewById(R.id.home_nogps);
         txtNoNet = (TextView) view.findViewById(R.id.home_nonet);
@@ -245,10 +262,13 @@ public class FragmentHome extends Fragment implements
                 if (mapFollow) changeMapPosition();
             }
 
-            txtAccuracy.setText(new DecimalFormat("#.#").format(loc.getAccuracy()));
-            txtSpeed.setText(new DecimalFormat("#.#").format(loc.getSpeed()));
-            txtAlt.setText(new DecimalFormat("#").format(loc.getAltitude()));
-            txtBearing.setText(new DecimalFormat("#").format(loc.getBearing()));
+            bearing = loc.getBearing();
+            speed = loc.getSpeed();
+            alt = loc.getAltitude();
+            acc = loc.getAccuracy();
+
+            showPositionValues();
+
             txtNoGps.setVisibility(View.GONE);
         }
 
@@ -275,6 +295,39 @@ public class FragmentHome extends Fragment implements
             }
             mapFollow = false;
         }
+    }
+
+    /**
+     * Shows the real position data based on source and set unit
+     */
+    private void showPositionValues(){
+
+        if (activity.gpsViaBt){ // bt
+            if (isAltMeter) // ft -> m
+                txtAlt.setText(new DecimalFormat("#").format(alt*FT_TO_M));
+            else
+                txtAlt.setText(new DecimalFormat("#").format(alt));
+
+            if (isSpeedKnots) // m/s -> knot
+                txtSpeed.setText(new DecimalFormat("#.#").format(speed*MPS_TO_KNOT));
+            else // m/s -> km/h
+                txtSpeed.setText(new DecimalFormat("#.#").format(speed*MPS_TO_KMPH));
+
+        }
+        else {  // gps
+            if (isAltMeter)
+                txtAlt.setText(new DecimalFormat("#").format(alt));
+            else // m -> ft
+                txtAlt.setText(new DecimalFormat("#").format(alt*M_TO_FT));
+
+            if (isSpeedKnots) // km/h -> knot
+                txtSpeed.setText(new DecimalFormat("#.#").format(speed*KMPH_TO_KNOT));
+            else
+                txtSpeed.setText(new DecimalFormat("#.#").format(speed));
+        }
+
+        txtAccuracy.setText(new DecimalFormat("#.#").format(acc));
+        txtBearing.setText(new DecimalFormat("#").format(bearing));
     }
 
     /**
@@ -309,13 +362,10 @@ public class FragmentHome extends Fragment implements
         map.setTrafficEnabled(false);
         map.setOnMarkerClickListener(this);
 
-        boolean success;
         if (activity.nightMode)
-            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
+            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_dark));
         else
-            success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_light));
-
-        if (!success) Log.w("Map style", "Failed to load from RAW file");
+            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_light));
 
         mapFollow = true;
 
@@ -480,7 +530,33 @@ public class FragmentHome extends Fragment implements
                 mapNorthUp = !mapNorthUp;
                 changeMapPosition();
                 break;
+            case R.id.home_data_speed_unit:
+                switchSpeedUnit();
+                break;
+            case R.id.home_data_altitude_unit:
+                switchAltUnit();
+                break;
         }
+    }
+
+    /**
+     * Switch between knots and km/h speed
+     */
+    private void switchSpeedUnit(){
+        isSpeedKnots = !isSpeedKnots;
+        if (isSpeedKnots) txtSpeedUnit.setText(getString(R.string.calc_unit_k));
+        else txtSpeedUnit.setText(getString(R.string.calc_unit_kmh));
+        showPositionValues();
+    }
+
+    /**
+     * Switch between m and ft altitude
+     */
+    private void switchAltUnit(){
+        isAltMeter = !isAltMeter;
+        if (isAltMeter) txtAltUnit.setText(getString(R.string.calc_unit_m));
+        else txtAltUnit.setText(getString(R.string.calc_unit_ft));
+        showPositionValues();
     }
 
     /**

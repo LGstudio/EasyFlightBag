@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.io.DataInputStream;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.UUID;
 
 import sk.lgstudio.easyflightbag.R;
@@ -50,10 +51,6 @@ public class BTTrackerService extends Service {
         return null;
     }
 
-    public Context getServiceContext(){
-        return getApplicationContext();
-    }
-
     /**
      * Send the location via intent for the activity
      * @param data [lon, lat, alt. bearing, speed]
@@ -64,13 +61,13 @@ public class BTTrackerService extends Service {
         Intent intent = new Intent(context.getString(R.string.gps_intent_filter));
         if (data.length == 5) {
 
-            intent.putExtra(context.getString(R.string.gps_latitude), Float.parseFloat(data[1]));
-            intent.putExtra(context.getString(R.string.gps_longitude), Float.parseFloat(data[0]));
+            intent.putExtra(context.getString(R.string.gps_latitude), Double.parseDouble(data[1]));
+            intent.putExtra(context.getString(R.string.gps_longitude), Double.parseDouble(data[0]));
             intent.putExtra(context.getString(R.string.gps_accuracy), 0f);
             intent.putExtra(context.getString(R.string.gps_bearing), Float.parseFloat(data[3]));
             intent.putExtra(context.getString(R.string.gps_speed), Float.parseFloat(data[4]));
-            intent.putExtra(context.getString(R.string.gps_time), 0f);
-            intent.putExtra(context.getString(R.string.gps_altitude), Float.parseFloat(data[2]));
+            intent.putExtra(context.getString(R.string.gps_time), (long) 0);
+            intent.putExtra(context.getString(R.string.gps_altitude), Double.parseDouble(data[2]));
             intent.putExtra(getString(R.string.gps_enabled), true);
         }
         else {
@@ -85,36 +82,38 @@ public class BTTrackerService extends Service {
 
         @Override
         public void run() {
-            BluetoothSocket socket = null;
-            BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
+            while (true){
+                BluetoothSocket socket = null;
+                BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
 
-            try {
-                BluetoothServerSocket mmServerSocket = mAdapter.listenUsingRfcommWithServiceRecord("EFB", MY_UUID);
-                socket = mmServerSocket.accept();
-            } catch(Exception e){
-                return;
-            }
-
-            byte[] buffer = new byte[256];  // buffer store for the stream
-            int bytes; // bytes returned from read()
-            try {
-
-                // Get the BluetoothSocket input stream
-                InputStream tmpIn = socket.getInputStream();
-
-                while (run){
-                    if (tmpIn != null){
-                        DataInputStream mmInStream = new DataInputStream(tmpIn);
-
-                        // Read from the InputStream
-                        bytes = mmInStream.read(buffer);
-                        String readMessage = new String(buffer, 0, bytes);
-                        sendLocation(readMessage.split(" "));
-                    }
+                try {
+                    BluetoothServerSocket mmServerSocket = mAdapter.listenUsingRfcommWithServiceRecord("EFB", MY_UUID);
+                    socket = mmServerSocket.accept();
+                } catch(Exception e){
+                    return;
                 }
 
-            } catch (Exception e) {}
+                byte[] buffer = new byte[256];  // buffer store for the stream
+                int bytes; // bytes returned from read()
+                try {
 
+                    // Get the BluetoothSocket input stream
+                    InputStream tmpIn = socket.getInputStream();
+
+                    while (run){
+                        if (tmpIn != null){
+                            DataInputStream mmInStream = new DataInputStream(tmpIn);
+
+                            // Read from the InputStream
+                            bytes = mmInStream.read(buffer);
+                            String readMessage = new String(buffer, 0, bytes);
+                            sendLocation(readMessage.split(" "));
+                        }
+                    }
+
+                } catch (Exception e) {}
+
+            }
         }
     }
 }
