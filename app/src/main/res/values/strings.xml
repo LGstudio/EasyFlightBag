@@ -1,16 +1,10 @@
 <resources>
+
+    <!-- NONTRANSLATABLE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
     <string name="app_name" translatable="false">EasyFlightBag</string>
     <string name="app_prefs" translatable="false">sk.lgstudio.efb</string>
     <string name="gmap_api_key" translatable="false">AIzaSyCxUOrnnZ3KJ5uoTiqBRox_iy0Ifzkjobc</string>
-
-    <string name="loading">loading&#8230;</string>
-
-    <string name="tab_home">Home</string>
-    <string name="tab_aip">AIP</string>
-    <string name="tab_chklist">Checklists</string>
-    <string name="tab_docs">Documents</string>
-    <string name="tab_functions">Calculations</string>
-    <string name="tab_settings">Settings</string>
 
     <string name="pref_chk_folder" translatable="false">chk_folder</string>
     <string name="pref_theme" translatable="false">app_theme</string>
@@ -39,6 +33,83 @@
     <string name="folder_airspace" translatable="false">/Airspace</string>
     <string name="folder_plans" translatable="false">/Plans</string>
 
+    <string name="service_aip_download" translatable="false">intent_aip_download</string>
+    <string name="intent_aip_status" translatable="false">intent_aip_status</string>
+    <string name="intent_aip_country" translatable="false">intent_aip_country</string>
+    <string name="service_air_name" translatable="false">intent_air_name</string>
+    <string name="service_air_download" translatable="false">intent_air_download</string>
+
+    <string name="url_cz_ais" translatable="false">http://lis.rlp.cz/ais_data/aip/control/aip_obsah_en.htm</string>
+    <string name="url_cz_ais_data" translatable="false">http://lis.rlp.cz/ais_data</string>
+    <string name="url_at_aip" translatable="false">https://eaip.austrocontrol.at/</string>
+
+    <string name="url_open_aip" translatable="false">http://www.openaip.net/customer_export_fj28JDP2053Jdlpczqi3kLv/</string>
+    <string name="file_airports" translatable="false">_wpt.aip</string>
+    <string name="file_airspace" translatable="false">_asp.aip</string>
+    <string name="file_navaids" translatable="false">_nav.aip</string>
+    <string name="file_hotspots" translatable="false">_hot.aip</string>
+
+    <string name="gps_latitude" translatable="false">GPSlat</string>
+    <string name="gps_longitude" translatable="false">GPSlon</string>
+    <string name="gps_accuracy" translatable="false">GPSacc</string>
+    <string name="gps_altitude" translatable="false">GPSalt</string>
+    <string name="gps_speed" translatable="false">GPSspe</string>
+    <string name="gps_time" translatable="false">GPStim</string>
+    <string name="gps_bearing" translatable="false">GPSbea</string>
+    <string name="gps_location" translatable="false">gps_location</string>
+    <string name="gps_enabled" translatable="false">gps_enabled</string>
+    <string name="gps_intent_filter" translatable="false">GPSIntent</string>
+
+    <string name="calc_unit_m" translatable="false">m</string>
+    <string name="calc_unit_mm" translatable="false">mm</string>
+    <string name="calc_unit_km" translatable="false">km</string>
+    <string name="calc_unit_ft" translatable="false">ft</string>
+    <string name="calc_unit_nmi" translatable="false">nm</string>
+    <string name="calc_unit_mi" translatable="false">mi</string>
+    <string name="calc_unit_yd" translatable="false">yd</string>
+    <string name="calc_unit_in" translatable="false">in</string>
+    <string name="calc_unit_kmh" translatable="false">km/h</string>
+    <string name="calc_unit_kn" translatable="false">knots</string>
+    <string name="calc_unit_mph" translatable="false">mph</string>
+    <string name="calc_unit_mps" translatable="false">m/s</string>
+    <string name="calc_unit_ftpmin" translatable="false">ft/min</string>
+    <string name="calc_unit_kg" translatable="false">kg</string>
+    <string name="calc_unit_t" translatable="false">T</string>
+    <string name="calc_unit_lb" translatable="false">lb</string>
+    <string name="calc_unit_l" translatable="false">l</string>
+    <string name="calc_unit_m_cube" translatable="false">m^3</string>
+    <string name="calc_unit_g_us" translatable="false">US fl. gal.</string>
+    <string name="calc_unit_g_imp" translatable="false">imp. gal.</string>
+    <string name="calc_unit_oz" translatable="false">fl. oz</string>
+    <string name="calc_unit_hpa_bma" translatable="false">hPa (mBa)</string>
+    <string name="calc_unit_atm" translatable="false">ATM</string>
+    <string name="calc_unit_inhg" translatable="false">In. Hg.</string>
+    <string name="calc_unit_kgxm" translatable="false">kg x m</string>
+    <string name="calc_unit_lbxin" translatable="false">lb x in</string>
+    <string name="calc_unit_c" translatable="false">C</string>
+    <string name="calc_unit_f" translatable="false">F</string>
+    <string name="calc_unit_k" translatable="false">k</string>
+    <string name="calc_unit_kg_m3" translatable="false">kg/m^3</string>
+    <string name="calc_unit_kg_l" translatable="false">kg/l</string>
+    <string name="calc_unit_h" translatable="false">h</string>
+    <string name="calc_unit_min" translatable="false">m</string>
+    <string name="calc_unit_sec" translatable="false">s</string>
+    <string name="calc_unit_lph" translatable="false">l/hour</string>
+    <string name="calc_unit_gph" translatable="false">gal./hour</string>
+    <string name="calc_unit_degree" translatable="false">°</string>
+
+
+    <!-- TEXT FIELDS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <string name="tab_home">Home</string>
+    <string name="tab_aip">AIP</string>
+    <string name="tab_chklist">Checklists</string>
+    <string name="tab_docs">Documents</string>
+    <string name="tab_functions">Calculations</string>
+    <string name="tab_settings">Settings</string>
+
+    <string name="loading">loading&#8230;</string>
+
     <string name="file_chk_plane">Switch Add and Delete airplane type.txt</string>
     <string name="file_chk_plane_">Click on the airplane icon\n
         Select airplane from the list\n
@@ -63,7 +134,7 @@
     <string name="country_pl">Poland</string>
 
     <string name="chk_menu">Checklists</string>
-    <string name="chk_add_airplane">Add new airplane</string>
+    <string name="chk_add_airplane">Add new airplane (Aircraft ID)</string>
     <string name="chk_plane_exists_toast">Airplane already exists</string>
     <string name="chk_plane_delete_toast">Airplane deleted</string>
     <string name="chk_plane_delete_fail_toast">Unable to delete airplane</string>
@@ -72,7 +143,9 @@
     <string name="chk_deleted_fail_toast">Unable to delete checklist</string>
 
     <string name="manage_airplanes">Manage Airplanes</string>
+    <string name="manage_airplanes_select">Select from existing airplanes</string>
     <string name="manage_plans">Manage Flight Plans</string>
+    <string name="manage_plans_select">Select from existing flight plans</string>
     <string name="flight_plan_add">Add new flight plan</string>
 
     <string name="btn_back">Back</string>
@@ -98,18 +171,7 @@
     <string name="list_name_mandatory">Please enter checklist title here.</string>
     <string name="list_text_hint">Write the tasks to individual lines</string>
 
-    <string name="gps_intent_filter" translatable="false">GPSIntent</string>
     <string name="GPS_disabled">GPS is off</string>
-
-    <string name="gps_latitude" translatable="false">GPSlat</string>
-    <string name="gps_longitude" translatable="false">GPSlon</string>
-    <string name="gps_accuracy" translatable="false">GPSacc</string>
-    <string name="gps_altitude" translatable="false">GPSalt</string>
-    <string name="gps_speed" translatable="false">GPSspe</string>
-    <string name="gps_time" translatable="false">GPStim</string>
-    <string name="gps_bearing" translatable="false">GPSbea</string>
-    <string name="gps_location" translatable="false">gps_location</string>
-    <string name="gps_enabled" translatable="false">gps_enabled</string>
 
     <string name="calc_conv">Conversions</string>
     <string name="calc_conv_dist">Distance</string>
@@ -161,7 +223,7 @@
     <string name="calc_takeoff">Takeoff</string>
     <string name="calc_landing">Landing</string>
     <string name="calc_out_of_fuel">Out of fuel</string>
-    <string name="calc_switch">Twitch to</string>
+    <string name="calc_switch">Switch to</string>
     <string name="calc_runway_num">Runway number</string>
     <string name="calc_wind_dir">Wind from</string>
     <string name="calc_wind_speed">Wind speed (kn)</string>
@@ -179,45 +241,6 @@
     <string name="calc_warning_takeoff_offlimit">Take off weight is out of limits</string>
     <string name="calc_warning_landing_offlimit">Landing weight is out of limits</string>
     <string name="calc_warning_set_time">Set flight time to proceed</string>
-
-
-    <string name="calc_unit_m" translatable="false">m</string>
-    <string name="calc_unit_mm" translatable="false">mm</string>
-    <string name="calc_unit_km" translatable="false">km</string>
-    <string name="calc_unit_ft" translatable="false">ft</string>
-    <string name="calc_unit_nmi" translatable="false">nm</string>
-    <string name="calc_unit_mi" translatable="false">mi</string>
-    <string name="calc_unit_yd" translatable="false">yd</string>
-    <string name="calc_unit_in" translatable="false">in</string>
-    <string name="calc_unit_kmh" translatable="false">km/h</string>
-    <string name="calc_unit_kn" translatable="false">knots</string>
-    <string name="calc_unit_mph" translatable="false">mph</string>
-    <string name="calc_unit_mps" translatable="false">m/s</string>
-    <string name="calc_unit_ftpmin" translatable="false">ft/min</string>
-    <string name="calc_unit_kg" translatable="false">kg</string>
-    <string name="calc_unit_t" translatable="false">T</string>
-    <string name="calc_unit_lb" translatable="false">lb</string>
-    <string name="calc_unit_l" translatable="false">l</string>
-    <string name="calc_unit_m_cube" translatable="false">m^3</string>
-    <string name="calc_unit_g_us" translatable="false">US fl. gal.</string>
-    <string name="calc_unit_g_imp" translatable="false">imp. gal.</string>
-    <string name="calc_unit_oz" translatable="false">fl. oz</string>
-    <string name="calc_unit_hpa_bma" translatable="false">hPa (mBa)</string>
-    <string name="calc_unit_atm" translatable="false">ATM</string>
-    <string name="calc_unit_inhg" translatable="false">In. Hg.</string>
-    <string name="calc_unit_kgxm" translatable="false">kg x m</string>
-    <string name="calc_unit_lbxin" translatable="false">lb x in</string>
-    <string name="calc_unit_c" translatable="false">C</string>
-    <string name="calc_unit_f" translatable="false">F</string>
-    <string name="calc_unit_k" translatable="false">k</string>
-    <string name="calc_unit_kg_m3" translatable="false">kg/m^3</string>
-    <string name="calc_unit_kg_l" translatable="false">kg/l</string>
-    <string name="calc_unit_h" translatable="false">h</string>
-    <string name="calc_unit_min" translatable="false">m</string>
-    <string name="calc_unit_sec" translatable="false">s</string>
-    <string name="calc_unit_lph" translatable="false">l/hour</string>
-    <string name="calc_unit_gph" translatable="false">gal./hour</string>
-    <string name="calc_unit_degree" translatable="false">°</string>
 
     <string name="aip_day_ago">day(s) ago</string>
     <string name="aip_downloading">Downloading…</string>
@@ -238,22 +261,6 @@
     <string name="bt_waiting">Waitng for a Bluetooth conncetion</string>
     <string name="bt_failed">No Bluetooth device connected. Please reset to try again.</string>
 
-    <string name="service_aip_download" translatable="false">intent_aip_download</string>
-    <string name="intent_aip_status" translatable="false">intent_aip_status</string>
-    <string name="intent_aip_country" translatable="false">intent_aip_country</string>
-    <string name="service_air_name" translatable="false">intent_air_name</string>
-    <string name="service_air_download" translatable="false">intent_air_download</string>
-    
-    <string name="url_cz_ais" translatable="false">http://lis.rlp.cz/ais_data/aip/control/aip_obsah_en.htm</string>
-    <string name="url_cz_ais_data" translatable="false">http://lis.rlp.cz/ais_data</string>
-    <string name="url_at_aip" translatable="false">https://eaip.austrocontrol.at/</string>
-
-    <string name="url_open_aip" translatable="false">http://www.openaip.net/customer_export_fj28JDP2053Jdlpczqi3kLv/</string>
-    <string name="file_airports" translatable="false">_wpt.aip</string>
-    <string name="file_airspace" translatable="false">_asp.aip</string>
-    <string name="file_navaids" translatable="false">_nav.aip</string>
-    <string name="file_hotspots" translatable="false">_hot.aip</string>
-
     <string name="no_gps">NO GPS</string>
     <string name="no_net">NO INTERNET</string>
     <string name="home_fl_plan">Flight plan</string>
@@ -264,9 +271,6 @@
 
     <string name="plan_warning_saved">Flight plan saved</string>
     <string name="plan_warning_save_error">Unable to save plan</string>
-
-    <string name="fly_here">Fly here</string>
-    <string name="fly_here_from">From</string>
 
     <string name="airports">Airports</string>
     <string name="airspaces">Airspaces</string>

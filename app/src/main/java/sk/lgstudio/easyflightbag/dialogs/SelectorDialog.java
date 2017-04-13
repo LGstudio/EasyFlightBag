@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,19 +29,19 @@ import sk.lgstudio.easyflightbag.R;
  *  - folders selector : .loadContent(file, false)
  */
 
-public class SelectorDialog extends Dialog implements View.OnClickListener, DialogInterface.OnCancelListener {
+public class SelectorDialog extends Dialog implements View.OnClickListener, DialogInterface.OnCancelListener{
+
+    public final static short TYPE_AIRPLANE = 0;
+    public final static short TYPE_FLIGHTPLAN = 1;
 
     private File rootFolder;
     private boolean files = false;
     public File selected = null; // the selected file/folder is returned in here
     public boolean edit = false; // if edit button was pressed set to true
+    private boolean removeFile = true; // set when delete dialog returns "yes"
 
     private EditText txtNew;
     private ListView list;
-    private ImageButton btnAdd;
-    private TextView title;
-
-    private ArrayList<File> content;
 
     /**
      * Constructor
@@ -56,25 +55,33 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
 
     /**
      * Loads and initializes content onto the view
-     * @param root - rootFolder folder to look for
-     * @param selectedFile - actual selected file
-     * @param areFiles - are wee looking for folders or files
-     * @param titleResource - Resource id of the dialog title
-     * @param hintResource - Resource id of the "add new" hint text
      */
-    public void loadContent(File root, File selectedFile, boolean areFiles, int titleResource, int hintResource){
+    public void loadContent(File root, File selectedFile, boolean areFiles, short type){
         rootFolder = root;
         files = areFiles;
         selected = selectedFile;
 
-        title = (TextView) findViewById(R.id.selector_title);
+        TextView title = (TextView) findViewById(R.id.selector_title);
         txtNew = (EditText) findViewById(R.id.selector_new_text);
-        btnAdd = (ImageButton) findViewById(R.id.selector_new_add);
+        TextView subTitle = (TextView) findViewById(R.id.selector_list_headline);
+        ImageButton btnAdd = (ImageButton) findViewById(R.id.selector_new_add);
         list = (ListView) findViewById(R.id.selector_list);
 
         btnAdd.setOnClickListener(this);
-        title.setText(titleResource);
-        txtNew.setHint(hintResource);
+
+        switch (type){
+            case TYPE_AIRPLANE:
+                title.setText(R.string.manage_airplanes);
+                subTitle.setText(R.string.manage_airplanes_select);
+                txtNew.setHint(R.string.chk_add_airplane);
+                break;
+            case TYPE_FLIGHTPLAN:
+                title.setText(R.string.manage_plans);
+                subTitle.setText(R.string.manage_plans_select);
+                txtNew.setHint(R.string.flight_plan_add);
+                break;
+        }
+
         txtNew.clearFocus();
 
         fillList();
@@ -85,7 +92,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
      */
     private void fillList(){
 
-        content = new ArrayList<>();
+        ArrayList<File> content = new ArrayList<>();
 
         for (File inFile : rootFolder.listFiles()) {
             if (inFile.isDirectory() && ! files) {

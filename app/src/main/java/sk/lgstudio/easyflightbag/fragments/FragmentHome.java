@@ -328,7 +328,7 @@ public class FragmentHome extends Fragment implements
         }
 
         txtAccuracy.setText(new DecimalFormat("#.#").format(acc));
-        txtBearing.setText(new DecimalFormat("#").format(bearing));
+        txtBearing.setText(new DecimalFormat("#").format(bearing) + "°");
     }
 
     /**
@@ -479,7 +479,7 @@ public class FragmentHome extends Fragment implements
             planLine.remove();
 
         if (flightPlanManager != null) {
-            PolylineOptions po = new PolylineOptions().geodesic(true).clickable(false).width(4f).color(Color.MAGENTA);
+            PolylineOptions po = new PolylineOptions().geodesic(true).clickable(false).width(7f).color(Color.MAGENTA);
             if (editing){
                 for (FlightPlanManager.Point p: flightPlanManager.editedPlan) {
                     MarkerOptions o = new MarkerOptions().position(p.location).draggable(p.editeble).icon(mapPointIcon).anchor(0.5f, 0.5f);
@@ -647,7 +647,7 @@ public class FragmentHome extends Fragment implements
         dialogPlans = new SelectorDialog(getContext());
         dialogPlans.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogPlans.setContentView(R.layout.dialog_selector);
-        dialogPlans.loadContent(plansFolder, plansFolder, true, R.string.manage_plans, R.string.flight_plan_add);
+        dialogPlans.loadContent(plansFolder, plansFolder, true, SelectorDialog.TYPE_FLIGHTPLAN);
         dialogPlans.setOnCancelListener(this);
         dialogPlans.setOnDismissListener(this);
         dialogPlans.show();
@@ -753,29 +753,6 @@ public class FragmentHome extends Fragment implements
         listFlightPlan.setAdapter(new PlanEditorAdapter(getContext(), R.layout.list_item_edit, flightPlanManager.editedPlan));
         listFlightPlan.scrollListBy(pos);
         loadPlanMarkers();
-    }
-
-    /**
-     * Fly directly to one selected point
-     */
-    private void flyToPoint(LatLng point){
-        flightPlanManager = new FlightPlanManager(null);
-
-        FlightPlanManager.Point pFrom = new FlightPlanManager.Point();
-        pFrom.editeble = false;
-        pFrom.location = lastPosition;
-        pFrom.name = getString(R.string.fly_here_from);
-        flightPlanManager.plan.add(pFrom);
-
-        FlightPlanManager.Point p = new FlightPlanManager.Point();
-        p.editeble = false;
-        p.location = point;
-        p.name = getString(R.string.fly_here);
-        flightPlanManager.plan.add(p);
-
-        loadFlightPlan();
-        loadPlanMarkers();
-        changeLayoutPanels();
     }
 
     /**
@@ -914,12 +891,6 @@ public class FragmentHome extends Fragment implements
                 final OverlayDetailDialog d = new OverlayDetailDialog(getContext());
                 d.setContentView(R.layout.dialog_overlay_detail);
                 d.loadContent(lastPosition, airspaces, airports);
-                d.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        if (d.flyTo) flyToPoint(coord);
-                    }
-                });
                 d.show();
             }
         }

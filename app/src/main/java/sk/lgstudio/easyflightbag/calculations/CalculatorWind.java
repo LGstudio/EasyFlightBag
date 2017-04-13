@@ -26,6 +26,7 @@ public class CalculatorWind extends Calculator implements SeekBar.OnSeekBarChang
     private TextView txtTailWind;
     private TextView txtLeftWind;
     private TextView txtRightWind;
+    private TextView txtMetar;
 
     private int runwayNum = 1;
     private int windDirection = 90;
@@ -59,6 +60,7 @@ public class CalculatorWind extends Calculator implements SeekBar.OnSeekBarChang
         txtTailWind = (TextView) v.findViewById(R.id.wind_tail_wind);
         txtLeftWind = (TextView) v.findViewById(R.id.wind_left_wind);
         txtRightWind = (TextView) v.findViewById(R.id.wind_right_wind);
+        txtMetar = (TextView) v.findViewById(R.id.wind_metar);
 
         SeekBar sRunway = (SeekBar) v.findViewById(R.id.wind_seek_runway);
         SeekBar sWindDir = (SeekBar) v.findViewById(R.id.wind_seek_dir);
@@ -156,6 +158,8 @@ public class CalculatorWind extends Calculator implements SeekBar.OnSeekBarChang
             txtTailWind.setText(tail);
             txtLeftWind.setText(left);
             txtRightWind.setText(right);
+
+            txtMetar.setText("RWY" + runwayNum + " " + windDirection + "° " + windSpeed + "kt" );
         }
     }
 }

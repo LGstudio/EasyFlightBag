@@ -39,11 +39,16 @@ public class DeleteDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.delete_btn_no:
-                dismiss();
-                break;
-            case R.id.delete_btn_yes:
                 cancel();
                 break;
+            case R.id.delete_btn_yes:
+                super.cancel();
+                break;
         }
+    }
+
+    @Override
+    public void cancel(){
+        dismiss();
     }
 }

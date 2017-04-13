@@ -160,7 +160,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         dialogAirplane = new SelectorDialog(context);
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogAirplane.setContentView(R.layout.dialog_selector);
-        dialogAirplane.loadContent(parentFolder, selectedPlane ,true, R.string.manage_airplanes, R.string.chk_add_airplane);
+        dialogAirplane.loadContent(parentFolder, selectedPlane ,true, SelectorDialog.TYPE_AIRPLANE);
         dialogAirplane.setOnCancelListener(this);
         dialogAirplane.setOnDismissListener(this);
         dialogAirplane.show();

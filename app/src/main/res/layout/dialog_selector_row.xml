@@ -3,32 +3,30 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/row_padding"
-    android:paddingEnd="@dimen/row_padding"
-    android:paddingTop="@dimen/row_padding_small"
-    android:paddingBottom="@dimen/row_padding_small">
+    android:padding="@dimen/row_padding_small"
+    android:background="?attr/backgroundColor">
 
    <ImageButton
-        android:src="@drawable/ic_delete"
-        android:padding="@dimen/row_padding"
-        android:background="?attr/primaryColor"
+        android:src="@drawable/ic_delete_inv"
+        android:padding="@dimen/row_padding_small"
+        android:background="?attr/backgroundColor"
         android:id="@+id/selector_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+       android:layout_centerVertical="true"
         android:contentDescription="@string/btn_delete"
-        android:elevation="@dimen/elevation_4"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="@dimen/row_padding"/>
 
     <ImageButton
-        android:src="@drawable/ic_edit"
-        android:padding="@dimen/row_padding"
-        android:background="?attr/primaryColor"
+        android:src="@drawable/ic_edit_inv"
+        android:padding="@dimen/row_padding_small"
+        android:background="?attr/backgroundColor"
         android:id="@+id/selector_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/btn_delete"
-        android:elevation="@dimen/elevation_4"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/btn_edit"
         android:layout_toStartOf="@id/selector_delete"
         android:layout_marginStart="@dimen/row_padding"/>
 
@@ -39,8 +37,9 @@
         android:textColor="?attr/primaryTextColor"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
-        android:padding="@dimen/row_padding"
+        android:padding="@dimen/row_padding_small"
         android:layout_toStartOf="@id/selector_edit"
-        android:clickable="true"/>
+        android:clickable="true"
+        />
 
 </RelativeLayout>

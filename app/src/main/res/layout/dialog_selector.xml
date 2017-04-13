@@ -52,12 +52,20 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/selector_list_headline"
+        android:textColor="?attr/primaryTextColor"
+        android:layout_marginBottom="@dimen/row_padding_small"
+        android:layout_marginStart="@dimen/row_padding_small"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/selector_list"
-        android:background="?attr/backgroundColor"
-        android:elevation="@dimen/elevation_4">
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/row_padding_small">
 
     </ListView>
 

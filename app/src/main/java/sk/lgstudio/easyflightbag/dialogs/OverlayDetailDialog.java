@@ -38,7 +38,6 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
     private String m;
     private boolean canBack = false;
     private ArrayList<View> views = null;
-    public boolean flyTo = false;
 
     /**
      * Constructor
@@ -98,9 +97,6 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
     private void loadButtons(){
         ImageButton close = (ImageButton) findViewById(R.id.detail_close);
         close.setOnClickListener(this);
-
-        Button goTo = (Button) findViewById(R.id.detail_fly_to);
-        goTo.setOnClickListener(this);
     }
 
     /**
@@ -257,10 +253,6 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.detail_close:
-                dismiss();
-                break;
-            case R.id.detail_fly_to:
-                flyTo = true;
                 dismiss();
                 break;
             default:

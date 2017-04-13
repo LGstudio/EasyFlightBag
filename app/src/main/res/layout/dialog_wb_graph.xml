@@ -15,7 +15,7 @@
         android:padding="@dimen/row_padding"
         android:layout_marginLeft="@dimen/row_padding"
         android:layout_marginRight="@dimen/row_padding"
-        android:src="@drawable/ic_done"
+        android:src="@drawable/ic_arrow_back"
         android:layout_marginTop="@dimen/row_padding"
         android:layout_alignParentBottom="true"
         android:elevation="@dimen/elevation_8"/>

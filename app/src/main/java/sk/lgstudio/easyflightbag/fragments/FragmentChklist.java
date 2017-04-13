@@ -278,7 +278,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
         dialogAirplane = new SelectorDialog(getContext());
         dialogAirplane.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogAirplane.setContentView(R.layout.dialog_selector);
-        dialogAirplane.loadContent(folder, folderActual, false, R.string.manage_airplanes ,R.string.chk_add_airplane);
+        dialogAirplane.loadContent(folder, folderActual, false, SelectorDialog.TYPE_AIRPLANE);
         dialogAirplane.setOnCancelListener(this);
         dialogAirplane.setOnDismissListener(this);
         dialogAirplane.show();

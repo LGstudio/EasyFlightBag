@@ -163,5 +163,6 @@ public class ChklistEditorDialog extends Dialog implements View.OnClickListener,
         }
         returnStatus = DELETE;
         dismiss();
+
     }
 }
