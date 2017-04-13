@@ -18,6 +18,7 @@
     <string name="pref_document_page" translatable="false">document_page.</string>
     <string name="pref_wb_selected" translatable="false">wb_file</string>
     <string name="pref_overlay_selected" translatable="false">map_overlay_country</string>
+    <string name="pref_apt_type_selected" translatable="false">map_apt_type_selected</string>
 
     <string name="folder_root" translatable="false">/EasyFlightBag</string>
     <string name="folder_airplanes" translatable="false">/Airplanes</string>
@@ -256,6 +257,13 @@
     <string name="set_aip">AIP data</string>
     <string name="set_airspace">Airspace and Airports</string>
     <string name="set_select_country">Show on map: </string>
+    <string name="set_select_aiirports">Visible airport types on map: </string>
+    <string name="set_apt_type_int">International</string>
+    <string name="set_apt_type_civ">Civil</string>
+    <string name="set_apt_type_glide">Glider/Ultralight</string>
+    <string name="set_apt_type_mil">Military</string>
+    <string name="set_apt_type_heli">Heliport</string>
+    <string name="set_apt_type_oth">Other</string>
     <string name="set_gps_mode">Get GPS data via Blutooth</string>
 
     <string name="bt_waiting">Waitng for a Bluetooth conncetion</string>

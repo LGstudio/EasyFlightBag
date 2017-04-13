@@ -42,6 +42,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
 
     private EditText txtNew;
     private ListView list;
+    private TextView subTitle;
 
     /**
      * Constructor
@@ -63,7 +64,7 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
 
         TextView title = (TextView) findViewById(R.id.selector_title);
         txtNew = (EditText) findViewById(R.id.selector_new_text);
-        TextView subTitle = (TextView) findViewById(R.id.selector_list_headline);
+        subTitle = (TextView) findViewById(R.id.selector_list_headline);
         ImageButton btnAdd = (ImageButton) findViewById(R.id.selector_new_add);
         list = (ListView) findViewById(R.id.selector_list);
 
@@ -108,8 +109,10 @@ public class SelectorDialog extends Dialog implements View.OnClickListener, Dial
 
         list.setAdapter(new ListAdapter(getContext(), R.layout.dialog_selector_row, content));
 
-        if(content.isEmpty())
+        if(content.isEmpty()) {
             selected = null;
+            subTitle.setVisibility(View.GONE);
+        }
     }
 
     /**

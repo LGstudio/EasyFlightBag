@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -32,6 +33,15 @@ import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
  * - AIP downloaders
  */
 public class FragmentSettings extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
+
+    private final static int apt_chk_box_id[] = {
+            R.id.set_chkbx_int,
+            R.id.set_chkbx_civ,
+            R.id.set_chkbx_glide,
+            R.id.set_chkbx_heli,
+            R.id.set_chkbx_mil,
+            R.id.set_chkbx_oth,
+    };
 
     private final static int country_string_id[] = {
             R.string.country_all,
@@ -106,6 +116,14 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
             btn.setOnClickListener(this);
         }
 
+        short i = 0;
+        for (int id : apt_chk_box_id){
+            CheckBox bx = (CheckBox) view.findViewById(id);
+            bx.setOnCheckedChangeListener(this);
+            bx.setChecked(mapOverlayManager.getAptTypeSelected(i));
+            i++;
+        }
+
         return view;
     }
 
@@ -132,6 +150,7 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
      */
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        boolean end = true;
         switch (compoundButton.getId()){
             case R.id.set_night_switch:
                 nightSwitchTrigeger(b);
@@ -139,6 +158,17 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
             case R.id.set_gps_mode_switch:
                 changeGpsSource(b);
                 break;
+            default:
+                end = false;
+        }
+        if (end) return;
+
+        short i = 0;
+        for (int id : apt_chk_box_id){
+            if (id == compoundButton.getId()){
+                mapOverlayManager.setAirportType(i, b);
+            }
+            i++;
         }
     }
 

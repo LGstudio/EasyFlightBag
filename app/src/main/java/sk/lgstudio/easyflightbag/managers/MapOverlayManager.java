@@ -57,6 +57,7 @@ public class MapOverlayManager {
     private ArrayList<ArrayList<Airport.Data>> airports = null;
     public boolean isLoading = false;
     private File folder;
+    private boolean selectedAptTypes[] = {true, true, true, true, true, true};
 
     /**
      * Constructor - loads data from .aip files
@@ -90,28 +91,51 @@ public class MapOverlayManager {
         airspaces = new ArrayList<>();
         airports = new ArrayList<>();
 
-        for (int i = 0; i < countries.length; i++){
+        for (String country : countries) {
 
             ArrayList<Airspace.Data> asp = new ArrayList<>();
             ArrayList<Airport.Data> aps = new ArrayList<>();
 
             // airspaces
-            String fileName = folder.getPath()+"/"+countries[i]+filetypes[1];
+            String fileName = folder.getPath() + "/" + country + filetypes[1];
             File f = new File(fileName);
             if (f.exists())
                 asp.addAll(new Airspace.Parser().parse(f));
             airspaces.add(asp);
 
             // airports
-            fileName = folder.getPath()+"/"+countries[i]+filetypes[0];
+            fileName = folder.getPath() + "/" + country + filetypes[0];
             f = new File(fileName);
             if (f.exists()) {
                 aps.addAll(new Airport.Parser().parse(f));
-                for (Airport.Data d: aps)
+                for (Airport.Data d : aps)
                     d.icon = getAirportIcon(d);
             }
             airports.add(aps);
         }
+
+        for (int i = 0; i < selectedAptTypes.length; i++){
+            selectedAptTypes[i] = prefs.getBoolean(activity.getString(R.string.pref_apt_type_selected) + "." +i, true);
+        }
+    }
+
+    /**
+     * Returns if given airport type is visible
+     * @param i
+     * @return
+     */
+    public boolean getAptTypeSelected(short i){
+        return selectedAptTypes[i];
+    }
+
+    /**
+     * Saves airport type filter selection
+     * @param i
+     * @param b
+     */
+    public void setAirportType(short i, boolean b){
+        selectedAptTypes[i] = b;
+        prefs.edit().putBoolean(activity.getString(R.string.pref_apt_type_selected) + "." +i, b).apply();
     }
 
     /**
@@ -123,11 +147,31 @@ public class MapOverlayManager {
 
         for(int i = 0; i < airports.size(); i++){
             if (country == 0 || country == i+1){
-                aps.addAll(airports.get(i));
+                for (Airport.Data apt: airports.get(i)){
+                    if (airportTypeVisible(apt.type))
+                        aps.add(apt);
+                }
             }
         }
 
         return aps;
+    }
+
+    private boolean airportTypeVisible(short t){
+        switch (t){
+            case Airport.APT_TYPE_APT: return selectedAptTypes[5];
+            case Airport.APT_TYPE_CIVIL: return selectedAptTypes[1];
+            case Airport.APT_TYPE_CLOSED: return selectedAptTypes[5];
+            case Airport.APT_TYPE_GLIDING: return selectedAptTypes[2];
+            case Airport.APT_TYPE_HELI_CIVIL: return selectedAptTypes[3];
+            case Airport.APT_TYPE_HELI_MIL: return selectedAptTypes[3];
+            case Airport.APT_TYPE_INT: return selectedAptTypes[0];
+            case Airport.APT_TYPE_MIL: return selectedAptTypes[4];
+            case Airport.APT_TYPE_MIL_CIVIL: return selectedAptTypes[1];
+            case Airport.APT_TYPE_LIGHT: return selectedAptTypes[2];
+            case Airport.APT_TYPE_WATER: return selectedAptTypes[5];
+        }
+        return false;
     }
 
     /**

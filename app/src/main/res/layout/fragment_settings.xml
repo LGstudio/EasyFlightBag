@@ -58,7 +58,6 @@
 
     <RelativeLayout
         style="@style/Block_title_text_style.inSettings"
-
         android:layout_marginTop="@dimen/row_padding">
 
         <TextView
@@ -89,8 +88,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        style="@style/Block_title_text_style.inSettings"
-        android:layout_marginBottom="@dimen/row_padding">
+        style="@style/Block_title_text_style.inSettings">
 
         <TextView
             android:layout_width="wrap_content"
@@ -113,7 +111,99 @@
     </RelativeLayout>
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/row_padding"
+        android:layout_marginEnd="@dimen/row_padding"
+        android:paddingTop="@dimen/row_padding"
+        android:paddingStart="@dimen/row_padding"
+        android:paddingEnd="@dimen/row_padding"
+        android:elevation="@dimen/elevation_8"
+        android:background="?attr/backgroundColor"
+        android:text="@string/set_select_aiirports"
+        android:textColor="?attr/primaryTextColor"
+        android:id="@+id/set_select_airport_txt"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/row_padding"
+        android:layout_marginEnd="@dimen/row_padding"
+        android:paddingTop="@dimen/row_padding"
+        android:paddingStart="@dimen/row_padding"
+        android:paddingEnd="@dimen/row_padding"
+        android:background="?attr/backgroundColor"
+        android:elevation="@dimen/elevation_8"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <CheckBox
+            android:id="@+id/set_chkbx_int"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/set_apt_type_int"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <CheckBox
+            android:id="@+id/set_chkbx_civ"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/set_apt_type_civ"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <CheckBox
+            android:id="@+id/set_chkbx_glide"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/set_apt_type_glide"
+            android:textColor="?attr/primaryTextColor"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/row_padding"
+        android:layout_marginEnd="@dimen/row_padding"
+        android:padding="@dimen/row_padding"
+        android:background="?attr/backgroundColor"
+        android:elevation="@dimen/elevation_8"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <CheckBox
+            android:id="@+id/set_chkbx_heli"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/set_apt_type_heli"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <CheckBox
+            android:id="@+id/set_chkbx_mil"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/set_apt_type_mil"
+            android:textColor="?attr/primaryTextColor"/>
+
+        <CheckBox
+            android:id="@+id/set_chkbx_oth"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/set_apt_type_oth"
+            android:textColor="?attr/primaryTextColor"/>
+
+    </LinearLayout>
+
+
+    <TextView
         android:text="@string/set_aip"
+        android:layout_marginTop="@dimen/row_padding"
         style="@style/Block_title_text_style.inSettings"
         />
 
@@ -176,7 +266,8 @@
     </RelativeLayout>
 
     <RelativeLayout
-        style="@style/Block_title_text_style.inSettings">
+        style="@style/Block_title_text_style.inSettings"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -205,7 +296,8 @@
     </RelativeLayout>
 
     <RelativeLayout
-        style="@style/Block_title_text_style.inSettings">
+        style="@style/Block_title_text_style.inSettings"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -234,7 +326,8 @@
     </RelativeLayout>
 
     <RelativeLayout
-        style="@style/Block_title_text_style.inSettings">
+        style="@style/Block_title_text_style.inSettings"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
