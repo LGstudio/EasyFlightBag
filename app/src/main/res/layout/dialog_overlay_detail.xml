@@ -7,6 +7,17 @@
     android:paddingBottom="@dimen/row_padding"
     android:clipToPadding="false">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="@dimen/row_big_text"
+        android:id="@+id/detail_position_text"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/row_padding"
+        android:gravity="center_horizontal"
+        />
+
     <ImageButton
         android:id="@+id/detail_close"
         android:layout_width="match_parent"
@@ -27,7 +38,7 @@
         android:layout_above="@id/detail_close"
         android:layout_margin="@dimen/row_padding"
         android:clipToPadding="false"
-        android:layout_alignParentTop="true">
+        android:layout_below="@id/detail_position_text">
 
         <LinearLayout
             android:layout_width="match_parent"

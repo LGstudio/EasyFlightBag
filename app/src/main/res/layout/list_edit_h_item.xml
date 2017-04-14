@@ -12,9 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_edit_text"
         android:textColor="?attr/primaryTextColor"
-        android:maxLines="1"
-        android:text="skljfhskjdfksjdg sfsfe  af sdf sdf sdf sf sdf asdf"
-        android:textColorHighlight="?attr/backgroundColorHighlightLight"/>
+        android:maxLines="1" />
 
     <ImageButton
         android:layout_width="wrap_content"

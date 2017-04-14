@@ -38,6 +38,7 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
     private String m;
     private boolean canBack = false;
     private ArrayList<View> views = null;
+    private TextView title;
 
     /**
      * Constructor
@@ -59,6 +60,8 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
         showAirportLayout(data);
 
         loadButtons();
+        title = (TextView) findViewById(R.id.detail_position_text);
+        title.setVisibility(View.GONE);
     }
 
     /**
@@ -67,7 +70,7 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
      * @param as
      * @param ap
      */
-    public void loadContent(LatLng myPosition, ArrayList<Airspace.Data> as, ArrayList<Airport.Data> ap){
+    public void loadContent(LatLng myPosition, LatLng clicked, ArrayList<Airspace.Data> as, ArrayList<Airport.Data> ap){
         location = myPosition;
 
         views = new ArrayList<>();
@@ -92,6 +95,19 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
         }
 
         loadButtons();
+
+        float[] results = new float[3];
+        Location.distanceBetween(location.latitude, location.longitude, clicked.latitude, clicked.longitude, results);
+
+        double b = results[1];
+        if (b < 0) b = 360 + b;
+        String dstStr = new DecimalFormat("#.#").format(results[0]/1000) + km;
+        String bearStr = new DecimalFormat("#.#").format(b) + d;
+        String lat = new DecimalFormat("#.#####").format(clicked.latitude);
+        String lon = new DecimalFormat("#.#####").format(clicked.longitude);
+
+        title = (TextView) findViewById(R.id.detail_position_text);
+        title.setText("LAT:" + lat + "/LON:" + lon + " - " + dstStr + " / " + bearStr );
     }
 
     private void loadButtons(){
@@ -198,8 +214,10 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
             float[] results = new float[3];
             Location.distanceBetween(location.latitude, location.longitude, dt.location.latitude, dt.location.longitude, results);
 
+            double b = results[1];
+            if (b < 0) b = 360 + b;
             String dstStr = new DecimalFormat("#.#").format(results[0]/1000) + km;
-            String bearStr = new DecimalFormat("#.#").format(results[1]) + d;
+            String bearStr = new DecimalFormat("#.#").format(b) + d;
             dist.setText(dstStr);
             bear.setText(bearStr);
 
@@ -258,6 +276,7 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
             default:
                 canBack = true;
                 layoutLists.removeAllViews();
+                title.setVisibility(View.GONE);
                 showAirportLayout((Airport.Data) v.getTag());
 
         }
@@ -269,6 +288,7 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
             dismiss();
         else{
             canBack = false;
+            title.setVisibility(View.VISIBLE);
             layoutLists.removeAllViews();
             for (View v: views)
                 layoutLists.addView(v);

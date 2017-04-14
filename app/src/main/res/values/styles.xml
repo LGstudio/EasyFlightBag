@@ -269,6 +269,12 @@
 
     -->
 
+    <style name="ImageStyleSimple">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@color/colorTransparent</item>
+    </style>
+
     <style name="NumberPickerStyle">
         <item name="android:divider">?attr/primaryColor</item>
         <item name="android:layout_height">wrap_content</item>
