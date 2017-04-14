@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_text"
         android:textColor="?attr/primaryTextColor"
-        android:gravity="center_vertical|end"
+        android:gravity="center_vertical"
         />
 
 </RelativeLayout>

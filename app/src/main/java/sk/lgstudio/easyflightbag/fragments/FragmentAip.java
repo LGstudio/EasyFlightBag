@@ -57,10 +57,9 @@ public class FragmentAip extends Fragment {
         horizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.aip_list_scroll);
         scrollLayout = (LinearLayout) view.findViewById(R.id.aip_list_layout);
 
-        //if (fillData) { TODO: FIX THIS
         files.clear();
         getData();
-        //}
+
         fillView();
 
         return view;

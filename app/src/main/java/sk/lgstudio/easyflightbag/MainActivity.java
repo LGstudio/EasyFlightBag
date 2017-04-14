@@ -418,8 +418,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onBackPressed() {
         if (selectedTab != MENU_NAV)
             changeTab(MENU_NAV);
-        else
-            super.onBackPressed();
+        //else
+            //super.onBackPressed();
     }
 
     /**

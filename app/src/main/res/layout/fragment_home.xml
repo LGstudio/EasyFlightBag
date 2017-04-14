@@ -88,11 +88,31 @@
 
     </LinearLayout>
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor"
+        android:id="@+id/home_plan_scrollview"
+        android:layout_above="@id/home_gps_info_panel"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/home_plan_list"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical">
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/home_map_layout"
-        android:layout_above="@id/home_gps_info_panel">
+        android:layout_above="@id/home_plan_scrollview">
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/home_map_view"
@@ -108,8 +128,7 @@
             android:textSize="@dimen/big_text"
             android:textColor="?attr/redColor"
             android:layout_margin="@dimen/bar_spacing"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:visibility="gone"
             />
 
@@ -122,46 +141,40 @@
             android:textColor="?attr/redColor"
             android:layout_above="@id/home_nonet"
             android:layout_margin="@dimen/bar_spacing"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             />
 
-        <RelativeLayout
+        <Button
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="wrap_content"
+            android:text="@string/home_fl_plan"
+            android:background="?attr/backgroundDarkColor"
+            android:padding="@dimen/row_padding"
+            android:textColor="?attr/primaryTextColor"
+            android:id="@+id/home_button_plan"
+            android:layout_alignParentBottom="true"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home_fl_plan"
-                android:background="?attr/backgroundDarkColor"
-                android:padding="@dimen/row_padding"
-                android:textColor="?attr/primaryTextColor"
-                android:id="@+id/home_button_plan_top"
-                android:layout_alignParentTop="true"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/backgroundDarkColor"
+            android:padding="@dimen/row_padding"
+            android:id="@+id/home_button_plan_left"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_arrow_back_inv"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_stop"
-                android:background="?attr/backgroundDarkColor"
-                android:padding="@dimen/row_padding"
-                android:textColor="?attr/primaryTextColor"
-                android:id="@+id/home_button_plan_bottom"
-                android:visibility="gone"
-                android:layout_alignParentBottom="true"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/backgroundDarkColor"
+            android:padding="@dimen/row_padding"
+            android:id="@+id/home_button_plan_right"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_done_inv"/>
 
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="?attr/backgroundColor"
-                android:id="@+id/home_plan_list"
-                android:visibility="gone"
-                android:layout_below="@id/home_button_plan_top"
-                android:layout_above="@id/home_button_plan_bottom"/>
-
-        </RelativeLayout>
         
         <ImageButton
             android:id="@+id/home_map_center"
