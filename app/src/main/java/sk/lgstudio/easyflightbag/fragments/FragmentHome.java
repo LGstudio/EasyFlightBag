@@ -404,7 +404,7 @@ public class FragmentHome extends Fragment implements
         if (editing){
             flightPlanManager.addNewPoint(latLng);
             refillPlanListEdit();
-            planScrollView.smoothScrollTo(HorizontalScrollView.FOCUS_RIGHT, 0);
+            planScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             loadPlanMarkers();
         }
         else (new GetPOITask()).execute((LatLng) latLng);
@@ -420,7 +420,7 @@ public class FragmentHome extends Fragment implements
             else flightPlanManager.addNewPoint(latLng, name);
 
             refillPlanListEdit();
-            planScrollView.smoothScrollTo(HorizontalScrollView.FOCUS_RIGHT, 0);
+            planScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             loadPlanMarkers();
         }
         else (new GetPOITask()).execute(marker.getPosition());
@@ -739,6 +739,10 @@ public class FragmentHome extends Fragment implements
 
         int i = 0;
         for (FlightPlanManager.Point p: flightPlanManager.editedPlan){
+
+            if (i > 0)
+                addPlanArrow();
+
             LinearLayout elem = (LinearLayout) inflater.inflate(R.layout.list_edit_h_item, null);
 
             TextView txt = (TextView) elem.findViewById(R.id.list_edit_text);
@@ -788,6 +792,7 @@ public class FragmentHome extends Fragment implements
            flightPlanManager.editedPlan = null;
            changeLayoutPanels();
            loadPlanMarkers();
+           refillPlanList();
            Toast.makeText(getContext(), getContext().getString(R.string.plan_warning_saved), Toast.LENGTH_SHORT).show();
        }
        else
@@ -800,8 +805,7 @@ public class FragmentHome extends Fragment implements
      */
     private void removePlanPoint(int posiotion){
         flightPlanManager.editedPlan.remove(posiotion);
-        planList.removeViewAt(2*posiotion); // position
-        if (posiotion > 0) planList.removeViewAt(2*posiotion - 1); // arrow
+        refillPlanListEdit();
         loadPlanMarkers();
     }
 
