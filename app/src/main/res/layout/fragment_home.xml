@@ -95,7 +95,8 @@
         android:id="@+id/home_plan_scrollview"
         android:elevation="@dimen/elevation_8"
         android:layout_above="@id/home_gps_info_panel"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -113,7 +114,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/home_map_layout"
-        android:layout_above="@id/home_plan_scrollview">
+        android:layout_above="@id/home_plan_scrollview"
+        android:layout_alignParentTop="true">
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/home_map_view"

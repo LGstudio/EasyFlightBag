@@ -25,6 +25,7 @@ import sk.lgstudio.easyflightbag.calculations.Calculator;
 import sk.lgstudio.easyflightbag.calculations.CalculatorTime;
 import sk.lgstudio.easyflightbag.calculations.CalculatorWB;
 import sk.lgstudio.easyflightbag.calculations.CalculatorWind;
+import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 
 /**
  *
@@ -66,7 +67,7 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     private FrameLayout frame;
 
     public File folder;
-    public SharedPreferences prefs;
+    public AirplaneManager airplaneManager;
     private LayoutInflater layoutInflater;
 
     @Override
@@ -93,15 +94,19 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
             calcView.add(v);
         }
 
-        addCalcView(openedViewId);
         return view;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        addCalcView(openedViewId);
+    }
 
     @Override
-    public void onDestroyView(){
+    public void onPause(){
         frame.removeAllViewsInLayout();
-        super.onDestroyView();
+        super.onPause();
     }
 
     @Override
@@ -116,7 +121,7 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
     private void initCalculators(){
         calcFunctions = new ArrayList<>();
 
-        calcFunctions.add(new CalculatorWB(prefs, getActivity(), layoutInflater, folder));
+        calcFunctions.add(new CalculatorWB(getActivity(), layoutInflater, airplaneManager, folder));
         calcFunctions.add(new CalculatorTime(null, CalculatorData.timeValues, CalculatorData.timeLayout));
         calcFunctions.add(new CalculatorWind(getContext()));
         calcFunctions.add(new CalculatorFuelOil(null, CalculatorData.oilValues, CalculatorData.oilLayout));

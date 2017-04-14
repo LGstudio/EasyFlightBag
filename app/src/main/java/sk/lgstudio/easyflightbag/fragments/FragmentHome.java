@@ -50,6 +50,7 @@ import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.dialogs.OverlayDetailDialog;
 import sk.lgstudio.easyflightbag.dialogs.SelectorDialog;
+import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 import sk.lgstudio.easyflightbag.managers.FlightPlanManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 import sk.lgstudio.easyflightbag.openAIP.Airport;
@@ -123,6 +124,7 @@ public class FragmentHome extends Fragment implements
 
     public MapOverlayManager mapOverlayManager = null;
     public FlightPlanManager flightPlanManager = null;
+    public AirplaneManager airplaneManager = null;
     public MainActivity activity;
     private LayoutInflater inflater;
 
@@ -404,8 +406,8 @@ public class FragmentHome extends Fragment implements
         if (editing){
             flightPlanManager.addNewPoint(latLng);
             refillPlanListEdit();
-            planScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             loadPlanMarkers();
+            planScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
         }
         else (new GetPOITask()).execute((LatLng) latLng);
     }
@@ -420,8 +422,8 @@ public class FragmentHome extends Fragment implements
             else flightPlanManager.addNewPoint(latLng, name);
 
             refillPlanListEdit();
-            planScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             loadPlanMarkers();
+            planScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
         }
         else (new GetPOITask()).execute(marker.getPosition());
 
@@ -630,6 +632,9 @@ public class FragmentHome extends Fragment implements
      * Create flight plan chooser dialog
      */
     private void openFlightPlans(){
+
+        changeLayoutPanels();
+
         dialogPlans = new SelectorDialog(getContext());
         dialogPlans.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogPlans.setContentView(R.layout.dialog_selector);
@@ -654,13 +659,15 @@ public class FragmentHome extends Fragment implements
     @Override
     public void onCancel(DialogInterface dialog) {
         // no new plan was selected
-        if (dialogPlans.selected == null) {
-            flightPlanManager = null;
-            editing = false;
-            loadFlightPlan();
-            loadPlanMarkers();
+        if (dialogPlans != null){
+            if (dialogPlans.selected == null) {
+                flightPlanManager = null;
+                editing = false;
+                loadFlightPlan();
+                loadPlanMarkers();
+            }
+            dialogPlans = null;
         }
-        dialogPlans = null;
     }
 
     /**
@@ -788,12 +795,10 @@ public class FragmentHome extends Fragment implements
      */
     private void saveEditedRoute(){
        if (flightPlanManager.saveEditedPlan()){
-           editing = false;
-           flightPlanManager.editedPlan = null;
-           changeLayoutPanels();
-           loadPlanMarkers();
-           refillPlanList();
            Toast.makeText(getContext(), getContext().getString(R.string.plan_warning_saved), Toast.LENGTH_SHORT).show();
+           editing = false;
+           flightPlanManager = null;
+           openFlightPlans();
        }
        else
            Toast.makeText(getContext(), getContext().getString(R.string.plan_warning_save_error), Toast.LENGTH_SHORT).show();

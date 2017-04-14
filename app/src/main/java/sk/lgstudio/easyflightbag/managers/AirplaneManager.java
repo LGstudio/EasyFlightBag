@@ -33,7 +33,7 @@ public class AirplaneManager {
     private static final String KEY_ADD_W = "additional_weight";
     private static final String KEY_LIMITS = "limits";
 
-    private File file;
+    public File file = null;
 
     public boolean loaded = false;
 
@@ -51,17 +51,27 @@ public class AirplaneManager {
     public double max_landing = 0;
     public double empty_weight = 0;
     public double empty_arm = 0;
-    public ArrayList<Weights> additional_weight;
-    public ArrayList<Tanks> tanks;
-    public ArrayList<Limits> limits;
+    public ArrayList<Weights> additional_weight = new ArrayList<>();
+    public ArrayList<Tanks> tanks= new ArrayList<>();
+    public ArrayList<Limits> limits= new ArrayList<>();
 
     /**
-     * Constructor - reads the .json file
-     * @param f
+     * Constructor
      */
-    public AirplaneManager(File f){
+    public AirplaneManager(){
+
+    }
+
+    /**
+     *  reads the .json file
+     */
+    public void loadFile(File f){
         file = f;
         FileInputStream is = null;
+
+        limits.clear();
+        additional_weight.clear();
+        tanks.clear();
 
         try {
             is = new FileInputStream(file);
@@ -86,10 +96,6 @@ public class AirplaneManager {
             max_landing = json.getDouble(KEY_MLW);
             empty_weight = json.getDouble(KEY_EMPTY_W);
             empty_arm = json.getDouble(KEY_EMPTY_A);
-
-            additional_weight = new ArrayList<>();
-            tanks = new ArrayList<>();
-            limits = new ArrayList<>();
 
             JSONArray jAW = json.getJSONArray(KEY_ADD_W);
             for (int i = 0; i < jAW.length(); i++){
@@ -125,6 +131,17 @@ public class AirplaneManager {
         } catch (JSONException | IOException e) {
             loaded = false;
         }
+    }
+
+    /**
+     * Clears airplane data
+     */
+    public void clearFile(){
+        file = null;
+        limits.clear();
+        additional_weight.clear();
+        tanks.clear();
+        loaded = false;
     }
 
     /**

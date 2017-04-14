@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.dialogs.SplashDialog;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
+import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
 import sk.lgstudio.easyflightbag.services.BTTrackerService;
@@ -251,6 +252,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         // init managers
         MapOverlayManager mapOverlayManager = new MapOverlayManager(activity, fldr);
         AIPManager aipManager = new AIPManager(activity);
+        AirplaneManager airplaneManager = new AirplaneManager();
 
         fHome.plansFolder = new File(rootDir.getPath() + getString(R.string.folder_plans));
         if (!fHome.plansFolder.exists())
@@ -260,7 +262,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         fHome.lastPosition = new LatLng(prefs.getFloat(getString(R.string.gps_latitude), 0), prefs.getFloat(getString(R.string.gps_longitude), 0));
         fHome.activity = activity;
         fHome.mapOverlayManager = mapOverlayManager;
-        fCalc.prefs = prefs;
+        fHome.airplaneManager = airplaneManager;
+        fCalc.airplaneManager = airplaneManager;
         fChk.prefs = prefs;
         fSet.activity = activity;
         fSet.aipManager = aipManager;
