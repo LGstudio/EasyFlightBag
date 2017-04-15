@@ -1,6 +1,5 @@
 package sk.lgstudio.easyflightbag.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
-import sk.lgstudio.easyflightbag.managers.FlightPlanManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
 
 /**
@@ -288,7 +285,7 @@ public class FragmentSettings extends Fragment implements CompoundButton.OnCheck
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(ctx);
-            View spinnerElement = inflater.inflate(R.layout.list_text_item, null);
+            View spinnerElement = inflater.inflate(R.layout.item_text, null);
 
             TextView airplane = (TextView) spinnerElement.findViewById(R.id.list_text);
             airplane.setText(data.get(position));

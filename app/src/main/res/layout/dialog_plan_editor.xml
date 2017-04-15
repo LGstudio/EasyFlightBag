@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:background="?attr/primaryColor"
+        android:elevation="@dimen/elevation_12"
+        android:layout_alignParentTop="true"
+        android:id="@+id/plan_editor_top">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/btn_back"
+            android:layout_alignParentStart="true"
+            android:id="@+id/plan_editor_bck"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/row_padding"
+            android:background="@drawable/bck_transparent"/>
+
+        <ImageButton
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_done"
+            android:contentDescription="@string/btn_save"
+            android:id="@+id/plan_editor_save"
+            android:padding="@dimen/row_padding"
+            android:background="@drawable/bck_transparent"/>
+
+        <TextView
+            android:id="@+id/plan_editor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/row_padding"
+            android:textColor="?attr/highlightColor"
+            android:maxLines="1"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/plan_editor_bck"
+            android:layout_toStartOf="@id/plan_editor_save"/>
+
+    </RelativeLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundDarkColor"
+        android:id="@+id/plan_editor_scroll"
+        android:elevation="@dimen/elevation_8"
+        android:layout_alignParentBottom="true"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/plan_editor_list"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical">
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/plan_editor_top"
+        android:layout_above="@id/plan_editor_scroll">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/plan_editor_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

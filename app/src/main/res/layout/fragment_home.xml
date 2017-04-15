@@ -110,6 +110,40 @@
 
     </HorizontalScrollView>
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundDarkColor"
+        android:padding="@dimen/row_padding"
+        android:id="@+id/home_button_plan_left"
+        android:visibility="gone"
+        android:src="@drawable/ic_info_inv"
+        android:elevation="@dimen/elevation_8"
+        android:layout_above="@id/home_plan_scrollview"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundDarkColor"
+        android:padding="@dimen/row_padding"
+        android:id="@+id/home_button_plan_right"
+        android:visibility="gone"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_clear_inv"
+        android:elevation="@dimen/elevation_8"
+        android:layout_above="@id/home_plan_scrollview"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_fl_plan"
+        android:background="?attr/backgroundDarkColor"
+        android:padding="@dimen/row_padding"
+        android:textColor="?attr/primaryTextColor"
+        android:id="@+id/home_button_plan"
+        android:elevation="@dimen/elevation_8"
+        android:layout_above="@id/home_gps_info_panel"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -146,41 +180,6 @@
             android:layout_margin="@dimen/bar_spacing"
             android:layout_alignParentTop="true"
             />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/home_fl_plan"
-            android:background="?attr/backgroundDarkColor"
-            android:padding="@dimen/row_padding"
-            android:textColor="?attr/primaryTextColor"
-            android:id="@+id/home_button_plan"
-            android:layout_alignParentBottom="true"
-            android:elevation="@dimen/elevation_8"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/backgroundDarkColor"
-            android:padding="@dimen/row_padding"
-            android:id="@+id/home_button_plan_left"
-            android:visibility="gone"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/ic_arrow_back_inv"
-            android:elevation="@dimen/elevation_8"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/backgroundDarkColor"
-            android:padding="@dimen/row_padding"
-            android:id="@+id/home_button_plan_right"
-            android:visibility="gone"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_done_inv"
-            android:elevation="@dimen/elevation_8"/>
-
         
         <ImageButton
             android:id="@+id/home_map_center"

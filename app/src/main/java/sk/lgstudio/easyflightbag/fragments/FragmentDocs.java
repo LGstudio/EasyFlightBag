@@ -46,7 +46,7 @@ public class FragmentDocs extends Fragment implements AdapterView.OnItemClickLis
             }
         }
 
-        FileAdapter adapter = new FileAdapter(getContext(), R.layout.documents_list_item, files);
+        FileAdapter adapter = new FileAdapter(getContext(), R.layout.item_file_structure, files);
 
         list.setAdapter(adapter);
         list.setOnItemClickListener(this);

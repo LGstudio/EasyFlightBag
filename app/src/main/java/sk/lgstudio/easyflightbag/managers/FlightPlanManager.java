@@ -112,6 +112,14 @@ public class FlightPlanManager {
     }
 
     /**
+     * Returns the filename of the plan
+     * @return
+     */
+    public String getPlanName(){
+        return file.getName().substring(0,file.getName().length()-5);
+    }
+
+    /**
      * Adds new free point to the editor
      */
     public void addNewPoint(LatLng loc){

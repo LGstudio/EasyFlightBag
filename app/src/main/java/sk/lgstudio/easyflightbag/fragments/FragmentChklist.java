@@ -137,14 +137,14 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
 
 
         // ---------------------------------------------------------------------------------------------
-        doneAdapter = new LineAdapter(getContext(), R.layout.chk_list_content_done, tasksDone);
+        doneAdapter = new LineAdapter(getContext(), R.layout.item_chk_content_faded, tasksDone);
         listContentDone.setAdapter(doneAdapter);
-        actualAdapter = new LineAdapter(getContext(), R.layout.chk_list_content_actual, tasksActual);
+        actualAdapter = new LineAdapter(getContext(), R.layout.item_chk_content_actual, tasksActual);
         listContentActual.setAdapter(actualAdapter);
-        nextAdapter = new LineAdapter(getContext(), R.layout.chk_list_content_next, tasksNext);
+        nextAdapter = new LineAdapter(getContext(), R.layout.item_chk_content_faded, tasksNext);
         listContentNext.setAdapter(nextAdapter);
 
-        View header = layoutInflater.inflate(R.layout.chk_list_file_header, null);
+        View header = layoutInflater.inflate(R.layout.list_chk_file_header, null);
         airplaneType = (TextView) header.findViewById(R.id.chklist_airplane_name);
         createNew = (ImageView) header.findViewById(R.id.chklist_new);
         showMenu = (ImageView) header.findViewById(R.id.chklist_menu);
@@ -161,7 +161,7 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      * Initializes lists
      */
     private void reloadFiles(){
-        fAdapter = new FileAdapter(getContext(), R.layout.chk_list_file_row, getFiles());
+        fAdapter = new FileAdapter(getContext(), R.layout.item_text_bold, getFiles());
         listFiles.setAdapter(fAdapter);
 
         alignLayout();

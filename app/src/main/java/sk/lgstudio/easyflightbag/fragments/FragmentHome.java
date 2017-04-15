@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.dialogs.OverlayDetailDialog;
+import sk.lgstudio.easyflightbag.dialogs.PlanEditorDialog;
 import sk.lgstudio.easyflightbag.dialogs.SelectorDialog;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 import sk.lgstudio.easyflightbag.managers.FlightPlanManager;
@@ -116,7 +117,7 @@ public class FragmentHome extends Fragment implements
     private Marker locationMarker = null;
     private BitmapDescriptor mapPointIcon;
 
-    private boolean editing = false;
+    //private boolean editing = false;
     private ArrayList<Marker> planMarkers = new ArrayList<>();
     private Polyline planLine;
 
@@ -191,7 +192,9 @@ public class FragmentHome extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if (mapLayout != null) mapLayout.onResume();
+        if (mapLayout != null)
+            mapLayout.onResume();
+        changeLayoutPanels();
     }
 
     /**
@@ -251,7 +254,7 @@ public class FragmentHome extends Fragment implements
      */
     public void addNewLocation(boolean isEnabled, Location loc) {
 
-        if (isEnabled && !editing){
+        if (isEnabled){
             lastPosition = new LatLng(loc.getLatitude(), loc.getLongitude());
             bearing = loc.getBearing();
             speed = loc.getSpeed();
@@ -272,8 +275,7 @@ public class FragmentHome extends Fragment implements
 
             txtNoGps.setVisibility(View.GONE);
         }
-
-        else if (lastPosition != null && !editing) {
+        else {
             lastPosition = null;
             if (mapReady) {
                 if (locationMarker != null) {
@@ -288,13 +290,6 @@ public class FragmentHome extends Fragment implements
             txtSpeed.setText("-");
             txtAlt.setText("-");
             txtBearing.setText("-");
-        }
-        else if (mapReady) {
-            if (locationMarker != null) {
-                locationMarker.remove();
-                locationMarker = null;
-            }
-            mapFollow = false;
         }
     }
 
@@ -387,7 +382,6 @@ public class FragmentHome extends Fragment implements
         }
 
         if (planMarkers.size() > 0){
-            changeLayoutPanels();
             loadFlightPlan();
             loadPlanMarkers();
         }
@@ -403,30 +397,12 @@ public class FragmentHome extends Fragment implements
 
     @Override
     public void onMapClick(LatLng latLng) {
-        if (editing){
-            flightPlanManager.addNewPoint(latLng);
-            refillPlanListEdit();
-            loadPlanMarkers();
-            planScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
-        }
-        else (new GetPOITask()).execute((LatLng) latLng);
+        (new GetPOITask()).execute((LatLng) latLng);
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if (editing){
-            LatLng latLng = marker.getPosition();
-            String name = mapOverlayManager.getAirportICAO(latLng);
-
-            if (name.length() == 0) flightPlanManager.addNewPoint(latLng);
-            else flightPlanManager.addNewPoint(latLng, name);
-
-            refillPlanListEdit();
-            loadPlanMarkers();
-            planScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
-        }
-        else (new GetPOITask()).execute(marker.getPosition());
-
+        (new GetPOITask()).execute(marker.getPosition());
         return false;
     }
 
@@ -477,22 +453,14 @@ public class FragmentHome extends Fragment implements
 
         if (flightPlanManager != null) {
             PolylineOptions po = new PolylineOptions().geodesic(true).clickable(false).width(7f).color(Color.MAGENTA);
-            if (editing){
-                for (FlightPlanManager.Point p: flightPlanManager.editedPlan) {
-                    MarkerOptions o = new MarkerOptions().position(p.location).draggable(p.editeble).icon(mapPointIcon).anchor(0.5f, 0.5f);
-                    Marker m = map.addMarker(o);
-                    planMarkers.add(m);
-                    po.add(p.location);
-                }
+
+            for (FlightPlanManager.Point p: flightPlanManager.plan){
+                MarkerOptions o = new MarkerOptions().position(p.location).draggable(false).icon(mapPointIcon).anchor(0.5f,0.5f);
+                Marker m = map.addMarker(o);
+                planMarkers.add(m);
+                po.add(p.location);
             }
-            else {
-                for (FlightPlanManager.Point p: flightPlanManager.plan){
-                    MarkerOptions o = new MarkerOptions().position(p.location).draggable(false).icon(mapPointIcon).anchor(0.5f,0.5f);
-                    Marker m = map.addMarker(o);
-                    planMarkers.add(m);
-                    po.add(p.location);
-                }
-            }
+
             planLine = map.addPolyline(po);
         }
     }
@@ -518,12 +486,10 @@ public class FragmentHome extends Fragment implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.home_button_plan_right:
-                if (editing) saveEditedRoute();
-                else cancelRoute();
+                cancelRoute();
                 break;
             case R.id.home_button_plan_left:
-                if (editing) cancelRoute();
-                else showPlanInfo();
+                showPlanInfo();
                 break;
             case R.id.home_button_plan:
                 openFlightPlans();
@@ -581,52 +547,37 @@ public class FragmentHome extends Fragment implements
         mapPointIcon = BitmapDescriptorFactory.fromBitmap(bm);
     }
 
-    // TODO: FIX WRONG bOTTOM PANEL SIZES
+    // TODO: FIX WRONG bOTTOM PANEL SIZES ???
     /**
      * Show/Hide elevaton graph on the bottom
      */
     private void changeLayoutPanels() {
 
-        int bottomSize = 0;
-
-        if (!editing){
-            if (flightPlanManager == null){
-                planScrollView.setVisibility(View.GONE);
-                btnFlightPlanLeft.setVisibility(View.GONE);
-                btnFlightPlanRight.setVisibility(View.GONE);
-                btnFlightPlan.setVisibility(View.VISIBLE);
-            }
-            else {
-                planScrollView.setVisibility(View.VISIBLE);
-                bottomSize += planScrollView.getHeight();
-                btnFlightPlanLeft.setVisibility(View.VISIBLE);
-                btnFlightPlanLeft.setImageResource(R.drawable.ic_info_inv);
-                btnFlightPlanRight.setVisibility(View.VISIBLE);
-                btnFlightPlanRight.setImageResource(R.drawable.ic_clear_inv);
-                btnFlightPlan.setVisibility(View.GONE);
-            }
-            panelInfo.setVisibility(View.VISIBLE);
-            bottomSize += panelInfo.getHeight();
-
+        if (flightPlanManager == null){
+            planScrollView.setVisibility(View.GONE);
+            btnFlightPlanLeft.setVisibility(View.GONE);
+            btnFlightPlanRight.setVisibility(View.GONE);
+            btnFlightPlan.setVisibility(View.VISIBLE);
         }
-        else{
-            panelInfo.setVisibility(View.GONE);
-            btnFlightPlan.setVisibility(View.GONE);
+        else {
             planScrollView.setVisibility(View.VISIBLE);
-            bottomSize += planScrollView.getHeight();
             btnFlightPlanLeft.setVisibility(View.VISIBLE);
-            btnFlightPlanLeft.setImageResource(R.drawable.ic_arrow_back_inv);
             btnFlightPlanRight.setVisibility(View.VISIBLE);
-            btnFlightPlanRight.setImageResource(R.drawable.ic_done_inv);
+            btnFlightPlan.setVisibility(View.GONE);
         }
-
-        Log.e("Bottom panel", bottomSize + "px");
-        panelMap.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getView().getHeight() - bottomSize));
     }
 
     // ---------------------------------------------------------------
     // Flight plans
     // ---------------------------------------------------------------
+
+    // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    /**
+     * Opens plan info dialog
+     */
+    private void showPlanInfo(){
+
+    }
 
     /**
      * Create flight plan chooser dialog
@@ -644,14 +595,6 @@ public class FragmentHome extends Fragment implements
         dialogPlans.show();
     }
 
-    // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    /**
-     * Opens plan info dialog
-     */
-    private void showPlanInfo(){
-
-    }
-
     /**
      * Plan seletor Dialog on cancel handler
      * @param dialog
@@ -662,7 +605,6 @@ public class FragmentHome extends Fragment implements
         if (dialogPlans != null){
             if (dialogPlans.selected == null) {
                 flightPlanManager = null;
-                editing = false;
                 loadFlightPlan();
                 loadPlanMarkers();
             }
@@ -682,7 +624,11 @@ public class FragmentHome extends Fragment implements
         if (dialogPlans != null){
             if (dialogPlans.selected != null){
                 flightPlanManager = new FlightPlanManager(dialogPlans.selected);
-                editing = dialogPlans.edit;
+                if (dialogPlans.edit) {
+                    openPlanEditor();
+                    dialogPlans = null;
+                    return;
+                }
             }
             else {
                 flightPlanManager = null;
@@ -695,19 +641,30 @@ public class FragmentHome extends Fragment implements
         }
     }
 
+    private void openPlanEditor(){
+        mapLayout.onPause();
+        PlanEditorDialog dialog = new PlanEditorDialog(getContext(), R.style.FullScreenDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_plan_editor);
+        dialog.loadContent(lastPosition, 30f, flightPlanManager, mapOverlayManager);
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mapLayout.onResume();
+                loadFlightPlan();
+                loadPlanMarkers();
+                changeLayoutPanels();
+            }
+        });
+        dialog.show();
+    }
+
     /**
      * Loads flight plan into the list
      */
     private void loadFlightPlan(){
         if (flightPlanManager != null)
-            if (editing){
-                if (flightPlanManager.editedPlan == null)
-                    flightPlanManager.editedPlan = new ArrayList<>(flightPlanManager.plan);
-                refillPlanListEdit();
-            }
-            else{
-                refillPlanList();
-            }
+            refillPlanList();
     }
 
     /**
@@ -722,7 +679,7 @@ public class FragmentHome extends Fragment implements
             if (i > 0)
                 addPlanArrow();
 
-            TextView txt = (TextView) inflater.inflate(R.layout.list_text_h_item, null);
+            TextView txt = (TextView) inflater.inflate(R.layout.item_text_h, null);
             txt.setText(p.name);
             final int finalI = i;
             txt.setOnClickListener(new View.OnClickListener() {
@@ -733,37 +690,6 @@ public class FragmentHome extends Fragment implements
             });
 
             planList.addView(txt);
-
-            i++;
-        }
-    }
-
-    /**
-     * Fills the plan list with editor items
-     */
-    private void refillPlanListEdit(){
-        planList.removeAllViews();
-
-        int i = 0;
-        for (FlightPlanManager.Point p: flightPlanManager.editedPlan){
-
-            if (i > 0)
-                addPlanArrow();
-
-            LinearLayout elem = (LinearLayout) inflater.inflate(R.layout.list_edit_h_item, null);
-
-            TextView txt = (TextView) elem.findViewById(R.id.list_edit_text);
-            txt.setText(p.name);
-            ImageButton btn = (ImageButton) elem.findViewById(R.id.list_edit_delete);
-            final int finalI = i;
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    removePlanPoint(finalI);
-                }
-            });
-
-            planList.addView(elem);
 
             i++;
         }
@@ -784,33 +710,8 @@ public class FragmentHome extends Fragment implements
      * On planning cancel button press
      */
     private void cancelRoute(){
-        editing = false;
         flightPlanManager = null;
         changeLayoutPanels();
-        loadPlanMarkers();
-    }
-
-    /**
-     * Saves the edidted route from the list
-     */
-    private void saveEditedRoute(){
-       if (flightPlanManager.saveEditedPlan()){
-           Toast.makeText(getContext(), getContext().getString(R.string.plan_warning_saved), Toast.LENGTH_SHORT).show();
-           editing = false;
-           flightPlanManager = null;
-           openFlightPlans();
-       }
-       else
-           Toast.makeText(getContext(), getContext().getString(R.string.plan_warning_save_error), Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Removes data point from the list when in editing mode
-     * @param posiotion
-     */
-    private void removePlanPoint(int posiotion){
-        flightPlanManager.editedPlan.remove(posiotion);
-        refillPlanListEdit();
         loadPlanMarkers();
     }
 
@@ -819,7 +720,7 @@ public class FragmentHome extends Fragment implements
      * @param position
      */
     public void planItemClick(int position) {
-        if (!editing && flightPlanManager != null){
+        if (flightPlanManager != null){
             (new GetPOITask()).execute((LatLng) flightPlanManager.plan.get(position).location);
         }
     }

@@ -126,7 +126,7 @@ public class CalculatorFuelOil extends Calculator implements AdapterView.OnItemS
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(ctx);
-            View spinnerElement = inflater.inflate(R.layout.list_text_item, null);
+            View spinnerElement = inflater.inflate(R.layout.item_text, null);
 
             TextView airplane = (TextView) spinnerElement.findViewById(R.id.list_text);
             airplane.setText(fuel[position]);
