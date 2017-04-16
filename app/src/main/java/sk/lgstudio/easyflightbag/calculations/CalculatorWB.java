@@ -171,7 +171,6 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
             }
         });
         dialog.show();
-
     }
 
     @Override

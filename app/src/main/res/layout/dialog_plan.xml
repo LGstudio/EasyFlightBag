@@ -1,6 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundDarkColor">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:background="?attr/primaryColor"
+        android:elevation="@dimen/elevation_12"
+        android:id="@+id/plan_editor_top">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/btn_back"
+            android:layout_alignParentStart="true"
+            android:id="@+id/plan_bck"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/row_padding"
+            android:background="@drawable/bck_transparent"/>
+
+        <ImageButton
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_done"
+            android:contentDescription="@string/btn_save"
+            android:id="@+id/plan_save"
+            android:padding="@dimen/row_padding"
+            android:background="@drawable/bck_transparent"/>
+
+    </RelativeLayout>
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                style="@style/Airplane_editor_table_layout"
+                android:orientation="vertical">
+                
+                <TextView
+                    style="@style/Block_title_text_style"
+                    android:text="@string/plan_airplane_select"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/plan_select_airplane_title"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/row_padding"
+                    android:textAllCaps="true"
+                    android:background="?attr/primaryColor"
+                    android:layout_margin="@dimen/row_padding"
+                    android:text="@string/btn_select"
+                    android:id="@+id/plan_select_airplane"
+                    android:textColor="?attr/highlightColor"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@id/plan_select_airplane_title"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/plan_select_airplane"
+                    android:id="@+id/plan_select_airplane_text"
+                    android:textColor="?attr/primaryTextColor"
+                    android:layout_below="@id/plan_select_airplane_title"
+                    android:layout_margin="@dimen/row_padding"
+                    android:text="@string/plan_airplane_select_none"
+                    android:gravity="center_vertical"
+                    android:layout_alignParentBottom="true"
+                    android:paddingBottom="@dimen/row_padding"
+                    />
+
+            
+            </RelativeLayout>
+
+            <LinearLayout
+                style="@style/Airplane_editor_table_layout"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Block_title_text_style"
+                    android:text="@string/plan_airplane_data"/>
+
+                <TableLayout
+                    style="@style/Airplane_editor_table_layout"
+                    android:weightSum="4"
+                    android:id="@+id/plan_ap_data_table">
+
+                    <TableRow
+                        style="@style/Airplane_editor_table_row_layout"
+                        android:layout_marginBottom="@dimen/row_padding">
+
+                        <TextView
+                            style="@style/Block_text_style"
+                            android:text="@string/calc_cruise_sp"/>
+
+                        <EditText
+                            style="@style/Block_edit_text_number_style"
+                            android:id="@+id/plan_ap_cruise_sp"/>
+
+                        <TextView
+                            style="@style/Block_text_style"
+                            android:text="@string/calc_unit_kn"
+                            />
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/Airplane_editor_table_row_layout">
+
+                        <TextView
+                            style="@style/Block_text_style"
+                            android:text="@string/calc_fuel_tank"
+                            android:textStyle="bold"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            style="@style/Block_text_style"
+                            android:text="@string/calc_cont_l"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            style="@style/Block_text_style"
+                            android:text="@string/calc_cap_l"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            style="@style/Block_text_style"
+                            android:text="@string/calc_unu_l"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                style="@style/Airplane_editor_table_layout"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Block_title_text_style"
+                    android:text="@string/plan_select"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/plan_select_plan_title"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/row_padding"
+                    android:textAllCaps="true"
+                    android:background="?attr/primaryColor"
+                    android:layout_margin="@dimen/row_padding"
+                    android:text="@string/btn_select"
+                    android:id="@+id/plan_select_plan"
+                    android:textColor="?attr/highlightColor"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@id/plan_select_plan_title"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/plan_select_plan"
+                    android:id="@+id/plan_select_plan_text"
+                    android:textColor="?attr/primaryTextColor"
+                    android:layout_below="@id/plan_select_plan_title"
+                    android:layout_margin="@dimen/row_padding"
+                    android:text="@string/plan_select_none"
+                    android:gravity="center_vertical"
+                    android:layout_alignParentBottom="true"
+                    android:paddingBottom="@dimen/row_padding"
+                    />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                style="@style/Airplane_editor_table_layout"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Block_title_text_style"
+                    android:text="@string/plan_summary"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/primaryColor"
+                    android:layout_margin="@dimen/row_padding"
+                    android:id="@+id/plan_sum"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        
+    </ScrollView>
+    
 </LinearLayout>

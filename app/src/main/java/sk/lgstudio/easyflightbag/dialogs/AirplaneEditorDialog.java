@@ -306,6 +306,7 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
             if (airplane.saveFile()){
                 airplane.loaded = true;
                 Toast.makeText(getContext(), getContext().getString(R.string.calc_warning_saved), Toast.LENGTH_SHORT).show();
+                dismiss();
             }
             else
                 Toast.makeText(getContext(), getContext().getString(R.string.calc_warning_save_error), Toast.LENGTH_SHORT).show();

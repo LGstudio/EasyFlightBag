@@ -252,8 +252,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         // init managers
         MapOverlayManager mapOverlayManager = new MapOverlayManager(activity, fldr);
         AIPManager aipManager = new AIPManager(activity);
-        AirplaneManager airplaneManager = new AirplaneManager();
+        AirplaneManager airplaneManager = new AirplaneManager(this, prefs);
 
+        fHome.airplanesFolder = fCalc.folder;
         fHome.plansFolder = new File(rootDir.getPath() + getString(R.string.folder_plans));
         if (!fHome.plansFolder.exists())
             fHome.plansFolder.mkdir();

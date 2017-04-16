@@ -48,6 +48,7 @@ import java.util.ArrayList;
 
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
+import sk.lgstudio.easyflightbag.dialogs.FlightPlanDialog;
 import sk.lgstudio.easyflightbag.dialogs.OverlayDetailDialog;
 import sk.lgstudio.easyflightbag.dialogs.PlanEditorDialog;
 import sk.lgstudio.easyflightbag.dialogs.SelectorDialog;
@@ -102,6 +103,7 @@ public class FragmentHome extends Fragment implements
     protected GoogleMap map = null;
 
     public File plansFolder;
+    public File airplanesFolder;
 
     private boolean mapReady = false;
     private boolean mapNorthUp = true;
@@ -121,7 +123,8 @@ public class FragmentHome extends Fragment implements
     private ArrayList<Marker> planMarkers = new ArrayList<>();
     private Polyline planLine;
 
-    private SelectorDialog dialogPlans = null;
+    //private SelectorDialog dialogPlans = null;
+    private FlightPlanDialog flightPlanDialog = null;
 
     public MapOverlayManager mapOverlayManager = null;
     public FlightPlanManager flightPlanManager = null;
@@ -584,15 +587,21 @@ public class FragmentHome extends Fragment implements
      */
     private void openFlightPlans(){
 
-        changeLayoutPanels();
+        //changeLayoutPanels();
 
-        dialogPlans = new SelectorDialog(getContext());
+        flightPlanDialog = new FlightPlanDialog(getContext(), R.style.FullScreenDialog, airplaneManager, mapOverlayManager, lastPosition, plansFolder, airplanesFolder);
+        flightPlanDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        flightPlanDialog.setContentView(R.layout.dialog_plan);
+        flightPlanDialog.setOnDismissListener(this);
+        flightPlanDialog.show();
+
+        /**dialogPlans = new SelectorDialog(getContext());
         dialogPlans.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogPlans.setContentView(R.layout.dialog_selector);
         dialogPlans.loadContent(plansFolder, plansFolder, true, SelectorDialog.TYPE_FLIGHTPLAN);
         dialogPlans.setOnCancelListener(this);
         dialogPlans.setOnDismissListener(this);
-        dialogPlans.show();
+        dialogPlans.show();*/
     }
 
     /**
@@ -601,6 +610,7 @@ public class FragmentHome extends Fragment implements
      */
     @Override
     public void onCancel(DialogInterface dialog) {
+        /**
         // no new plan was selected
         if (dialogPlans != null){
             if (dialogPlans.selected == null) {
@@ -609,7 +619,7 @@ public class FragmentHome extends Fragment implements
                 loadPlanMarkers();
             }
             dialogPlans = null;
-        }
+        }*/
     }
 
     /**
@@ -619,7 +629,17 @@ public class FragmentHome extends Fragment implements
     @Override
     public void onDismiss(DialogInterface dialog) {
 
-        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        if (flightPlanDialog != null){
+            flightPlanManager = flightPlanDialog.flightPlanManager;
+
+            flightPlanDialog = null;
+            loadFlightPlan();
+            loadPlanMarkers();
+            changeLayoutPanels();
+        }
+
+
+        /**activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         if (dialogPlans != null){
             if (dialogPlans.selected != null){
@@ -638,11 +658,14 @@ public class FragmentHome extends Fragment implements
             loadFlightPlan();
             loadPlanMarkers();
             changeLayoutPanels();
-        }
+        }*/
     }
 
-    private void openPlanEditor(){
-        mapLayout.onPause();
+    /**
+     * Opens flight plan editor Dialog
+     */
+    /**private void openPlanEditor(){
+        mapLayout.onStop();
         PlanEditorDialog dialog = new PlanEditorDialog(getContext(), R.style.FullScreenDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_plan_editor);
@@ -650,14 +673,14 @@ public class FragmentHome extends Fragment implements
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                mapLayout.onResume();
+                mapLayout.onStart();
                 loadFlightPlan();
                 loadPlanMarkers();
                 changeLayoutPanels();
             }
         });
         dialog.show();
-    }
+    }*/
 
     /**
      * Loads flight plan into the list

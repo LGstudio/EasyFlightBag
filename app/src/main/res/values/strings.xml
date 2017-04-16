@@ -16,7 +16,7 @@
     <string name="pref_aip_last_update_pl" translatable="false">aip_last_update_pl</string>
     <string name="pref_air_last_update" translatable="false">air_last_update</string>
     <string name="pref_document_page" translatable="false">document_page.</string>
-    <string name="pref_wb_selected" translatable="false">wb_file</string>
+    <string name="pref_airplane_selected" translatable="false">airplane_file</string>
     <string name="pref_overlay_selected" translatable="false">map_overlay_country</string>
     <string name="pref_apt_type_selected" translatable="false">map_apt_type_selected</string>
 
@@ -163,6 +163,7 @@
     <string name="btn_cancel">Cancel</string>
     <string name="btn_orient">Orientation</string>
     <string name="btn_airplane">Airplanes</string>
+    <string name="btn_select">Select</string>
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
 
@@ -279,6 +280,13 @@
 
     <string name="plan_warning_saved">Flight plan saved</string>
     <string name="plan_warning_save_error">Unable to save plan</string>
+    <string name="plan_airplane_select">Select Airplane</string>
+    <string name="plan_airplane_select_none">(No Airplane Selected)</string>
+    <string name="plan_airplane_data">Additional Data</string>
+    <string name="plan_select">Select Flight Plan</string>
+    <string name="plan_select_none">(No Flight Plan Selected)</string>
+    <string name="plan_summary">Flight Summary</string>
+    <string name="plan_summary_empty">Please fill all the fields</string>
 
     <string name="airports">Airports</string>
     <string name="airspaces">Airspaces</string>

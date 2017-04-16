@@ -1,5 +1,8 @@
 package sk.lgstudio.easyflightbag.managers;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +14,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import sk.lgstudio.easyflightbag.R;
 
 
 /**
@@ -55,11 +60,21 @@ public class AirplaneManager {
     public ArrayList<Tanks> tanks= new ArrayList<>();
     public ArrayList<Limits> limits= new ArrayList<>();
 
+    private SharedPreferences prefs;
+    private String prefKey;
+
     /**
      * Constructor
      */
-    public AirplaneManager(){
-
+    public AirplaneManager(Activity a, SharedPreferences p){
+        prefs = p;
+        prefKey = a.getString(R.string.pref_airplane_selected);
+        String filename = prefs.getString(prefKey, "");
+        if (filename.length() > 0){
+            file = new File(filename);
+            if (file.exists()) loadFile(file);
+            else file = null;
+        }
     }
 
     /**
@@ -68,6 +83,8 @@ public class AirplaneManager {
     public void loadFile(File f){
         file = f;
         FileInputStream is = null;
+
+        prefs.edit().putString(prefKey, file.getPath()).apply();
 
         limits.clear();
         additional_weight.clear();
