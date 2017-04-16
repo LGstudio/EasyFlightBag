@@ -71,7 +71,6 @@ public class FragmentHome extends Fragment implements
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener,
-        DialogInterface.OnCancelListener,
         DialogInterface.OnDismissListener{
 
     public final static float M_TO_FT = 3.2808410892388f;
@@ -586,41 +585,13 @@ public class FragmentHome extends Fragment implements
      * Create flight plan chooser dialog
      */
     private void openFlightPlans(){
-
-        //changeLayoutPanels();
-
         flightPlanDialog = new FlightPlanDialog(getContext(), R.style.FullScreenDialog, airplaneManager, mapOverlayManager, lastPosition, plansFolder, airplanesFolder);
         flightPlanDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         flightPlanDialog.setContentView(R.layout.dialog_plan);
         flightPlanDialog.setOnDismissListener(this);
         flightPlanDialog.show();
-
-        /**dialogPlans = new SelectorDialog(getContext());
-        dialogPlans.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogPlans.setContentView(R.layout.dialog_selector);
-        dialogPlans.loadContent(plansFolder, plansFolder, true, SelectorDialog.TYPE_FLIGHTPLAN);
-        dialogPlans.setOnCancelListener(this);
-        dialogPlans.setOnDismissListener(this);
-        dialogPlans.show();*/
     }
 
-    /**
-     * Plan seletor Dialog on cancel handler
-     * @param dialog
-     */
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        /**
-        // no new plan was selected
-        if (dialogPlans != null){
-            if (dialogPlans.selected == null) {
-                flightPlanManager = null;
-                loadFlightPlan();
-                loadPlanMarkers();
-            }
-            dialogPlans = null;
-        }*/
-    }
 
     /**
      * Plan selector Dialog dismiss handler
@@ -637,50 +608,7 @@ public class FragmentHome extends Fragment implements
             loadPlanMarkers();
             changeLayoutPanels();
         }
-
-
-        /**activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        if (dialogPlans != null){
-            if (dialogPlans.selected != null){
-                flightPlanManager = new FlightPlanManager(dialogPlans.selected);
-                if (dialogPlans.edit) {
-                    openPlanEditor();
-                    dialogPlans = null;
-                    return;
-                }
-            }
-            else {
-                flightPlanManager = null;
-            }
-
-            dialogPlans = null;
-            loadFlightPlan();
-            loadPlanMarkers();
-            changeLayoutPanels();
-        }*/
     }
-
-    /**
-     * Opens flight plan editor Dialog
-     */
-    /**private void openPlanEditor(){
-        mapLayout.onStop();
-        PlanEditorDialog dialog = new PlanEditorDialog(getContext(), R.style.FullScreenDialog);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_plan_editor);
-        dialog.loadContent(lastPosition, 30f, flightPlanManager, mapOverlayManager);
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mapLayout.onStart();
-                loadFlightPlan();
-                loadPlanMarkers();
-                changeLayoutPanels();
-            }
-        });
-        dialog.show();
-    }*/
 
     /**
      * Loads flight plan into the list

@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -137,8 +138,9 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
      */
     private void writeSum(){
         if (airplaneManager.loaded && flightPlanManager != null){
-
+            // TODO: evaueate filled data
         }
+        else notOK = true;
 
         if (notOK) {
             txtSum.setText(getContext().getString(R.string.plan_summary_empty));
@@ -225,7 +227,7 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
         if (isAirplane){
             if (dialog.selected != null){
                 airplaneManager.loadFile(dialog.selected);
-                if (dialog.edit) {
+                if (dialog.edit || !airplaneManager.loaded) {
                     createAirplaneEditorDialog();
                     return;
                 }
@@ -238,13 +240,14 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
         else{
             if (dialog.selected != null){
                 flightPlanManager = new FlightPlanManager(dialog.selected);
-                if (dialog.edit) {
+                if (dialog.edit || !flightPlanManager.loaded) {
                     openPlanEditor();
                 }
             }
             else {
                 flightPlanManager = null;
             }
+            loadFlightPlan();
         }
         dialog = null;
     }

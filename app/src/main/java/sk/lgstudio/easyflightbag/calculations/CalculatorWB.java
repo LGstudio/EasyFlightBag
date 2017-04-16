@@ -189,7 +189,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         if (dialogAirplane != null) {
             if (dialogAirplane.selected != null){
                 airplaneManager.loadFile(dialogAirplane.selected);
-                if (dialogAirplane.edit) {
+                if (dialogAirplane.edit || !airplaneManager.loaded) {
                     createAirplaneEditorDialog();
                     return;
                 }
