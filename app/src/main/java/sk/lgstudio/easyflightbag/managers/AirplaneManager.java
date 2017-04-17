@@ -37,6 +37,10 @@ public class AirplaneManager {
     private static final String KEY_EMPTY_A = "empty_arm";
     private static final String KEY_ADD_W = "additional_weight";
     private static final String KEY_LIMITS = "limits";
+    private static final String KEY_EQ_COM_NAV = "eq_com_nav";
+    private static final String KEY_EQ_SSR = "eq_ssr";
+    private static final String KEY_TYPE = "eq_type";
+    private static final String KEY_COLOR = "eq_color";
 
     public File file = null;
 
@@ -44,6 +48,13 @@ public class AirplaneManager {
 
     public int flightTimeH = 0;
     public int flightTimeM = 0;
+
+    public String type = "";
+    public String color = "";
+    public String eq_nav = "";
+    public String eq_ssr = "";
+    public boolean eq_nav_bool[] = {false, false, false, false, false, false, false, false, false, false};
+    public boolean eq_ssr_bool[] = {false, false, false, false, false, false, false, false, false, false};
 
     public double cruise_sp = 0;
     public double climb_sp = 0;
@@ -56,6 +67,7 @@ public class AirplaneManager {
     public double max_landing = 0;
     public double empty_weight = 0;
     public double empty_arm = 0;
+
     public ArrayList<Weights> additional_weight = new ArrayList<>();
     public ArrayList<Tanks> tanks= new ArrayList<>();
     public ArrayList<Limits> limits= new ArrayList<>();
@@ -101,6 +113,33 @@ public class AirplaneManager {
             }
 
             JSONObject json = new JSONObject(str);
+
+            type = json.getString(KEY_TYPE);
+            color = json.getString(KEY_COLOR);
+            eq_nav = json.getString(KEY_EQ_COM_NAV);
+            eq_ssr = json.getString(KEY_EQ_SSR);
+
+            eq_nav_bool[0] = (eq_nav.contains("D"));
+            eq_nav_bool[1] = (eq_nav.contains("F"));
+            eq_nav_bool[2] = (eq_nav.contains("G"));
+            eq_nav_bool[3] = (eq_nav.contains("H"));
+            eq_nav_bool[4] = (eq_nav.contains("K"));
+            eq_nav_bool[5] = (eq_nav.contains("L"));
+            eq_nav_bool[6] = (eq_nav.contains("O"));
+            eq_nav_bool[7] = (eq_nav.contains("U"));
+            eq_nav_bool[8] = (eq_nav.contains("V"));
+            eq_nav_bool[9] = (eq_nav.contains("Z"));
+
+            eq_ssr_bool[0] = (eq_ssr.contains("N"));
+            eq_ssr_bool[1] = (eq_ssr.contains("A"));
+            eq_ssr_bool[2] = (eq_ssr.contains("C"));
+            eq_ssr_bool[3] = (eq_ssr.contains("E"));
+            eq_ssr_bool[4] = (eq_ssr.contains("H"));
+            eq_ssr_bool[5] = (eq_ssr.contains("I"));
+            eq_ssr_bool[6] = (eq_ssr.contains("L"));
+            eq_ssr_bool[7] = (eq_ssr.contains("X"));
+            eq_ssr_bool[8] = (eq_ssr.contains("P"));
+            eq_ssr_bool[9] = (eq_ssr.contains("S"));
 
             cruise_sp = json.getDouble(KEY_CR_SP);
             climb_sp = json.getDouble(KEY_CL_SP);
@@ -168,6 +207,35 @@ public class AirplaneManager {
     public boolean saveFile(){
         JSONObject json = new JSONObject();
         try {
+            json.put(KEY_TYPE, type);
+            json.put(KEY_COLOR, color);
+
+            eq_nav = "";
+            if (eq_nav_bool[0]) eq_nav += "D";
+            if (eq_nav_bool[1]) eq_nav += "F";
+            if (eq_nav_bool[2]) eq_nav += "G";
+            if (eq_nav_bool[3]) eq_nav += "H";
+            if (eq_nav_bool[4]) eq_nav += "K";
+            if (eq_nav_bool[5]) eq_nav += "L";
+            if (eq_nav_bool[6]) eq_nav += "O";
+            if (eq_nav_bool[7]) eq_nav += "U";
+            if (eq_nav_bool[8]) eq_nav += "V";
+            if (eq_nav_bool[9]) eq_nav += "Z";
+            json.put(KEY_EQ_COM_NAV, eq_nav);
+
+            eq_ssr = "";
+            if (eq_ssr_bool[0]) eq_ssr += "N";
+            if (eq_ssr_bool[1]) eq_ssr += "A";
+            if (eq_ssr_bool[2]) eq_ssr += "C";
+            if (eq_ssr_bool[3]) eq_ssr += "E";
+            if (eq_ssr_bool[4]) eq_ssr += "H";
+            if (eq_ssr_bool[5]) eq_ssr += "I";
+            if (eq_ssr_bool[6]) eq_ssr += "L";
+            if (eq_ssr_bool[7]) eq_ssr += "X";
+            if (eq_ssr_bool[8]) eq_ssr += "P";
+            if (eq_ssr_bool[9]) eq_ssr += "S";
+            json.put(KEY_EQ_SSR, eq_ssr);
+
             json.put(KEY_CR_SP, cruise_sp);
             json.put(KEY_CL_SP, climb_sp);
             json.put(KEY_DS_SP, descent_sp);

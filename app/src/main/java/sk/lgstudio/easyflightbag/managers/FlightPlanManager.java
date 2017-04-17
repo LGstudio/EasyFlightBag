@@ -29,11 +29,16 @@ public class FlightPlanManager {
     private final static String KEY_LON = "lon";
     private final static String KEY_EDITABLE = "editable";
 
+    public static final short RULE_VFR = 0;
+    public static final short RULE_IFR = 1;
+    public static final short RULE_VFR_SP = 2;
+
     public boolean loaded = false;
 
     private File file;
     public ArrayList<Point> plan;
     public ArrayList<Point> editedPlan;
+    public AdditionalData data;
 
     /**
      * Constructor - reads the .json file
@@ -71,6 +76,7 @@ public class FlightPlanManager {
             }
 
             loaded = true;
+            data = new AdditionalData();
         } catch (JSONException | IOException e) {
             loaded = false;
         }
@@ -167,6 +173,17 @@ public class FlightPlanManager {
         public String name;
         public LatLng location;
         public boolean editeble;
+    }
+
+    public static class AdditionalData{
+        public float flightLevel = 0f;
+        public short flightRules = 0;
+        public int rangeH = 0;
+        public int rangeM = 0;
+        public int depH = 0;
+        public int depM = 0;
+        public int arrivH = 0;
+        public int arrivM = 0;
     }
 
 }

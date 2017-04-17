@@ -99,6 +99,26 @@
     <string name="calc_unit_gph" translatable="false">gal./hour</string>
     <string name="calc_unit_degree" translatable="false">°</string>
 
+    <string name="calc_eq_dme" translatable="false">DME</string>
+    <string name="calc_eq_adf" translatable="false">ADF</string>
+    <string name="calc_eq_gnss" translatable="false">GNSS</string>
+    <string name="calc_eq_hf" translatable="false">HF RTF</string>
+    <string name="calc_eq_mls" translatable="false">MLS</string>
+    <string name="calc_eq_ils" translatable="false">ILS</string>
+    <string name="calc_eq_vor" translatable="false">VOR</string>
+    <string name="calc_eq_uhf" translatable="false">UHF RTF</string>
+    <string name="calc_eq_vhf" translatable="false">VHF RTF</string>
+    <string name="calc_eq_other" translatable="false">Other</string>
+    <string name="calc_eq_n" translatable="false">None</string>
+    <string name="calc_eq_a" translatable="false">A</string>
+    <string name="calc_eq_c" translatable="false">C</string>
+    <string name="calc_eq_e" translatable="false">E</string>
+    <string name="calc_eq_h" translatable="false">H</string>
+    <string name="calc_eq_i" translatable="false">I</string>
+    <string name="calc_eq_l" translatable="false">L</string>
+    <string name="calc_eq_x" translatable="false">X</string>
+    <string name="calc_eq_p" translatable="false">P</string>
+    <string name="calc_eq_s" translatable="false">S</string>
 
     <!-- TEXT FIELDS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
@@ -229,6 +249,11 @@
     <string name="calc_runway_num">Runway number</string>
     <string name="calc_wind_dir">Wind from</string>
     <string name="calc_wind_speed">Wind speed (kn)</string>
+    <string name="calc_airplane_info">Airplane Information</string>
+    <string name="calc_airplane_type">Type</string>
+    <string name="calc_airplane_color">Color</string>
+    <string name="calc_airplane_eq_nav">Equipment - COM/NAV</string>
+    <string name="calc_airplane_eq_ssr">Equipment - SSR Transponder</string>
 
     <string name="calc_note_tank">Note: The W&amp;B calculator will calculate by draining the lower positioned fuel tanks in the list first.</string>
     <string name="calc_warning_tank">Add at least 1 fuel tank to save</string>

@@ -153,7 +153,14 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
      * Check if data are valid for flight then close the dialog
      */
     private void savePlan(){
-        // TODO: validate data, save fuel tanks ...
+        // TODO: validate data, save fuel tanks and flightPlanManager.AdditionalData...
+
+
+        // TODO: calculate flight time;
+        airplaneManager.flightTimeH = 1;
+        airplaneManager.flightTimeM = 1;
+
+
         dismiss();
     }
 

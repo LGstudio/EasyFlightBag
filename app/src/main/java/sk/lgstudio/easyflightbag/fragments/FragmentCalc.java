@@ -105,6 +105,9 @@ public class FragmentCalc extends Fragment implements View.OnClickListener {
 
     @Override
     public void onPause(){
+        if (calcFunctions.size() > openedView){
+            calcFunctions.get(openedView).detachView();
+        }
         frame.removeAllViewsInLayout();
         super.onPause();
     }

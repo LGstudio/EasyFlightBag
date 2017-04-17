@@ -38,6 +38,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
 
     private TextView airplaneId = null;
     private ImageButton airplaneEditor = null;
+    private ImageButton airplaneSelector = null;
 
     private ScrollView scrollView;
     private NumberPicker flightTimeH;
@@ -62,7 +63,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         airplaneEditor = null;
         airplaneId = null;
 
-        ImageButton airplaneSelector = (ImageButton) v.findViewById(R.id.wb_plane);
+        airplaneSelector = (ImageButton) v.findViewById(R.id.wb_plane);
         airplaneEditor = (ImageButton) v.findViewById(R.id.wb_edit);
         airplaneId = (TextView) v.findViewById(R.id.wb_airplane_name);
         airplaneSelector.setOnClickListener(this);
@@ -221,6 +222,21 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
 
             if (airplaneManager.loaded){
                 scrollView.setVisibility(View.VISIBLE);
+
+                if (airplaneManager.flightTimeH != 0 && airplaneManager.flightTimeM != 0){
+                    flightTimeH.setValue(airplaneManager.flightTimeH);
+                    flightTimeM.setValue(airplaneManager.flightTimeM);
+                    flightTimeM.setEnabled(false);
+                    flightTimeH.setEnabled(false);
+                    airplaneSelector.setEnabled(false);
+                }
+                else {
+                    flightTimeH.setValue(0);
+                    flightTimeM.setValue(0);
+                    flightTimeM.setEnabled(true);
+                    flightTimeH.setEnabled(true);
+                    airplaneSelector.setEnabled(true);
+                }
 
                 for(final AirplaneManager.Tanks t: airplaneManager.tanks) {
                     TableRow row = (TableRow) inflater.inflate(R.layout.calc_wb_fuel_row, null);

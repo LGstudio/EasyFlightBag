@@ -3,6 +3,8 @@ package sk.lgstudio.easyflightbag.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
@@ -22,6 +24,35 @@ import sk.lgstudio.easyflightbag.managers.AirplaneManager;
  */
 
 public class AirplaneEditorDialog extends Dialog implements View.OnClickListener{
+
+    private static final int eq_nav_id[] = {
+            R.id.ap_edit_eq_dme,
+            R.id.ap_edit_eq_adf,
+            R.id.ap_edit_eq_gnss,
+            R.id.ap_edit_eq_hf,
+            R.id.ap_edit_eq_mls,
+            R.id.ap_edit_eq_ils,
+            R.id.ap_edit_eq_vor,
+            R.id.ap_edit_eq_uhf,
+            R.id.ap_edit_eq_vhf,
+            R.id.ap_edit_eq_oth,
+    };
+
+    private static final int eq_ssr_id[] = {
+            R.id.ap_edit_eq_n,
+            R.id.ap_edit_eq_a,
+            R.id.ap_edit_eq_c,
+            R.id.ap_edit_eq_e,
+            R.id.ap_edit_eq_h,
+            R.id.ap_edit_eq_i,
+            R.id.ap_edit_eq_l,
+            R.id.ap_edit_eq_x,
+            R.id.ap_edit_eq_p,
+            R.id.ap_edit_eq_s,
+    };
+
+    private EditText edtType;
+    private EditText edtColor;
 
     private EditText edtCruiseSp;
     private EditText edtClimbSp;
@@ -73,6 +104,9 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         TextView airplaneId = (TextView) findViewById(R.id.airplane_editor_name);
         airplaneId.setText(airplane.getName());
 
+        edtType = (EditText) findViewById(R.id.ap_edit_type);
+        edtColor = (EditText) findViewById(R.id.ap_edit_color);
+
         edtCruiseSp =  (EditText) findViewById(R.id.ap_edit_perf_cr_sp);
         edtClimbSp =  (EditText) findViewById(R.id.ap_edit_perf_cl_sp);
         edtDescSp =  (EditText) findViewById(R.id.ap_edit_perf_de_sp);
@@ -100,8 +134,33 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         ImageButton tableLimitsAdd = (ImageButton) findViewById(R.id.ap_edit_pref_table_limits_add);
         tableLimitsAdd.setOnClickListener(this);
 
+        for (int i = 0; i < eq_nav_id.length; i++){
+            CheckBox b = (CheckBox) findViewById(eq_nav_id[i]);
+            final int f = i;
+            b.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    airplane.eq_nav_bool[f] = isChecked;
+                }
+            });
+        }
+
+        for (int i = 0; i < eq_ssr_id.length; i++){
+            CheckBox b = (CheckBox) findViewById(eq_ssr_id[i]);
+            final int f = i;
+            b.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    airplane.eq_ssr_bool[f] = isChecked;
+                }
+            });
+        }
+
         // load content from object
         if (airplane.loaded){
+
+            edtType.setText(airplane.type);
+            edtColor.setText(airplane.color);
 
             edtCruiseSp.setText(String.valueOf(airplane.cruise_sp));
             edtClimbSp.setText(String.valueOf(airplane.climb_sp));
@@ -128,6 +187,16 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
             for(AirplaneManager.Limits l: airplane.limits){
                 addLimits(l.arm, l.weight);
+            }
+
+            for (int i = 0; i < eq_nav_id.length; i++){
+                CheckBox b = (CheckBox) findViewById(eq_nav_id[i]);
+                b.setChecked(airplane.eq_nav_bool[i]);
+            }
+
+            for (int i = 0; i < eq_ssr_id.length; i++){
+                CheckBox b = (CheckBox) findViewById(eq_ssr_id[i]);
+                b.setChecked(airplane.eq_ssr_bool[i]);
             }
         }
     }
@@ -265,6 +334,10 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         }
 
         if (!isEmpty()) {
+
+            airplane.type = edtType.getText().toString();
+            airplane.color = edtColor.getText().toString();
+
             airplane.cruise_sp = Double.parseDouble(edtCruiseSp.getText().toString());
             airplane.climb_sp = Double.parseDouble(edtClimbSp.getText().toString());
             airplane.descent_sp = Double.parseDouble(edtDescSp.getText().toString());
@@ -321,7 +394,9 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
      * @return
      */
     private boolean isEmpty(){
-        boolean empty = (edtCruiseSp.getText().length() == 0)
+        boolean empty = (edtType.getText().length() == 0)
+                &&(edtColor.getText().length() == 0)
+                &&(edtCruiseSp.getText().length() == 0)
                 && (edtClimbSp.getText().length() == 0)
                 && (edtDescSp.getText().length() == 0)
                 && (edtClimbRt.getText().length() == 0)

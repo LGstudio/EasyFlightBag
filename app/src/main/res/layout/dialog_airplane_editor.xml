@@ -58,6 +58,176 @@
 
             <TableLayout
                 style="@style/Airplane_editor_table_layout"
+                android:weightSum="5">
+
+                <TableRow style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_title_text_style"
+                        android:text="@string/calc_airplane_info"/>
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_airplane_type"
+                        android:layout_weight="0"/>
+
+                    <EditText
+                        style="@style/Block_edit_text_style"
+                        android:id="@+id/ap_edit_type"
+                        />
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/calc_airplane_color"
+                        android:layout_weight="0"/>
+
+                    <EditText
+                        style="@style/Block_edit_text_style"
+                        android:id="@+id/ap_edit_color" />
+
+                </TableRow>
+
+                <TableRow style="@style/Airplane_editor_table_row_layout"
+                    android:layout_marginTop="@dimen/row_padding">
+
+                    <TextView
+                        style="@style/Block_edit_text_style"
+                        android:text="@string/calc_airplane_eq_nav"/>
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_dme"
+                        android:id="@+id/ap_edit_eq_dme"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_adf"
+                        android:id="@+id/ap_edit_eq_adf"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_gnss"
+                        android:id="@+id/ap_edit_eq_gnss"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_mls"
+                        android:id="@+id/ap_edit_eq_mls"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_ils"
+                        android:id="@+id/ap_edit_eq_ils"/>
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_hf"
+                        android:id="@+id/ap_edit_eq_hf"/>
+
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_uhf"
+                        android:id="@+id/ap_edit_eq_uhf"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_vhf"
+                        android:id="@+id/ap_edit_eq_vhf"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_vor"
+                        android:id="@+id/ap_edit_eq_vor"/>
+
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_other"
+                        android:id="@+id/ap_edit_eq_oth"/>
+
+                </TableRow>
+
+                <TableRow style="@style/Airplane_editor_table_row_layout"
+                    android:layout_marginTop="@dimen/row_padding">
+
+                    <TextView
+                        style="@style/Block_edit_text_style"
+                        android:text="@string/calc_airplane_eq_ssr"/>
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_n"
+                        android:id="@+id/ap_edit_eq_n"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_a"
+                        android:id="@+id/ap_edit_eq_a"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_c"
+                        android:id="@+id/ap_edit_eq_c"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_e"
+                        android:id="@+id/ap_edit_eq_e"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_h"
+                        android:id="@+id/ap_edit_eq_h"/>
+
+                </TableRow>
+
+                <TableRow
+                    style="@style/Airplane_editor_table_row_layout">
+
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_i"
+                        android:id="@+id/ap_edit_eq_i"/>
+
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_l"
+                        android:id="@+id/ap_edit_eq_l"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_x"
+                        android:id="@+id/ap_edit_eq_x"/>
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_p"
+                        android:id="@+id/ap_edit_eq_p"/>
+
+                    <CheckBox
+                        style="@style/Block_checkbox_style"
+                        android:text="@string/calc_eq_s"
+                        android:id="@+id/ap_edit_eq_s"/>
+
+                </TableRow>
+
+
+            </TableLayout>
+
+            <TableLayout
+                style="@style/Airplane_editor_table_layout"
                 android:weightSum="3">
 
                 <TableRow style="@style/Airplane_editor_table_row_layout">

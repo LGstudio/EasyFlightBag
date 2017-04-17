@@ -387,7 +387,6 @@ public class FragmentHome extends Fragment implements
 
         if (planMarkers.size() > 0){
             loadFlightPlan();
-            loadPlanMarkers();
         }
 
     }
@@ -551,7 +550,6 @@ public class FragmentHome extends Fragment implements
         mapPointIcon = BitmapDescriptorFactory.fromBitmap(bm);
     }
 
-    // TODO: FIX WRONG bOTTOM PANEL SIZES ???
     /**
      * Show/Hide elevaton graph on the bottom
      */
@@ -595,22 +593,17 @@ public class FragmentHome extends Fragment implements
         flightPlanDialog.show();
     }
 
-
     /**
      * Plan selector Dialog dismiss handler
      * @param dialog
      */
     @Override
     public void onDismiss(DialogInterface dialog) {
-
-        //mapLayout.getMapAsync(this);
-
         if (flightPlanDialog != null){
             flightPlanManager = flightPlanDialog.flightPlanManager;
 
             flightPlanDialog = null;
             loadFlightPlan();
-            loadPlanMarkers();
             changeLayoutPanels();
         }
     }
@@ -621,6 +614,8 @@ public class FragmentHome extends Fragment implements
     private void loadFlightPlan(){
         if (flightPlanManager != null)
             refillPlanList();
+
+        loadPlanMarkers();
     }
 
     /**
@@ -667,6 +662,8 @@ public class FragmentHome extends Fragment implements
      */
     private void cancelRoute(){
         flightPlanManager = null;
+        airplaneManager.flightTimeH = 0;
+        airplaneManager.flightTimeM = 0;
         changeLayoutPanels();
         loadPlanMarkers();
     }
