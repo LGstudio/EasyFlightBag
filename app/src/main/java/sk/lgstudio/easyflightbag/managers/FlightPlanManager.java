@@ -29,10 +29,6 @@ public class FlightPlanManager {
     private final static String KEY_LON = "lon";
     private final static String KEY_EDITABLE = "editable";
 
-    public static final short RULE_VFR = 0;
-    public static final short RULE_IFR = 1;
-    public static final short RULE_VFR_SP = 2;
-
     public boolean loaded = false;
 
     private File file;
@@ -177,7 +173,6 @@ public class FlightPlanManager {
 
     public static class AdditionalData{
         public float flightLevel = 0f;
-        public short flightRules = 0;
         public int rangeH = 0;
         public int rangeM = 0;
         public int depH = 0;
@@ -185,5 +180,4 @@ public class FlightPlanManager {
         public int arrivH = 0;
         public int arrivM = 0;
     }
-
 }

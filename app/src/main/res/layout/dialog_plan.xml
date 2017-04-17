@@ -46,7 +46,7 @@
             <RelativeLayout
                 style="@style/Airplane_editor_table_layout"
                 android:orientation="vertical">
-                
+
                 <TextView
                     style="@style/Block_title_text_style"
                     android:text="@string/plan_airplane_select"
@@ -59,11 +59,12 @@
                     android:padding="@dimen/row_padding"
                     android:textAllCaps="true"
                     android:background="?attr/primaryColor"
-                    android:layout_margin="@dimen/row_padding"
+                    android:layout_marginEnd="@dimen/row_padding"
+                    android:layout_marginTop="@dimen/row_padding"
+                    android:layout_marginStart="@dimen/row_padding"
                     android:text="@string/btn_select"
                     android:id="@+id/plan_select_airplane"
                     android:textColor="?attr/highlightColor"
-                    android:layout_alignParentBottom="true"
                     android:layout_below="@id/plan_select_airplane_title"
                     android:textStyle="bold"/>
 
@@ -77,25 +78,16 @@
                     android:layout_margin="@dimen/row_padding"
                     android:text="@string/plan_airplane_select_none"
                     android:gravity="center_vertical"
-                    android:layout_alignParentBottom="true"
-                    android:paddingBottom="@dimen/row_padding"
+                    android:paddingTop="@dimen/row_padding"
                     />
 
-            
-            </RelativeLayout>
-
-            <LinearLayout
-                style="@style/Airplane_editor_table_layout"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/Block_title_text_style"
-                    android:text="@string/plan_airplane_data"/>
 
                 <TableLayout
                     style="@style/Airplane_editor_table_layout"
                     android:weightSum="4"
-                    android:id="@+id/plan_ap_data_table">
+                    android:id="@+id/plan_ap_data_table"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@id/plan_select_airplane">
 
                     <TableRow
                         style="@style/Airplane_editor_table_row_layout"
@@ -144,7 +136,7 @@
 
                 </TableLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 style="@style/Airplane_editor_table_layout"
@@ -166,23 +158,67 @@
                     android:text="@string/btn_select"
                     android:id="@+id/plan_select_plan"
                     android:textColor="?attr/highlightColor"
-                    android:layout_alignParentBottom="true"
                     android:layout_below="@id/plan_select_plan_title"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toEndOf="@id/plan_select_plan"
                     android:id="@+id/plan_select_plan_text"
                     android:textColor="?attr/primaryTextColor"
-                    android:layout_below="@id/plan_select_plan_title"
-                    android:layout_margin="@dimen/row_padding"
                     android:text="@string/plan_select_none"
                     android:gravity="center_vertical"
-                    android:layout_alignParentBottom="true"
                     android:paddingBottom="@dimen/row_padding"
-                    />
+                    android:layout_marginLeft="@dimen/row_padding"
+                    android:layout_marginRight="@dimen/row_padding"
+                    android:layout_alignBaseline="@+id/plan_select_plan"
+                    android:layout_alignBottom="@+id/plan_select_plan"
+                    android:layout_toEndOf="@+id/plan_select_plan" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@id/plan_select_plan_text"
+                    android:layout_marginStart="@dimen/row_padding"
+                    android:layout_marginTop="@dimen/row_padding">
+
+                    <TextView
+                        style="@style/Block_text_style"
+                        android:text="@string/plan_departure_time"
+                        android:layout_marginEnd="@dimen/row_padding" />
+
+                    <NumberPicker
+                        android:id="@+id/plan_departure_h"
+                        style="@style/NumberPickerStyle"
+                        android:theme="@style/NumberPickerStyleText"
+                        />
+
+                    <TextView
+                        style="@style/Calculator_text_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calc_unit_h"
+                        android:textStyle="bold" />
+
+                    <NumberPicker
+                        android:id="@+id/plan_departure_m"
+                        style="@style/NumberPickerStyle"
+                        android:theme="@style/NumberPickerStyleText"
+                        />
+
+                    <TextView
+                        style="@style/Calculator_text_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calc_unit_min"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
 
             </RelativeLayout>
 

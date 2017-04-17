@@ -80,5 +80,18 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/row_padding"
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="@dimen/row_big_text"
+        android:background="?attr/backgroundDarkColor"
+        android:text="@string/plan_add_departue_point"
+        android:gravity="center_horizontal"
+        android:id="@+id/plan_editor_hint"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:elevation="@dimen/elevation_12"/>
 
 </RelativeLayout>

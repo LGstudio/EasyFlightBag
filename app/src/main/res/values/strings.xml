@@ -311,7 +311,12 @@
     <string name="plan_select">Select Flight Plan</string>
     <string name="plan_select_none">(No Flight Plan Selected)</string>
     <string name="plan_summary">Flight Summary</string>
-    <string name="plan_summary_empty">Please fill all the fields</string>
+    <string name="plan_summary_empty">Please fill all the fields with valid values</string>
+    <string name="plan_add_departue_point">Select departure airport on the map.</string>
+    <string name="plan_departure_time">Departure Time (UTC)</string>
+    <string name="plan_arrival_time">Arrival Time (UTC)</string>
+    <string name="plan_duration_time">Flight Duration</string>
+    <string name="plan_duration_distance">Flight Distance</string>
 
     <string name="airports">Airports</string>
     <string name="airspaces">Airspaces</string>

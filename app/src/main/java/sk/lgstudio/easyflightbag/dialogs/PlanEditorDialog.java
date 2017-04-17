@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
@@ -36,7 +34,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.vision.text.Line;
 
 import java.util.ArrayList;
 
@@ -67,6 +64,7 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
     private LinearLayout planList;
     private ImageButton btnBack;
     private ImageButton btnSave;
+    private TextView txthint;
 
     private ArrayList<Marker> planMarkers = new ArrayList<>();
     private Polyline planLine;
@@ -111,6 +109,8 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
         btnSave = (ImageButton) findViewById(R.id.plan_editor_save);
         btnSave.setOnClickListener(this);
         btnBack.setOnClickListener(this);
+
+        txthint = (TextView) findViewById(R.id.plan_editor_hint);
 
         TextView title = (TextView) findViewById(R.id.plan_editor_name);
         title.setText(flightPlanManager.getPlanName());
@@ -158,7 +158,6 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
         }
 
         loadPlanMarkers();
-
     }
 
     @Override
@@ -214,6 +213,10 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
 
             i++;
         }
+
+        if (i == 0) txthint.setVisibility(View.VISIBLE);
+        else txthint.setVisibility(View.GONE);
+
     }
 
     /**

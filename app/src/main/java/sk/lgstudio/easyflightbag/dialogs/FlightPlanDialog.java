@@ -8,15 +8,20 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
+import java.text.DecimalFormat;
 
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
@@ -29,15 +34,15 @@ import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
  *      - Fill flight info
  *      - Select Flight plan
  */
-public class FlightPlanDialog extends Dialog implements View.OnClickListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
+public class FlightPlanDialog extends Dialog implements View.OnClickListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener, NumberPicker.OnValueChangeListener {
+
+    public final static float KTS_TO_KMPH = 1.852f;
 
     private TextView txtAirplane;
     private TextView txtPlan;
     private TextView txtSum;
     private EditText edtCrSp;
     private TableLayout table;
-
-    private float crSpeed = 0;
 
     private File plansFolder;
     private File airplanesFolder;
@@ -51,15 +56,28 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
     private boolean isAirplane = false;
     private boolean notOK = false;
 
-    public FlightPlanDialog(Context context, int themeResId, AirplaneManager ap, MapOverlayManager map, LatLng pos, File plan, File airplane, Bundle bundle) {
+    private String sumArr;
+    private String sumDur;
+    private String sumDist;
+    private String sumKm;
+
+    public FlightPlanDialog(Context context, int themeResId, FlightPlanManager fp, AirplaneManager ap, MapOverlayManager map, LatLng pos, File plan, File airplane, Bundle bundle) {
         super(context, themeResId);
 
         airplanesFolder = airplane;
         plansFolder = plan;
+        flightPlanManager = fp;
         airplaneManager = ap;
         mapOverlayManager = map;
         lastPosition = pos;
         instance = bundle;
+
+        sumArr = context.getString(R.string.plan_arrival_time);
+        sumDur = context.getString(R.string.plan_duration_time);
+        sumDist = context.getString(R.string.plan_duration_distance);
+        sumKm = context.getString(R.string.calc_unit_km);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
@@ -70,38 +88,55 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
         ImageButton btnSave = (ImageButton) findViewById(R.id.plan_save);
         Button btnAirplane = (Button) findViewById(R.id.plan_select_airplane);
         Button btnPlan = (Button) findViewById(R.id.plan_select_plan);
-        btnBack.setOnClickListener(this);
-        btnSave.setOnClickListener(this);
-        btnPlan.setOnClickListener(this);
-        btnAirplane.setOnClickListener(this);
 
         txtAirplane = (TextView) findViewById(R.id.plan_select_airplane_text);
         txtPlan = (TextView) findViewById(R.id.plan_select_plan_text);
         txtSum = (TextView) findViewById(R.id.plan_sum);
         edtCrSp = (EditText) findViewById(R.id.plan_ap_cruise_sp);
-        edtCrSp.setEnabled(false);
+
+        NumberPicker depH = (NumberPicker) findViewById(R.id.plan_departure_h);
+        NumberPicker depM = (NumberPicker) findViewById(R.id.plan_departure_m);
+        depH.setMaxValue(0);
+        depH.setMaxValue(23);
+        depM.setMaxValue(0);
+        depM.setMaxValue(59);
+
+        table = (TableLayout) findViewById(R.id.plan_ap_data_table);
+
+        loadAirplane();
+
+        if (flightPlanManager != null){
+            depH.setValue(flightPlanManager.data.depH);
+            depM.setValue(flightPlanManager.data.depM);
+        }
+
+        depH.setOnValueChangedListener(this);
+        depM.setOnValueChangedListener(this);
+
         edtCrSp.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0)
-                    crSpeed =  Float.valueOf(String.valueOf(s));
-                else
-                    crSpeed = 0f;
-                writeSum();
+                if (s.length() > 0) {
+                    airplaneManager.cruise_sp = Float.valueOf(String.valueOf(s));
+                    validateData(true);
+                }
+                else {
+                    airplaneManager.cruise_sp = 0f;
+                    validateData(false);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {}
         });
 
-        table = (TableLayout) findViewById(R.id.plan_ap_data_table);
-
-        if (airplaneManager.loaded)
-            loadAirplane();
-
+        btnBack.setOnClickListener(this);
+        btnSave.setOnClickListener(this);
+        btnPlan.setOnClickListener(this);
+        btnAirplane.setOnClickListener(this);
     }
 
     /**
@@ -111,15 +146,54 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
         if (airplaneManager.loaded){
             txtAirplane.setText(airplaneManager.getName());
             edtCrSp.setEnabled(true);
-            // TODO: LOAD fuel tanks
+
+            edtCrSp.setText(String.valueOf(airplaneManager.cruise_sp));
+
+            for(final AirplaneManager.Tanks t: airplaneManager.tanks) {
+
+                TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.calc_wb_fuel_row, null);
+                TextView txtName = (TextView) row.findViewById(R.id.ap_wb_fuel_name);
+                TextView txtCap = (TextView) row.findViewById(R.id.ap_wb_fuel_capacity);
+                TextView txtUnus = (TextView) row.findViewById(R.id.ap_wb_fuel_unus);
+                EditText actual = (EditText) row.findViewById(R.id.ap_wb_fuel_content);
+                txtName.setText(t.name);
+                txtCap.setText(String.valueOf(t.max));
+                txtUnus.setText(String.valueOf(t.unus));
+                actual.setText(String.valueOf(t.actual));
+                actual.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s.length() > 0)
+                            t.actual = Double.parseDouble(s.toString());
+                        else
+                            t.actual = 0;
+
+                        if (t.actual < t.max && t.actual > t.unus)
+                            validateData(true);
+                        else
+                            validateData(false);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {}
+                });
+
+                table.addView(row);
+
+            }
+
         }
         else {
             txtAirplane.setText(getContext().getString(R.string.plan_airplane_select_none));
             edtCrSp.setEnabled(false);
             edtCrSp.setText("");
-            // TODO: Clear fuel tanks rows
+            for (int i = 0; i < airplaneManager.tanks.size(); i++)
+                table.removeViewAt(1);
         }
-        writeSum();
+        validateData(true);
     }
 
     /**
@@ -132,15 +206,28 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
         else{
             txtPlan.setText(flightPlanManager.getPlanName());
         }
-        writeSum();
+        validateData(true);
     }
 
     /**
      * rewrites summary information
      */
-    private void writeSum(){
-        if (airplaneManager.loaded && flightPlanManager != null){
-            // TODO: evaueate filled data
+    private void validateData(boolean isChangeOK){
+        if (isChangeOK && airplaneManager.loaded && flightPlanManager != null){
+            notOK = false;
+
+            double dist = flightPlanManager.getRoutLength();
+            double sp = airplaneManager.climb_sp * KTS_TO_KMPH;
+            // TODO
+
+            String info = sumDist + ": " + new DecimalFormat("#.#").format(dist) + sumKm + "\n";
+            info += sumDur + ": ";
+
+
+
+
+
+            txtSum.setText(info);
         }
         else notOK = true;
 
@@ -153,15 +240,10 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
      * Check if data are valid for flight then close the dialog
      */
     private void savePlan(){
-        // TODO: validate data, save fuel tanks and flightPlanManager.AdditionalData...
-
-
-        // TODO: calculate flight time;
-        airplaneManager.flightTimeH = 1;
-        airplaneManager.flightTimeM = 1;
-
-
-        dismiss();
+        if (notOK)
+            Toast.makeText(getContext(), getContext().getString(R.string.plan_summary_empty), Toast.LENGTH_SHORT).show();
+        else
+            dismiss();
     }
 
     @Override
@@ -293,5 +375,18 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        switch(picker.getId()) {
+            case R.id.plan_departure_h:
+                if (flightPlanManager != null) flightPlanManager.data.depH = newVal;
+                break;
+            case R.id.plan_departure_m:
+                if (flightPlanManager != null) flightPlanManager.data.depM = newVal;
+                break;
+        }
+        validateData(true);
     }
 }
