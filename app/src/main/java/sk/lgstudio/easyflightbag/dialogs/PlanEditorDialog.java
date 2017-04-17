@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.VectorDrawable;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
@@ -58,6 +61,7 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
     private LatLng lastPosition = null;
     private FlightPlanManager flightPlanManager;
     private MapOverlayManager mapOverlayManager;
+    private Bundle savedInstanceState;
 
     private HorizontalScrollView planScrollView;
     private LinearLayout planList;
@@ -84,14 +88,22 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
         mapPointIcon = BitmapDescriptorFactory.fromBitmap(bm);
     }
 
-    public void loadContent(LatLng mypos, float range, FlightPlanManager flPlanMan, MapOverlayManager overlay){
+    public void loadContent(LatLng mypos, float range, FlightPlanManager flPlanMan, MapOverlayManager overlay, Bundle b){
         lastPosition = mypos;
         flightPlanManager = flPlanMan;
         fuelRange = range;
         mapOverlayManager = overlay;
+        savedInstanceState = b;
+    }
+
+    @Override
+    public void show(){
+        super.show();
 
         mapLayout = (MapView) findViewById(R.id.plan_editor_map);
+        mapLayout.onCreate(savedInstanceState);
         mapLayout.getMapAsync(this);
+        mapLayout.onResume();
 
         planScrollView = (HorizontalScrollView) findViewById(R.id.plan_editor_scroll);
         planList = (LinearLayout) findViewById(R.id.plan_editor_list);
@@ -104,6 +116,12 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
         title.setText(flightPlanManager.getPlanName());
 
         loadFlightPlan();
+    }
+
+    @Override
+    public void dismiss(){
+        mapLayout.onDestroy();
+        super.dismiss();
     }
 
     @Override
@@ -122,7 +140,7 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
 
 
         if(lastPosition != null){
-            CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(lastPosition).build());
+            CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(lastPosition).zoom(12f).build());
             map.moveCamera(myLoc);
         }
 
@@ -139,9 +157,8 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
             loadOverlays();
         }
 
-        if (planMarkers.size() > 0){
-            loadPlanMarkers();
-        }
+        loadPlanMarkers();
+
     }
 
     @Override

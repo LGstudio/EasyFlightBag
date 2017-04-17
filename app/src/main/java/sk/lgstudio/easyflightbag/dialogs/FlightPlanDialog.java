@@ -3,11 +3,11 @@ package sk.lgstudio.easyflightbag.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -45,12 +45,13 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
     private MapOverlayManager mapOverlayManager;
     private LatLng lastPosition;
     public FlightPlanManager flightPlanManager = null; // returned value
+    private Bundle instance;
 
     private SelectorDialog dialog;
     private boolean isAirplane = false;
     private boolean notOK = false;
 
-    public FlightPlanDialog(Context context, int themeResId, AirplaneManager ap, MapOverlayManager map, LatLng pos, File plan, File airplane) {
+    public FlightPlanDialog(Context context, int themeResId, AirplaneManager ap, MapOverlayManager map, LatLng pos, File plan, File airplane, Bundle bundle) {
         super(context, themeResId);
 
         airplanesFolder = airplane;
@@ -58,6 +59,7 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
         airplaneManager = ap;
         mapOverlayManager = map;
         lastPosition = pos;
+        instance = bundle;
     }
 
     @Override
@@ -276,7 +278,7 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
         PlanEditorDialog dialog = new PlanEditorDialog(getContext(), R.style.FullScreenDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_plan_editor);
-        dialog.loadContent(lastPosition, 30f, flightPlanManager, mapOverlayManager);
+        dialog.loadContent(lastPosition, 30f, flightPlanManager, mapOverlayManager, instance);
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {;

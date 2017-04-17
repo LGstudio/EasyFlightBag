@@ -61,7 +61,7 @@ import sk.lgstudio.easyflightbag.openAIP.Airspace;
 /**
  * The 1st fragment
  * Features:
- *  - Flight planning
+ *  - Opens Flight Planning
  *  - Flight navigation
  *  - Shows gps data
  */
@@ -78,8 +78,6 @@ public class FragmentHome extends Fragment implements
     public final static float MPS_TO_KNOT = 1.94384f;
     public final static float MPS_TO_KMPH = 3.6f;
 
-    private RelativeLayout panelMap;
-    private LinearLayout panelInfo;
     private HorizontalScrollView planScrollView;
     private LinearLayout planList;
     private Button btnFlightPlan;
@@ -130,6 +128,7 @@ public class FragmentHome extends Fragment implements
     public AirplaneManager airplaneManager = null;
     public MainActivity activity;
     private LayoutInflater inflater;
+    private Bundle instance;
 
     // ---------------------------------------------------------------
     // Lifecycle
@@ -145,6 +144,7 @@ public class FragmentHome extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.inflater = inflater;
+        instance = savedInstanceState;
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         btnFlightPlan = (Button) view.findViewById(R.id.home_button_plan);
@@ -157,9 +157,6 @@ public class FragmentHome extends Fragment implements
 
         planScrollView = (HorizontalScrollView) view.findViewById(R.id.home_plan_scrollview);
         planList = (LinearLayout) view.findViewById(R.id.home_plan_list);
-
-        panelInfo = (LinearLayout) view.findViewById(R.id.home_gps_info_panel);
-        panelMap = (RelativeLayout) view.findViewById(R.id.home_map_layout);
 
         txtAccuracy = (TextView) view.findViewById(R.id.home_data_accuracy);
         txtSpeed = (TextView) view.findViewById(R.id.home_data_speed);
@@ -196,6 +193,8 @@ public class FragmentHome extends Fragment implements
         super.onResume();
         if (mapLayout != null)
             mapLayout.onResume();
+        if (!airplaneManager.loaded)
+            flightPlanManager = null;
         changeLayoutPanels();
     }
 
@@ -233,7 +232,10 @@ public class FragmentHome extends Fragment implements
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            if (mapLayout != null) mapLayout.onSaveInstanceState(savedInstanceState);
+            if (mapLayout != null) {
+                mapLayout.onSaveInstanceState(savedInstanceState);
+                instance = savedInstanceState;
+            }
         }
     }
 
@@ -585,7 +587,8 @@ public class FragmentHome extends Fragment implements
      * Create flight plan chooser dialog
      */
     private void openFlightPlans(){
-        flightPlanDialog = new FlightPlanDialog(getContext(), R.style.FullScreenDialog, airplaneManager, mapOverlayManager, lastPosition, plansFolder, airplanesFolder);
+        //mapLayout.onDestroy();
+        flightPlanDialog = new FlightPlanDialog(getContext(), R.style.FullScreenDialog, airplaneManager, mapOverlayManager, lastPosition, plansFolder, airplanesFolder, instance);
         flightPlanDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         flightPlanDialog.setContentView(R.layout.dialog_plan);
         flightPlanDialog.setOnDismissListener(this);
@@ -599,6 +602,8 @@ public class FragmentHome extends Fragment implements
      */
     @Override
     public void onDismiss(DialogInterface dialog) {
+
+        //mapLayout.getMapAsync(this);
 
         if (flightPlanDialog != null){
             flightPlanManager = flightPlanDialog.flightPlanManager;

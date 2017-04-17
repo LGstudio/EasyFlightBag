@@ -252,7 +252,6 @@
         <item name="android:maxLines">1</item>
         <item name="android:inputType">numberDecimal</item>
         <item name="android:selectAllOnFocus">true</item>
-        <item name="android:focusable">false</item>
     </style>
 
     <style name="Block_edit_text_style">
