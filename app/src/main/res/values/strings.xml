@@ -317,6 +317,9 @@
     <string name="plan_arrival_time">Arrival Time (UTC)</string>
     <string name="plan_duration_time">Flight Duration</string>
     <string name="plan_duration_distance">Flight Distance</string>
+    <string name="plan_fuel_endurance">Endurance</string>
+    <string name="plan_fuel_required">Required</string>
+    <string name="plan_no_fuel">Not enough fuel on board to fly</string>
 
     <string name="airports">Airports</string>
     <string name="airspaces">Airspaces</string>

@@ -586,7 +586,7 @@ public class FragmentHome extends Fragment implements
      */
     private void openFlightPlans(){
         //mapLayout.onDestroy();
-        flightPlanDialog = new FlightPlanDialog(getContext(), R.style.FullScreenDialog, flightPlanManager, airplaneManager, mapOverlayManager, lastPosition, plansFolder, airplanesFolder, instance);
+        flightPlanDialog = new FlightPlanDialog(getContext(), R.style.FullScreenDialog, airplaneManager, mapOverlayManager, lastPosition, plansFolder, airplanesFolder, instance);
         flightPlanDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         flightPlanDialog.setContentView(R.layout.dialog_plan);
         flightPlanDialog.setOnDismissListener(this);
@@ -601,7 +601,6 @@ public class FragmentHome extends Fragment implements
     public void onDismiss(DialogInterface dialog) {
         if (flightPlanDialog != null){
             flightPlanManager = flightPlanDialog.flightPlanManager;
-
             flightPlanDialog = null;
             loadFlightPlan();
             changeLayoutPanels();

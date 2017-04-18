@@ -172,7 +172,6 @@ public class FlightPlanManager {
     }
 
     public static class AdditionalData{
-        public float flightLevel = 0f;
         public int rangeH = 0;
         public int rangeM = 0;
         public int depH = 0;

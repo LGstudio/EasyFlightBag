@@ -87,7 +87,8 @@
                     android:weightSum="4"
                     android:id="@+id/plan_ap_data_table"
                     android:layout_alignParentBottom="true"
-                    android:layout_below="@id/plan_select_airplane">
+                    android:layout_below="@id/plan_select_airplane"
+                    android:elevation="0dp">
 
                     <TableRow
                         style="@style/Airplane_editor_table_row_layout"
@@ -224,7 +225,8 @@
 
             <LinearLayout
                 style="@style/Airplane_editor_table_layout"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/row_padding">
 
                 <TextView
                     style="@style/Block_title_text_style"
@@ -233,7 +235,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/primaryColor"
+                    android:textColor="?attr/primaryTextColor"
+                    android:lineSpacingExtra="@dimen/row_padding"
                     android:layout_margin="@dimen/row_padding"
                     android:id="@+id/plan_sum"/>
 

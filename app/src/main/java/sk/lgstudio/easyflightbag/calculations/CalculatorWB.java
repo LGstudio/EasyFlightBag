@@ -30,7 +30,7 @@ import sk.lgstudio.easyflightbag.managers.AirplaneManager;
  * Weight and Balance calculator screen and manager
  */
 
-public class CalculatorWB extends Calculator implements View.OnClickListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
+public class CalculatorWB extends Calculator implements View.OnClickListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener, NumberPicker.OnValueChangeListener {
 
     private File parentFolder = null;
     private SelectorDialog dialogAirplane;
@@ -76,6 +76,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
         flightTimeH.setMaxValue(99);
         flightTimeM.setMinValue(0);
         flightTimeM.setMaxValue(59);
+        flightTimeM.setOnValueChangedListener(this);
 
         tableFuel = (TableLayout) v.findViewById(R.id.ap_wb_table_tanks);
         tableWeights = (TableLayout) v.findViewById(R.id.ap_wb_table_weights);
@@ -223,12 +224,16 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
             if (airplaneManager.loaded){
                 scrollView.setVisibility(View.VISIBLE);
 
+                boolean load = true;
                 if (airplaneManager.flightTimeH != 0 && airplaneManager.flightTimeM != 0){
                     flightTimeH.setValue(airplaneManager.flightTimeH);
                     flightTimeM.setValue(airplaneManager.flightTimeM);
                     flightTimeM.setEnabled(false);
                     flightTimeH.setEnabled(false);
                     airplaneSelector.setEnabled(false);
+                    airplaneSelector.setVisibility(View.GONE);
+                    airplaneEditor.setVisibility(View.GONE);
+                    load = false;
                 }
                 else {
                     flightTimeH.setValue(0);
@@ -236,6 +241,7 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
                     flightTimeM.setEnabled(true);
                     flightTimeH.setEnabled(true);
                     airplaneSelector.setEnabled(true);
+                    airplaneSelector.setVisibility(View.VISIBLE);
                 }
 
                 for(final AirplaneManager.Tanks t: airplaneManager.tanks) {
@@ -248,21 +254,26 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
                     txtCap.setText(String.valueOf(t.max));
                     txtUnus.setText(String.valueOf(t.unus));
                     actual.setText(String.valueOf(t.actual));
-                    actual.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            if (s.length() > 0)
-                                t.actual = Double.parseDouble(s.toString());
-                            else
-                                t.actual = 0;
-                        }
+                    if (load)
+                        actual.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-                        @Override
-                        public void afterTextChanged(Editable s) {}
-                    });
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                if (s.length() > 0)
+                                    t.actual = Double.parseDouble(s.toString());
+                                else
+                                    t.actual = 0;
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {}
+                        });
+                    else
+                        actual.setEnabled(false);
+
                     tableFuel.addView(row);
 
                 }
@@ -302,6 +313,18 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
             airplaneEditor.setVisibility(View.GONE);
             scrollView.setVisibility(View.GONE);
             airplaneManager.clearFile();
+        }
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        if (newVal == 0 && oldVal == 59) {
+            flightTimeH.setValue(flightTimeH.getValue()+1);
+            return;
+        }
+        else if (newVal == 59 && oldVal == 0) {
+            flightTimeH.setValue(flightTimeH.getValue()-1);
+            return;
         }
     }
 }
