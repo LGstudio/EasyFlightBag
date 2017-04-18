@@ -41,6 +41,7 @@ public class AirplaneManager {
     private static final String KEY_EQ_SSR = "eq_ssr";
     private static final String KEY_TYPE = "eq_type";
     private static final String KEY_COLOR = "eq_color";
+    private static final String KEY_ARM_IS_SAT = "arm_sat";
 
     public File file = null;
 
@@ -67,6 +68,8 @@ public class AirplaneManager {
     public double max_landing = 0;
     public double empty_weight = 0;
     public double empty_arm = 0;
+
+    public boolean is_arm_sat = false;
 
     public ArrayList<Weights> additional_weight = new ArrayList<>();
     public ArrayList<Tanks> tanks= new ArrayList<>();
@@ -152,6 +155,8 @@ public class AirplaneManager {
             max_landing = json.getDouble(KEY_MLW);
             empty_weight = json.getDouble(KEY_EMPTY_W);
             empty_arm = json.getDouble(KEY_EMPTY_A);
+
+            is_arm_sat = json.getBoolean(KEY_ARM_IS_SAT);
 
             JSONArray jAW = json.getJSONArray(KEY_ADD_W);
             for (int i = 0; i < jAW.length(); i++){
@@ -247,6 +252,8 @@ public class AirplaneManager {
             json.put(KEY_MLW, max_landing);
             json.put(KEY_EMPTY_W, empty_weight);
             json.put(KEY_EMPTY_A, empty_arm);
+
+            json.put(KEY_ARM_IS_SAT, is_arm_sat);
 
             JSONArray jAW = new JSONArray();
             for (Tanks t: tanks){

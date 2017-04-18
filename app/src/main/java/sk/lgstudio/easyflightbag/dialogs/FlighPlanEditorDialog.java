@@ -3,12 +3,14 @@ package sk.lgstudio.easyflightbag.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -69,6 +71,7 @@ public class FlighPlanEditorDialog extends Dialog implements OnMapReadyCallback,
     private ArrayList<Marker> planMarkers = new ArrayList<>();
     private Polyline planLine;
     private BitmapDescriptor mapPointIcon;
+    private TypedValue routeColor;
 
     public FlighPlanEditorDialog(Context context, int themeResId) {
         super(context, themeResId);
@@ -84,6 +87,11 @@ public class FlighPlanEditorDialog extends Dialog implements OnMapReadyCallback,
         Canvas canvas = new Canvas(bm);
         vectorDrawable.draw(canvas);
         mapPointIcon = BitmapDescriptorFactory.fromBitmap(bm);
+
+        Resources.Theme theme = context.getTheme();
+        routeColor = new TypedValue();
+        theme.resolveAttribute(R.attr.pinkColor, routeColor, true);
+
     }
 
     public void loadContent(LatLng mypos, float range, FlightPlanManager flPlanMan, MapOverlayManager overlay, Bundle b){
@@ -276,7 +284,7 @@ public class FlighPlanEditorDialog extends Dialog implements OnMapReadyCallback,
             planLine.remove();
 
         if (flightPlanManager != null) {
-            PolylineOptions po = new PolylineOptions().geodesic(true).clickable(false).width(7f).color(Color.MAGENTA);
+            PolylineOptions po = new PolylineOptions().geodesic(true).clickable(false).width(7f).color(routeColor.data);
 
             for (FlightPlanManager.Point p : flightPlanManager.editedPlan) {
                 MarkerOptions o = new MarkerOptions().position(p.location).draggable(p.editeble).icon(mapPointIcon).anchor(0.5f, 0.5f);

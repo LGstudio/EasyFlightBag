@@ -1,6 +1,7 @@
 package sk.lgstudio.easyflightbag.fragments;
 
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,6 +113,7 @@ public class FragmentHome extends Fragment implements
     private MarkerOptions locaionMarkerOptions;
     private Marker locationMarker = null;
     private BitmapDescriptor mapPointIcon;
+    private TypedValue routeColor;
 
     //private boolean editing = false;
     private ArrayList<Marker> planMarkers = new ArrayList<>();
@@ -142,6 +145,10 @@ public class FragmentHome extends Fragment implements
         this.inflater = inflater;
         instance = savedInstanceState;
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        Resources.Theme theme = getContext().getTheme();
+        routeColor = new TypedValue();
+        theme.resolveAttribute(R.attr.pinkColor, routeColor, true);
 
         btnFlightPlan = (Button) view.findViewById(R.id.home_button_plan);
         btnFlightPlanLeft = (ImageButton) view.findViewById(R.id.home_button_plan_left);
@@ -451,7 +458,7 @@ public class FragmentHome extends Fragment implements
             planLine.remove();
 
         if (flightPlanManager != null) {
-            PolylineOptions po = new PolylineOptions().geodesic(true).clickable(false).width(7f).color(Color.MAGENTA);
+            PolylineOptions po = new PolylineOptions().geodesic(true).clickable(false).width(7f).color(routeColor.data);
 
             for (FlightPlanManager.Point p: flightPlanManager.plan){
                 MarkerOptions o = new MarkerOptions().position(p.location).draggable(false).icon(mapPointIcon).anchor(0.5f,0.5f);

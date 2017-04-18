@@ -69,6 +69,11 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
     private EditText edtEmptyW;
     private EditText edtEmptyA;
 
+    private TextView armSwitch;
+    private TextView armFuel;
+    private TextView armWeights;
+    private TextView armLimits;
+
     private TableLayout tableTanks;
     private ArrayList<RowTank> tanks = new ArrayList<>();
 
@@ -134,6 +139,13 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
         ImageButton tableLimitsAdd = (ImageButton) findViewById(R.id.ap_edit_pref_table_limits_add);
         tableLimitsAdd.setOnClickListener(this);
 
+        armSwitch = (TextView) findViewById(R.id.arm_unit_switch);
+        armFuel = (TextView) findViewById(R.id.arm_unit_fuel);
+        armWeights = (TextView) findViewById(R.id.arm_unit_we);
+        armLimits = (TextView) findViewById(R.id.arm_unit_limits);
+
+        armSwitch.setOnClickListener(this);
+
         for (int i = 0; i < eq_nav_id.length; i++){
             CheckBox b = (CheckBox) findViewById(eq_nav_id[i]);
             final int f = i;
@@ -158,6 +170,8 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
 
         // load content from object
         if (airplane.loaded){
+
+            switchArms(airplane.is_arm_sat);
 
             edtType.setText(airplane.type);
             edtColor.setText(airplane.color);
@@ -202,6 +216,28 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
     }
 
     /**
+     * Switch between mm and sat mesures
+     * @param b - true: SAT, false: mm
+     */
+    private void switchArms(boolean b){
+        airplane.is_arm_sat = b;
+
+        if (b){
+            armSwitch.setText(R.string.calc_unit_sat);
+            armFuel.setText(R.string.calc_arm_sat);
+            armWeights.setText(R.string.calc_arm_sat);
+            armLimits.setText(R.string.calc_arm_sat);
+        }
+
+        else {
+            armSwitch.setText(R.string.calc_unit_mm);
+            armFuel.setText(R.string.calc_arm_mm);
+            armWeights.setText(R.string.calc_arm_mm);
+            armLimits.setText(R.string.calc_arm_mm);
+        }
+    }
+
+    /**
      * Handles button clicks
      * @param v
      */
@@ -223,7 +259,8 @@ public class AirplaneEditorDialog extends Dialog implements View.OnClickListener
             case R.id.ap_edit_pref_table_limits_add:
                 addLimits(0, 0);
                 break;
-
+            case R.id.arm_unit_switch:
+                switchArms(!airplane.is_arm_sat);
         }
     }
 

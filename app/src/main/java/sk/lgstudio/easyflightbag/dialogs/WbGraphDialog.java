@@ -61,6 +61,15 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
         ImageButton btn = (ImageButton) findViewById(R.id.wb_close);
         btn.setOnClickListener(this);
 
+        String armStr;
+        if (airplane.is_arm_sat) {
+            TextView txtArm = (TextView) findViewById(R.id.wb_arm_text);
+            txtArm.setText(R.string.calc_arm_sat);
+            armStr = getContext().getString(R.string.calc_arm_sat);
+        }
+        else
+            armStr = getContext().getString(R.string.calc_arm_mm);
+
         TableLayout summary = (TableLayout) findViewById(R.id.wb_flight_summary);
 
         // error initialization
@@ -215,7 +224,7 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
 
         // AXIS
         Axis axisArm = new Axis();
-        axisArm.setName(getContext().getString(R.string.calc_arm_mm));
+        axisArm.setName(armStr);
         axisArm.setLineColor(textColor.data);
         axisArm.setTextColor(textColor.data);
         axisArm.setHasLines(true);

@@ -22,7 +22,8 @@
 
     <ScrollView
         style="@style/Airplane_editor_table_layout"
-        android:layout_above="@id/plan_info_close">
+        android:layout_above="@id/plan_info_close"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,9 +37,14 @@
             <TextView
                 style="@style/Block_text_style"
                 android:textColor="?attr/primaryTextColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_gravity="start"
                 android:layout_marginTop="@dimen/row_padding"
                 android:lineSpacingExtra="@dimen/row_padding"
-                android:id="@+id/plan_info_text"/>
+                android:id="@+id/plan_info_text"
+                />
 
         </LinearLayout>
 

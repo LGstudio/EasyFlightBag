@@ -472,8 +472,19 @@
                         android:id="@+id/ap_edit_perf_empty_a"/>
 
                     <TextView
-                        style="@style/Block_text_style"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/row_padding"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/row_padding"
+                        android:gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:textColor="?attr/highlightColor"
                         android:text="@string/calc_unit_mm"
+                        android:background="?attr/backgroundColorHighlight"
+                        android:clickable="true"
+                        android:elevation="@dimen/elevation_8"
+                        android:id="@+id/arm_unit_switch"
                         />
 
                 </TableRow>
@@ -522,6 +533,7 @@
                     <TextView
                         style="@style/Block_text_style"
                         android:text="@string/calc_arm_mm"
+                        android:id="@+id/arm_unit_fuel"
                         android:layout_weight="1"/>
 
                     <TextView
@@ -581,6 +593,7 @@
                     <TextView
                         style="@style/Block_text_style"
                         android:text="@string/calc_arm_mm"
+                        android:id="@+id/arm_unit_we"
                         android:layout_weight="1"/>
 
                     <TextView
@@ -627,6 +640,7 @@
                     <TextView
                         style="@style/Block_text_style"
                         android:text="@string/calc_arm_mm"
+                        android:id="@+id/arm_unit_limits"
                         android:layout_weight="1"/>
 
                     <TextView

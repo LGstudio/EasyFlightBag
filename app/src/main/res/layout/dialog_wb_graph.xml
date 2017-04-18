@@ -73,18 +73,16 @@
                     <TextView
                         style="@style/Block_edit_text_style"
                         android:text=""
-                        android:id="@+id/ap_wb_fuel_name"
                         android:maxLines="1"/>
 
                     <TextView
                         style="@style/Block_edit_text_number_style"
-                        android:id="@+id/ap_wb_fuel_capacity"
                         android:text="@string/calc_weight_kg"
                         android:maxLines="1"/>
 
                     <TextView
                         style="@style/Block_edit_text_number_style"
-                        android:id="@+id/ap_wb_fuel_unus"
+                        android:id="@+id/wb_arm_text"
                         android:text="@string/calc_arm_mm"
                         android:maxLines="1"/>
 
