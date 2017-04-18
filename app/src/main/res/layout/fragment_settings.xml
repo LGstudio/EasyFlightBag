@@ -208,7 +208,8 @@
         />
 
     <RelativeLayout
-        style="@style/Block_title_text_style.inSettings">
+        style="@style/Block_title_text_style.inSettings"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"

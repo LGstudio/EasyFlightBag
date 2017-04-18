@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -406,7 +405,7 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
      * Opens flight plan editor Dialog
      */
     private void openPlanEditor(){
-        PlanEditorDialog dialog = new PlanEditorDialog(getContext(), R.style.FullScreenDialog);
+        FlighPlanEditorDialog dialog = new FlighPlanEditorDialog(getContext(), R.style.FullScreenDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_plan_editor);
         dialog.loadContent(lastPosition, 30f, flightPlanManager, mapOverlayManager, instance);

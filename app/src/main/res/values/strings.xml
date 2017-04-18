@@ -320,6 +320,12 @@
     <string name="plan_fuel_endurance">Endurance</string>
     <string name="plan_fuel_required">Required</string>
     <string name="plan_no_fuel">Not enough fuel on board to fly</string>
+    <string name="plan_info">Flight Plan Information</string>
+    <string name="plan_aircraft_id">Aircraft Identification</string>
+    <string name="plan_aircraft_type">Type of Aircraft</string>
+    <string name="plan_dep_airp">Departure Airodrome</string>
+    <string name="plan_arr_airp">Destination Airodrome</string>
+    <string name="plan_plane_equip">Equipment</string>
 
     <string name="airports">Airports</string>
     <string name="airspaces">Airspaces</string>

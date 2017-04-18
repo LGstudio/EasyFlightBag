@@ -55,7 +55,7 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
         // setting text view
         TextView txtTime = (TextView) findViewById(R.id.wb_flight_time);
         txtTime.setText(getContext().getString(R.string.calc_fly_time) + ": " + String.valueOf(airplane.flightTimeH) + "h" + String.valueOf(airplane.flightTimeM));
-        double consumptionLeft = airplane.fuel_flow * airplane.flightTimeH + airplane.fuel_flow * (airplane.flightTimeM/60);
+        double consumptionLeft = (airplane.fuel_flow * airplane.flightTimeH) + ((airplane.fuel_flow * airplane.flightTimeM)/60);
         TextView fuelCons = (TextView) findViewById(R.id.wb_flight_fuel);
         fuelCons.setText(getContext().getString(R.string.calc_fuel_consumption)+ ": " + String.valueOf(consumptionLeft) + "l");
         ImageButton btn = (ImageButton) findViewById(R.id.wb_close);
@@ -119,6 +119,8 @@ public class WbGraphDialog extends Dialog implements View.OnClickListener {
                 fuelWeight = consumedFuel * airplane.fuel_density;
                 landingWeight += fuelWeight;
                 landingMoment += fuelWeight * t.arm;
+                consumptionLeft = 0;
+                break;
             }
             consumptionLeft -= consumedFuel;
         }

@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/backgroundDarkColor"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/row_padding"
+    android:clipToPadding="false">
+
+    <ImageButton
+        android:id="@+id/plan_info_close"
+        android:layout_width="match_parent"
+        android:background="?attr/primaryColor"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/row_padding"
+        android:layout_marginLeft="@dimen/row_padding"
+        android:layout_marginRight="@dimen/row_padding"
+        android:src="@drawable/ic_arrow_back"
+        android:layout_marginTop="@dimen/row_padding"
+        android:layout_alignParentBottom="true"
+        android:elevation="@dimen/elevation_8"/>
+
+
+    <ScrollView
+        style="@style/Airplane_editor_table_layout"
+        android:layout_above="@id/plan_info_close">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Block_title_text_style"
+                android:text="@string/plan_info" />
+
+            <TextView
+                style="@style/Block_text_style"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_marginTop="@dimen/row_padding"
+                android:lineSpacingExtra="@dimen/row_padding"
+                android:id="@+id/plan_info_text"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

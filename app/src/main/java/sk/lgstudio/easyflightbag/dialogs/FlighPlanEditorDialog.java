@@ -47,7 +47,7 @@ import sk.lgstudio.easyflightbag.openAIP.Airspace;
  * Dialog with map to edit flight plan
  */
 
-public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, View.OnClickListener {
+public class FlighPlanEditorDialog extends Dialog implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, View.OnClickListener {
 
     protected MapView mapLayout = null;
     protected GoogleMap map = null;
@@ -70,7 +70,7 @@ public class PlanEditorDialog extends Dialog implements OnMapReadyCallback, Goog
     private Polyline planLine;
     private BitmapDescriptor mapPointIcon;
 
-    public PlanEditorDialog(Context context, int themeResId) {
+    public FlighPlanEditorDialog(Context context, int themeResId) {
         super(context, themeResId);
         SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.app_prefs), Context.MODE_PRIVATE);
         nightMode = prefs.getBoolean(context.getString(R.string.pref_theme), false);

@@ -14,15 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,9 +46,8 @@ import java.util.ArrayList;
 import sk.lgstudio.easyflightbag.MainActivity;
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.dialogs.FlightPlanDialog;
+import sk.lgstudio.easyflightbag.dialogs.FlightPlanInfoDialog;
 import sk.lgstudio.easyflightbag.dialogs.OverlayDetailDialog;
-import sk.lgstudio.easyflightbag.dialogs.PlanEditorDialog;
-import sk.lgstudio.easyflightbag.dialogs.SelectorDialog;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 import sk.lgstudio.easyflightbag.managers.FlightPlanManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
@@ -573,12 +569,14 @@ public class FragmentHome extends Fragment implements
     // Flight plans
     // ---------------------------------------------------------------
 
-    // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /**
      * Opens plan info dialog
      */
     private void showPlanInfo(){
-
+        FlightPlanInfoDialog d = new FlightPlanInfoDialog(getContext(), airplaneManager, flightPlanManager);
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setContentView(R.layout.dialog_plan_info);
+        d.show();
     }
 
     /**
