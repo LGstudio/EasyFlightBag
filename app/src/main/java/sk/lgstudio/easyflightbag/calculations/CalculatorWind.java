@@ -159,7 +159,7 @@ public class CalculatorWind extends Calculator implements SeekBar.OnSeekBarChang
             txtLeftWind.setText(left);
             txtRightWind.setText(right);
 
-            txtMetar.setText("RWY" + runwayNum + " " + windDirection + "° " + windSpeed + "kt" );
+            txtMetar.setText("RWY" + rwy + " " + windDirection + "° " + windSpeed + "kt" );
         }
     }
 }

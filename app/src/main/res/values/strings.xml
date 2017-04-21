@@ -250,7 +250,7 @@
     <string name="calc_switch">Switch to</string>
     <string name="calc_runway_num">Runway number</string>
     <string name="calc_wind_dir">Wind from</string>
-    <string name="calc_wind_speed">Wind speed (kn)</string>
+    <string name="calc_wind_speed">Wind speed (kt)</string>
     <string name="calc_airplane_info">Airplane Information</string>
     <string name="calc_airplane_type">Type</string>
     <string name="calc_airplane_color">Color</string>

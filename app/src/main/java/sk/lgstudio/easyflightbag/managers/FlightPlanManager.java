@@ -42,6 +42,7 @@ public class FlightPlanManager {
      */
     public FlightPlanManager(File f){
         plan = new ArrayList<>();
+        data = new AdditionalData();
 
         if (f == null) return;
 
@@ -72,7 +73,6 @@ public class FlightPlanManager {
             }
 
             loaded = true;
-            data = new AdditionalData();
         } catch (JSONException | IOException e) {
             loaded = false;
         }
@@ -174,7 +174,7 @@ public class FlightPlanManager {
     public static class AdditionalData{
         public int rangeH = 0;
         public int rangeM = 0;
-        public int depH = 0;
+        public int depH = 12;
         public int depM = 0;
         public int arrivH = 0;
         public int arrivM = 0;

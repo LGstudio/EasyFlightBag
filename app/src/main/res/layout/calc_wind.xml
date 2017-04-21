@@ -80,6 +80,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:id="@+id/wind_metar"
                 android:gravity="center"
+                android:textSize="@dimen/big_text"
                 android:layout_marginBottom="@dimen/row_height"/>
 
             <TextView

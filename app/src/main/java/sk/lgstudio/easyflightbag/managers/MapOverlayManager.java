@@ -72,7 +72,6 @@ public class MapOverlayManager {
 
         if (exists())
             loadData();
-
     }
 
     /**
@@ -145,14 +144,15 @@ public class MapOverlayManager {
     public ArrayList<Airport.Data> getAirports(){
         ArrayList<Airport.Data> aps = new ArrayList<>();
 
-        for(int i = 0; i < airports.size(); i++){
-            if (country == 0 || country == i+1){
-                for (Airport.Data apt: airports.get(i)){
-                    if (airportTypeVisible(apt.type))
-                        aps.add(apt);
+        if (airports != null)
+            for(int i = 0; i < airports.size(); i++){
+                if (country == 0 || country == i+1){
+                    for (Airport.Data apt: airports.get(i)){
+                        if (airportTypeVisible(apt.type))
+                            aps.add(apt);
+                    }
                 }
             }
-        }
 
         return aps;
     }
@@ -181,11 +181,12 @@ public class MapOverlayManager {
     public ArrayList<Airspace.Data> getAirspaces(){
         ArrayList<Airspace.Data> asp = new ArrayList<>();
 
-        for(int i = 0; i < airspaces.size(); i++){
-            if (country == 0 || country == i+1){
-                asp.addAll(airspaces.get(i));
+        if (airspaces != null)
+            for(int i = 0; i < airspaces.size(); i++){
+                if (country == 0 || country == i+1){
+                    asp.addAll(airspaces.get(i));
+                }
             }
-        }
 
         return asp;
     }

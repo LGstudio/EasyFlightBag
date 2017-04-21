@@ -224,8 +224,8 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
             if (airplaneManager.loaded){
                 scrollView.setVisibility(View.VISIBLE);
 
-                boolean load = true;
-                if (airplaneManager.flightTimeH != 0 && airplaneManager.flightTimeM != 0){
+                boolean isRoute = airplaneManager.isRoute;
+                if (isRoute){
                     flightTimeH.setValue(airplaneManager.flightTimeH);
                     flightTimeM.setValue(airplaneManager.flightTimeM);
                     flightTimeM.setEnabled(false);
@@ -233,7 +233,6 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
                     airplaneSelector.setEnabled(false);
                     airplaneSelector.setVisibility(View.GONE);
                     airplaneEditor.setVisibility(View.GONE);
-                    load = false;
                 }
                 else {
                     flightTimeH.setValue(0);
@@ -255,7 +254,9 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
                     txtUnus.setText(String.valueOf(t.unus));
                     actual.setText(String.valueOf(t.actual));
 
-                    if (load)
+                    if (isRoute)
+                        actual.setEnabled(false);
+                    else
                         actual.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -271,8 +272,6 @@ public class CalculatorWB extends Calculator implements View.OnClickListener, Di
                             @Override
                             public void afterTextChanged(Editable s) {}
                         });
-                    else
-                        actual.setEnabled(false);
 
                     tableFuel.addView(row);
 

@@ -46,6 +46,7 @@ public class AirplaneManager {
     public File file = null;
 
     public boolean loaded = false;
+    public boolean isRoute = false;
 
     public int flightTimeH = 0;
     public int flightTimeM = 0;

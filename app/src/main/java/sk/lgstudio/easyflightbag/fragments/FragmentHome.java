@@ -199,6 +199,7 @@ public class FragmentHome extends Fragment implements
         if (!airplaneManager.loaded)
             flightPlanManager = null;
         changeLayoutPanels();
+        mapFollow = true;
     }
 
     /**
@@ -268,10 +269,7 @@ public class FragmentHome extends Fragment implements
             alt = loc.getAltitude();
             acc = loc.getAccuracy();
 
-            float b = 0f;
-            if (mapNorthUp) b = bearing;
-
-            locaionMarkerOptions.position(lastPosition).rotation(b);
+            locaionMarkerOptions.position(lastPosition).rotation(bearing);
             if (mapReady) {
                 if (locationMarker != null) locationMarker.remove();
                 locationMarker = map.addMarker(locaionMarkerOptions);
@@ -279,7 +277,6 @@ public class FragmentHome extends Fragment implements
             }
 
             showPositionValues();
-
             txtNoGps.setVisibility(View.GONE);
         }
         else {
@@ -289,7 +286,6 @@ public class FragmentHome extends Fragment implements
                     locationMarker.remove();
                     locationMarker = null;
                 }
-                mapFollow = false;
             }
 
             txtNoGps.setVisibility(View.VISIBLE);
@@ -375,8 +371,8 @@ public class FragmentHome extends Fragment implements
         if(lastPosition != null) changeMapPosition();
 
         UiSettings settings = map.getUiSettings();
-        settings.setCompassEnabled(true);
-        settings.setMyLocationButtonEnabled(true);
+        settings.setCompassEnabled(false);
+        settings.setMyLocationButtonEnabled(false);
         settings.setRotateGesturesEnabled(false);
         settings.setZoomControlsEnabled(false);
         settings.setZoomGesturesEnabled(true);
@@ -541,7 +537,7 @@ public class FragmentHome extends Fragment implements
      * Initializes the icons that will be put on map
      */
     private void initMapDrawables(){
-        locaionMarkerOptions = new MarkerOptions().draggable(false).icon(MapOverlayManager.getBitmapDescriptor(R.drawable.ic_plane_map, activity)).anchor(0.5f, 0.5f);
+        locaionMarkerOptions = new MarkerOptions().draggable(false).flat(true).icon(MapOverlayManager.getBitmapDescriptor(R.drawable.ic_plane_map, activity)).anchor(0.5f, 0.5f);
 
         VectorDrawable vectorDrawable = (VectorDrawable) activity.getDrawable(R.drawable.map_marker);
         int h = vectorDrawable.getIntrinsicHeight();
@@ -610,6 +606,10 @@ public class FragmentHome extends Fragment implements
             loadFlightPlan();
             changeLayoutPanels();
         }
+        if (flightPlanManager == null)
+            airplaneManager.isRoute = false;
+        else
+            airplaneManager.isRoute = true;
     }
 
     /**
@@ -666,8 +666,7 @@ public class FragmentHome extends Fragment implements
      */
     private void cancelRoute(){
         flightPlanManager = null;
-        airplaneManager.flightTimeH = 0;
-        airplaneManager.flightTimeM = 0;
+        airplaneManager.isRoute = false;
         changeLayoutPanels();
         loadPlanMarkers();
     }

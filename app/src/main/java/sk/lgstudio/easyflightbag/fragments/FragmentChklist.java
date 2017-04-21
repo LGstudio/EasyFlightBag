@@ -25,6 +25,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.dialogs.SelectorDialog;
@@ -179,11 +180,15 @@ public class FragmentChklist extends Fragment implements View.OnClickListener, D
      */
     public File[] getFiles(){
         if (folderActual != null){
-            return folderActual.listFiles(new FilenameFilter() {
+            File[] files = folderActual.listFiles(new FilenameFilter() {
                 public boolean accept(File dir, String name) {
                     return name.endsWith(".txt");
                 }
             });
+
+            Arrays.sort(files);
+
+            return files;
         }
 
         return new File[0];

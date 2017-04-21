@@ -228,8 +228,6 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
 
         if (notOK) {
             txtSum.setText(getContext().getString(R.string.plan_summary_empty));
-            airplaneManager.flightTimeH = 0;
-            airplaneManager.flightTimeM = 0;
         }
         else {
             double dist = flightPlanManager.getRoutLength();
