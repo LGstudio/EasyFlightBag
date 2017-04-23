@@ -66,7 +66,7 @@ public class FlightPlanDialog extends Dialog implements View.OnClickListener, Di
     private String sumReq;
     private String sumKm;
     private String sumL;
-    private String f = "%02d:%02d";
+    private String f = "%02dh %02dmin";
 
     public FlightPlanDialog(Context context, int themeResId, AirplaneManager ap, MapOverlayManager map, LatLng pos, File plan, File airplane, Bundle bundle) {
         super(context, themeResId);

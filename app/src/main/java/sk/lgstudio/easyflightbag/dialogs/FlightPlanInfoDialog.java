@@ -20,7 +20,7 @@ public class FlightPlanInfoDialog extends Dialog {
     private FlightPlanManager flightPlanManager;
     private Context c;
 
-    private String f = "%02d:%02d";
+    private String f = "%02dh %02dmin";
     private String n = "\n";
     private String d = ": ";
     private String q = "?";
