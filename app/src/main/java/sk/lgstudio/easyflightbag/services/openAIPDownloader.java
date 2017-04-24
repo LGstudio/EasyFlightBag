@@ -26,7 +26,7 @@ import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader;
  * Created by LGstudio on 2017-02-20.
  */
 
-public class AirspaceDownloader extends IntentService {
+public class OpenAIPDownloader extends IntentService {
 
     private String webUrl;
     private File folder;
@@ -34,7 +34,7 @@ public class AirspaceDownloader extends IntentService {
     private NotificationCompat.Builder builder = null;
     private NotificationManager notificationManager;
 
-    public AirspaceDownloader() {
+    public OpenAIPDownloader() {
         super("Airspace");
     }
 
