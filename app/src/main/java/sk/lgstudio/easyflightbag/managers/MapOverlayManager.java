@@ -13,7 +13,6 @@ import android.graphics.drawable.VectorDrawable;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -30,7 +29,7 @@ import sk.lgstudio.easyflightbag.R;
 import sk.lgstudio.easyflightbag.openAIP.Airport;
 import sk.lgstudio.easyflightbag.openAIP.Airspace;
 import sk.lgstudio.easyflightbag.services.AIPDownloader.AIPDownloader;
-import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
+import sk.lgstudio.easyflightbag.services.OpenAIPDownloader;
 
 /**
  * Map overlay manager
@@ -490,7 +489,7 @@ public class MapOverlayManager {
      * Starts downloading service
      */
     private void startService(){
-        activity.startService(new Intent(activity, AirspaceDownloader.class));
+        activity.startService(new Intent(activity, OpenAIPDownloader.class));
         LocalBroadcastManager.getInstance(activity).registerReceiver(this.downloadedReceiver, new IntentFilter(activity.getString(R.string.service_air_download)));
         started = true;
         activity.airDataChange();
@@ -500,7 +499,7 @@ public class MapOverlayManager {
      * Finishes downloading service
      */
     private void stopService(){
-        activity.stopService(new Intent(activity, AirspaceDownloader.class));
+        activity.stopService(new Intent(activity, OpenAIPDownloader.class));
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(this.downloadedReceiver);
         started = false;
         activity.airDataChange();

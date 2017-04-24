@@ -31,7 +31,6 @@ import sk.lgstudio.easyflightbag.dialogs.SplashDialog;
 import sk.lgstudio.easyflightbag.managers.AIPManager;
 import sk.lgstudio.easyflightbag.managers.AirplaneManager;
 import sk.lgstudio.easyflightbag.managers.MapOverlayManager;
-import sk.lgstudio.easyflightbag.services.AirspaceDownloader;
 import sk.lgstudio.easyflightbag.services.BTTrackerService;
 import sk.lgstudio.easyflightbag.services.GPSTrackerService;
 import sk.lgstudio.easyflightbag.fragments.FragmentAip;

@@ -178,7 +178,7 @@
             android:textSize="@dimen/big_text"
             android:textColor="?attr/redColor"
             android:layout_above="@id/home_nonet"
-            android:padding="@dimen/set_spacing"
+            android:padding="@dimen/bar_spacing"
             android:layout_alignParentBottom="true"
             android:background="?attr/highlightColor"
             android:elevation="@dimen/elevation_8"/>

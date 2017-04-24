@@ -71,7 +71,7 @@
         </service>
 
         <service
-            android:name=".services.AirspaceDownloader"
+            android:name=".services.OpenAIPDownloader"
             android:exported="false">
         </service>
 

@@ -38,5 +38,6 @@
     <dimen name="graph_height">400dp</dimen>
 
     <dimen name="wind_graph_size">196dp</dimen>
+    <dimen name="bar_spacing">4dp</dimen>
 
 </resources>
