@@ -228,10 +228,11 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
             dist.setText(dstStr);
             bear.setText(bearStr);
 
-            icon.setBackground(new BitmapDrawable(getContext().getResources(), dt.icon));
-            icon.setScaleX(0.5f);
-            icon.setScaleY(0.5f);
         }
+
+        icon.setBackground(new BitmapDrawable(getContext().getResources(), dt.icon));
+        icon.setScaleX(0.5f);
+        icon.setScaleY(0.5f);
     }
 
     /**
