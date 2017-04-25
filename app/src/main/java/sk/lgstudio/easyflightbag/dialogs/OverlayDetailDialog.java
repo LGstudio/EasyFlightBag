@@ -96,18 +96,25 @@ public class OverlayDetailDialog extends Dialog implements View.OnClickListener 
 
         loadButtons();
 
-        float[] results = new float[3];
-        Location.distanceBetween(location.latitude, location.longitude, clicked.latitude, clicked.longitude, results);
-
-        double b = results[1];
-        if (b < 0) b = 360 + b;
-        String dstStr = new DecimalFormat("#.#").format(results[0]/1000) + km;
-        String bearStr = new DecimalFormat("#.#").format(b) + d;
+        title = (TextView) findViewById(R.id.detail_position_text);
         String lat = new DecimalFormat("#.#####").format(clicked.latitude);
         String lon = new DecimalFormat("#.#####").format(clicked.longitude);
 
-        title = (TextView) findViewById(R.id.detail_position_text);
-        title.setText("LAT:" + lat + "/LON:" + lon + " - " + dstStr + " / " + bearStr );
+        if (location != null) {
+            float[] results = new float[3];
+            Location.distanceBetween(location.latitude, location.longitude, clicked.latitude, clicked.longitude, results);
+
+            double b = results[1];
+            if (b < 0) b = 360 + b;
+            String dstStr = new DecimalFormat("#.#").format(results[0] / 1000) + km;
+            String bearStr = new DecimalFormat("#.#").format(b) + d;
+
+            title.setText("LAT:" + lat + "/LON:" + lon + " - " + dstStr + " / " + bearStr);
+        }
+
+        else {
+            title.setText("LAT:" + lat + "/LON:" + lon);
+        }
     }
 
     private void loadButtons(){
